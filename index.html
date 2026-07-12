@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metadata — by Raj_op_360</title>
+<script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.min.js"></script>
+<style>
+  :root{
+    --violet:#7C5CFF;
+    --pink:#FF5CAC;
+    --cyan:#33D6FF;
+    --amber:#FFB454;
+    --lime:#8CFF7C;
+    --ink:#050611;
+    --glass:rgba(255,255,255,0.07);
+    --glass-brd:rgba(255,255,255,0.16);
+    --text:#F5F6FA;
+    --sub:rgba(245,246,250,0.58);
+    --sub2:rgba(245,246,250,0.38);
+    --radius:26px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+    padding:32px 16px 70px;
+    position:relative;
+  }
+
+  /* ---------- Living mesh background ---------- */
+  .mesh{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;}
+  .blob{position:absolute; border-radius:50%; filter:blur(70px); opacity:0.55; mix-blend-mode:screen;}
+  .blob.b1{width:420px;height:420px; background:var(--violet); top:-120px; left:-100px; animation:float1 22s ease-in-out infinite;}
+  .blob.b2{width:380px;height:380px; background:var(--pink); top:20%; right:-140px; animation:float2 26s ease-in-out infinite;}
+  .blob.b3{width:340px;height:340px; background:var(--cyan); bottom:-100px; left:10%; animation:float3 24s ease-in-out infinite;}
+  .blob.b4{width:260px;height:260px; background:var(--amber); bottom:10%; right:10%; animation:float1 30s ease-in-out infinite reverse; opacity:0.35;}
+  .grain{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  @keyframes float1{0%,100%{transform:translate(0,0) scale(1);} 33%{transform:translate(40px,60px) scale(1.1);} 66%{transform:translate(-30px,20px) scale(0.95);}}
+  @keyframes float2{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-60px,50px) scale(1.15);}}
+  @keyframes float3{0%,100%{transform:translate(0,0) scale(1);} 40%{transform:translate(50px,-40px) scale(1.08);} 70%{transform:translate(-20px,-70px) scale(0.92);}}
+
+  .wrap{max-width:560px; margin:0 auto; position:relative; z-index:2;}
+
+  /* ---------- Header ---------- */
+  .header{text-align:center; margin-bottom:26px; animation:dropIn .6s cubic-bezier(.2,1,.3,1);}
+  .header h1{
+    font-size:34px; font-weight:800; letter-spacing:-0.03em; margin:0 0 6px;
+    background:linear-gradient(100deg,#fff 20%, var(--cyan) 45%, var(--violet) 65%, var(--pink) 85%);
+    background-size:250% auto;
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:shimmer 6s linear infinite;
+  }
+  .header p{margin:0; color:var(--sub); font-size:14.5px; font-weight:500;}
+  @keyframes shimmer{to{background-position:250% center;}}
+  @keyframes dropIn{from{opacity:0; transform:translateY(-14px) scale(.98);} to{opacity:1; transform:translateY(0) scale(1);}}
+
+  /* ---------- Glass base ---------- */
+  .glass{
+    background:var(--glass);
+    -webkit-backdrop-filter:blur(28px) saturate(160%);
+    backdrop-filter:blur(28px) saturate(160%);
+    border:1px solid var(--glass-brd);
+    border-radius:var(--radius);
+    box-shadow:0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  /* ---------- Drop zone ---------- */
+  .dropzone{
+    padding:44px 22px;
+    text-align:center;
+    cursor:pointer;
+    position:relative;
+    isolation:isolate;
+    transition:transform .35s cubic-bezier(.2,1,.3,1), box-shadow .35s ease;
+    animation:dropIn .6s cubic-bezier(.2,1,.3,1) .08s both;
+  }
+  .dropzone::before{
+    content:'';
+    position:absolute; inset:-2px; z-index:-1; border-radius:calc(var(--radius) + 2px);
+    background:conic-gradient(from 0deg, var(--violet), var(--cyan), var(--pink), var(--amber), var(--violet));
+    opacity:0; transition:opacity .35s ease;
+    animation:spin 6s linear infinite;
+  }
+  .dropzone:active{transform:scale(0.985);}
+  .dropzone.drag{transform:scale(1.02);}
+  .dropzone.drag::before{opacity:1;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .app-icon{
+    width:74px;height:74px;border-radius:22px;
+    background:linear-gradient(155deg,#8B6BFF 0%, #6B4CFF 45%, #FF5CAC 100%);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 18px;
+    position:relative;
+    box-shadow:0 10px 26px rgba(124,92,255,0.45), inset 0 1px 1px rgba(255,255,255,0.5), inset 0 -6px 12px rgba(0,0,0,0.2);
+    animation:iconBreathe 4s ease-in-out infinite;
+  }
+  .app-icon::after{
+    content:'';
+    position:absolute; inset:0; border-radius:22px;
+    background:linear-gradient(120deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 35%);
+    animation:shine 4.5s ease-in-out infinite;
+  }
+  .app-icon svg{width:32px;height:32px;stroke:#fff; position:relative; z-index:1; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.2));}
+  @keyframes iconBreathe{0%,100%{transform:scale(1) rotate(0deg);} 50%{transform:scale(1.05) rotate(-2deg);}}
+  @keyframes shine{0%,100%{opacity:0.4; transform:translateX(-10%);} 50%{opacity:0.9; transform:translateX(10%);}}
+
+  .dropzone h3{margin:0 0 4px; font-size:17px; font-weight:700; letter-spacing:-0.01em;}
+  .dropzone p{margin:0; font-size:13.5px; color:var(--sub);}
+  input[type=file]{display:none;}
+
+  /* ---------- Preview card ---------- */
+  .preview{
+    display:none;
+    padding:16px;
+    margin-top:16px;
+    align-items:center;
+  }
+  .preview.show{display:flex; gap:14px; animation:popIn .45s cubic-bezier(.2,1.4,.4,1);}
+  .preview img{
+    width:66px;height:66px;object-fit:cover;
+    border-radius:16px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+  }
+  .preview .meta{flex:1; min-width:0;}
+  .preview .fname{font-weight:700; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .preview .fsub{font-size:12.5px; color:var(--sub); margin-top:3px;}
+  .preview .badge{
+    background:linear-gradient(120deg,var(--violet),var(--pink));
+    color:#fff; font-size:12px; font-weight:700;
+    padding:6px 12px; border-radius:20px; white-space:nowrap;
+    box-shadow:0 4px 14px rgba(124,92,255,0.4);
+  }
+  @keyframes popIn{0%{opacity:0; transform:translateY(14px) scale(.92);} 60%{transform:translateY(-2px) scale(1.02);} 100%{opacity:1; transform:translateY(0) scale(1);}}
+
+  /* ---------- Loading (liquid ring) ---------- */
+  .loading{display:none; text-align:center; padding:38px 0; color:var(--sub); font-size:14px; font-weight:500;}
+  .loading.show{display:block; animation:fadeUp .3s ease;}
+  .liquid-ring{
+    width:46px;height:46px; margin:0 auto 14px; border-radius:50%;
+    background:conic-gradient(from 0deg, var(--violet), var(--cyan), var(--pink), var(--amber), var(--violet));
+    animation:spin 1.1s linear infinite;
+    -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
+    mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
+  }
+
+  /* ---------- Results ---------- */
+  .results{margin-top:24px; display:none;}
+  .results.show{display:block;}
+
+  .section{margin-bottom:20px; opacity:0; animation:fadeUp .5s cubic-bezier(.2,1,.3,1) forwards;}
+  .section-title{
+    display:flex; align-items:center; gap:9px;
+    font-size:12.5px; font-weight:800;
+    text-transform:uppercase; letter-spacing:0.06em;
+    color:var(--sub);
+    margin:0 0 9px 16px;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;flex:none; box-shadow:0 0 10px 1px currentColor; animation:pulse 2.4s ease-in-out infinite;}
+  .dot.key{background:var(--cyan); color:var(--cyan);}
+  .dot.cam{background:var(--lime); color:var(--lime);}
+  .dot.geo{background:var(--pink); color:var(--pink);}
+  .dot.img{background:var(--amber); color:var(--amber);}
+  .dot.other{background:var(--violet); color:var(--violet);}
+  @keyframes pulse{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:0.5; transform:scale(0.75);}}
+
+  .card{padding:0; overflow:hidden;}
+  .row{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:16px; padding:13px 18px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    font-size:14.5px;
+    opacity:0; transform:translateX(-8px);
+    animation:rowIn .45s cubic-bezier(.2,1,.3,1) forwards;
+    animation-delay:calc(var(--i,0) * 45ms);
+  }
+  .row:last-child{border-bottom:none;}
+  .row:active{background:rgba(255,255,255,0.05);}
+  .row .k{color:var(--text); font-weight:600; flex:0 0 44%;}
+  .row .v{color:var(--sub); text-align:right; flex:1; word-break:break-word; font-variant-numeric:tabular-nums;}
+  @keyframes rowIn{to{opacity:1; transform:translateX(0);}}
+
+  .empty{text-align:center; color:var(--sub2); font-size:13.5px; padding:20px 16px; font-weight:500;}
+
+  .map-link{
+    display:inline-flex; align-items:center; gap:4px;
+    color:var(--cyan); font-weight:700; text-decoration:none; font-size:13px;
+  }
+
+  .footer{
+    text-align:center; margin-top:38px; padding-top:20px;
+    border-top:1px solid rgba(255,255,255,0.08);
+    font-size:12.5px; color:var(--sub2);
+  }
+  .footer b{
+    background:linear-gradient(100deg,var(--cyan),var(--violet),var(--pink));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    background-size:200% auto; animation:shimmer 5s linear infinite;
+  }
+
+  .reset-btn{
+    display:none; width:100%; margin-top:18px; padding:15px;
+    background:linear-gradient(120deg, rgba(124,92,255,0.25), rgba(255,92,172,0.25));
+    border:1px solid var(--glass-brd);
+    -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px);
+    border-radius:18px; color:#fff; font-weight:700; font-size:15px;
+    cursor:pointer; transition:transform .2s cubic-bezier(.2,1,.3,1), background .2s ease;
+  }
+  .reset-btn.show{display:block; animation:fadeUp .4s ease;}
+  .reset-btn:active{transform:scale(0.97); background:linear-gradient(120deg, rgba(124,92,255,0.4), rgba(255,92,172,0.4));}
+
+  @keyframes fadeUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+    .row, .section{opacity:1 !important; transform:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="mesh">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+</div>
+<div class="grain"></div>
+
+<div class="wrap">
+
+  <div class="header">
+    <h1>Photo Metadata</h1>
+    <p>Drop an image to see everything hidden inside it</p>
+  </div>
+
+  <div class="dropzone glass" id="dropzone">
+    <div class="app-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>
+    </div>
+    <h3>Upload a photo</h3>
+    <p>Tap to browse, or drag & drop</p>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="preview glass" id="preview">
+    <img id="previewImg" src="" alt="">
+    <div class="meta">
+      <div class="fname" id="fname">—</div>
+      <div class="fsub" id="fsub">—</div>
+    </div>
+    <div class="badge" id="badge">0 tags</div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="liquid-ring"></div>
+    Reading metadata…
+  </div>
+
+  <div class="results" id="results"></div>
+
+  <button class="reset-btn" id="resetBtn">Choose another photo</button>
+
+  <div class="footer">Developer: <b>@Raj_op_360</b></div>
+</div>
+
+<script>
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const preview = document.getElementById('preview');
+const previewImg = document.getElementById('previewImg');
+const fname = document.getElementById('fname');
+const fsub = document.getElementById('fsub');
+const badge = document.getElementById('badge');
+const loading = document.getElementById('loading');
+const results = document.getElementById('results');
+const resetBtn = document.getElementById('resetBtn');
+
+dropzone.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
+
+['dragover','dragenter'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.add('drag'); }));
+['dragleave','dragend','drop'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.remove('drag'); }));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  const f = e.dataTransfer.files[0];
+  if(f) handleFile(f);
+});
+
+resetBtn.addEventListener('click', () => {
+  fileInput.value = '';
+  preview.classList.remove('show');
+  results.classList.remove('show');
+  results.innerHTML = '';
+  resetBtn.classList.remove('show');
+});
+
+function humanSize(bytes){
+  if(bytes < 1024) return bytes + ' B';
+  if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/(1024*1024)).toFixed(2) + ' MB';
+}
+
+function fmtVal(v){
+  if(v == null) return '—';
+  if(v instanceof Date) return v.toLocaleString();
+  if(Array.isArray(v)) return v.map(fmtVal).join(', ');
+  if(typeof v === 'number') return Number.isInteger(v) ? v.toString() : v.toFixed(4).replace(/\.?0+$/,'');
+  if(typeof v === 'object'){
+    try { return JSON.stringify(v); } catch(e){ return String(v); }
+  }
+  return String(v);
+}
+
+function animateCount(el, target){
+  const dur = 600;
+  const start = performance.now();
+  function step(now){
+    const p = Math.min(1, (now - start) / dur);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = `${Math.round(eased * target)} tags`;
+    if(p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+async function handleFile(file){
+  if(!file.type.startsWith('image/')){
+    alert('Please choose an image file.');
+    return;
+  }
+  results.classList.remove('show');
+  results.innerHTML = '';
+  resetBtn.classList.remove('show');
+  loading.classList.add('show');
+
+  const url = URL.createObjectURL(file);
+  previewImg.src = url;
+  fname.textContent = file.name;
+  fsub.textContent = `${humanSize(file.size)} · ${file.type || 'unknown type'}`;
+  preview.classList.remove('show');
+  void preview.offsetWidth;
+  preview.classList.add('show');
+
+  const img = new Image();
+  img.onload = async () => {
+    let tags = {};
+    let loadError = null;
+    try{
+      if(typeof exifr === 'undefined'){
+        throw new Error('Metadata engine failed to load — check your internet connection and reload the page.');
+      }
+      tags = await exifr.parse(file, { tiff:true, exif:true, gps:true, iptc:true, xmp:true, icc:true, jfif:true, translateValues:true, reviveValues:true }) || {};
+    }catch(e){
+      console.warn('exifr error', e);
+      loadError = e.message || String(e);
+    }
+
+    buildResults(file, img, tags, loadError);
+    loading.classList.remove('show');
+    results.classList.add('show');
+    resetBtn.classList.add('show');
+  };
+  img.src = url;
+}
+
+// Field label map: key -> display label
+const LABELS = {
+  Make:'Camera Make', Model:'Camera Model', LensModel:'Lens', LensMake:'Lens Make',
+  DateTimeOriginal:'Date Taken', CreateDate:'Date Created', ModifyDate:'Date Modified',
+  FNumber:'Aperture (f/)', ApertureValue:'Aperture Value', ExposureTime:'Shutter Speed',
+  ISO:'ISO', FocalLength:'Focal Length', FocalLengthIn35mmFormat:'Focal Length (35mm)',
+  Flash:'Flash', ExposureProgram:'Exposure Program', ExposureMode:'Exposure Mode',
+  MeteringMode:'Metering Mode', WhiteBalance:'White Balance', ExposureCompensation:'Exposure Compensation',
+  Orientation:'Orientation', ColorSpace:'Color Space', Software:'Software',
+  latitude:'Latitude', longitude:'Longitude', GPSAltitude:'Altitude', GPSTimeStamp:'GPS Time',
+  GPSDateStamp:'GPS Date', GPSImgDirection:'Direction Facing', GPSSpeed:'GPS Speed',
+  XResolution:'Horizontal Resolution', YResolution:'Vertical Resolution', ResolutionUnit:'Resolution Unit',
+  BitsPerSample:'Bits Per Sample', Compression:'Compression', PhotometricInterpretation:'Photometric Interpretation',
+  ImageWidth:'Width', ImageHeight:'Height', ExifImageWidth:'Exif Width', ExifImageHeight:'Exif Height',
+  Artist:'Artist', Copyright:'Copyright', SceneCaptureType:'Scene Type', DigitalZoomRatio:'Digital Zoom',
+  SensingMethod:'Sensing Method', FileSource:'File Source', CustomRendered:'Custom Rendered',
+  SubjectDistance:'Subject Distance', LightSource:'Light Source', GainControl:'Gain Control',
+  Contrast:'Contrast', Saturation:'Saturation', Sharpness:'Sharpness', ExposureIndex:'Exposure Index',
+  MaxApertureValue:'Max Aperture', ShutterSpeedValue:'Shutter Speed Value', SensitivityType:'Sensitivity Type',
+  RecommendedExposureIndex:'Recommended Exposure Index', BrightnessValue:'Brightness Value',
+  OffsetTimeOriginal:'Timezone Offset', SubSecTimeOriginal:'Sub-second Time', ExifVersion:'Exif Version',
+  FlashpixVersion:'Flashpix Version', InteropIndex:'Interop Index', InteropVersion:'Interop Version',
+  YCbCrPositioning:'YCbCr Positioning', GPSVersionID:'GPS Version',
+};
+
+function label(key){
+  return LABELS[key] || key.replace(/([a-z])([A-Z])/g,'$1 $2').replace(/^./,c=>c.toUpperCase());
+}
+
+// Priority buckets (importance order)
+const CAMERA     = ['Make','Model','LensModel','LensMake','FNumber','ApertureValue','MaxApertureValue','ExposureTime','ShutterSpeedValue','ISO','SensitivityType','RecommendedExposureIndex','FocalLength','FocalLengthIn35mmFormat','Flash','ExposureProgram','ExposureMode','MeteringMode','WhiteBalance','ExposureCompensation','DigitalZoomRatio','SubjectDistance','BrightnessValue','OffsetTimeOriginal','SubSecTimeOriginal'];
+const LOCATION   = ['latitude','longitude','GPSAltitude','GPSImgDirection','GPSSpeed','GPSTimeStamp','GPSDateStamp','GPSVersionID'];
+const IMAGE_TECH = ['Orientation','ColorSpace','XResolution','YResolution','ResolutionUnit','BitsPerSample','Compression','PhotometricInterpretation','ImageWidth','ImageHeight','ExifImageWidth','ExifImageHeight','Software','ModifyDate','SceneCaptureType','LightSource','Contrast','Saturation','Sharpness','GainControl','SensingMethod','FileSource','CustomRendered','ExifVersion','FlashpixVersion','InteropIndex','InteropVersion','YCbCrPositioning'];
+
+function buildResults(file, img, tags, loadError){
+  const flat = {};
+  Object.keys(tags).forEach(k => {
+    if(/^\d+$/.test(k)) return; // skip stray numeric-indexed junk keys
+    const v = tags[k];
+    if(v === undefined || v === null || v === '') return;
+    if(typeof v === 'object' && !Array.isArray(v) && !(v instanceof Date)){
+      const keys = Object.keys(v);
+      const isByteLike = keys.length && keys.every(kk => /^\d+$/.test(kk));
+      if(isByteLike){
+        if(keys.length > 8){ return; }
+        const bytes = keys.sort((a,b)=>a-b).map(kk => v[kk]);
+        const ascii = bytes.every(b => b >= 32 && b <= 126);
+        flat[k] = ascii ? bytes.map(b=>String.fromCharCode(b)).join('') : bytes.join('.');
+        return;
+      }
+    }
+    flat[k] = v;
+  });
+
+  const naturalW = img.naturalWidth, naturalH = img.naturalHeight;
+
+  const keyInfoRows = [
+    ['File Name', file.name],
+    ['Dimensions', `${naturalW} × ${naturalH} px`],
+    ['File Type', file.type || 'unknown'],
+    ['File Size', humanSize(file.size)],
+  ];
+  if(flat.DateTimeOriginal) keyInfoRows.push(['Date Taken', fmtVal(flat.DateTimeOriginal)]);
+  else if(flat.CreateDate) keyInfoRows.push(['Date Created', fmtVal(flat.CreateDate)]);
+
+  const usedKeys = new Set(['DateTimeOriginal','CreateDate']);
+
+  const cameraRows = [];
+  CAMERA.forEach(k => {
+    if(flat[k] !== undefined){
+      let v = flat[k];
+      if(k==='FNumber') v = 'f/' + fmtVal(v);
+      else if(k==='ExposureTime') v = (v < 1 ? `1/${Math.round(1/v)} s` : `${v} s`);
+      else if(k==='FocalLength') v = fmtVal(v) + ' mm';
+      else if(k==='FocalLengthIn35mmFormat') v = fmtVal(v) + ' mm';
+      else v = fmtVal(v);
+      cameraRows.push([label(k), v]);
+      usedKeys.add(k);
+    }
+  });
+
+  const locationRows = [];
+  let hasGPS = false;
+  if(flat.latitude !== undefined && flat.longitude !== undefined){
+    hasGPS = true;
+    locationRows.push(['Coordinates', `${flat.latitude.toFixed(6)}, ${flat.longitude.toFixed(6)}`]);
+    usedKeys.add('latitude'); usedKeys.add('longitude');
+  }
+  LOCATION.forEach(k => {
+    if(k==='latitude'||k==='longitude') return;
+    if(flat[k] !== undefined){
+      const val = fmtVal(flat[k]);
+      if(/NaN/.test(val)) return;
+      locationRows.push([label(k), val]);
+      usedKeys.add(k);
+    }
+  });
+
+  const techRows = [];
+  IMAGE_TECH.forEach(k => {
+    if(flat[k] !== undefined){
+      techRows.push([label(k), fmtVal(flat[k])]);
+      usedKeys.add(k);
+    }
+  });
+
+  const otherRows = [];
+  Object.keys(flat).sort().forEach(k => {
+    if(usedKeys.has(k)) return;
+    if(k.toLowerCase().includes('thumbnail')) return;
+    let v = flat[k];
+    if(v instanceof Uint8Array || (v && v.buffer)) return;
+    otherRows.push([label(k), fmtVal(v)]);
+  });
+
+  let html = '';
+  let sectionDelay = 0;
+
+  html += section('key','Key Info', keyInfoRows, null, sectionDelay++);
+  if(cameraRows.length) html += section('cam','Camera & Capture', cameraRows, null, sectionDelay++);
+  if(locationRows.length){
+    html += section('geo','Location', locationRows, hasGPS ? {lat:flat.latitude, lon:flat.longitude} : null, sectionDelay++);
+  }
+  if(techRows.length) html += section('img','Image & Technical', techRows, null, sectionDelay++);
+  if(otherRows.length) html += section('other','All Other Metadata', otherRows, null, sectionDelay++);
+
+  const totalTags = keyInfoRows.length + cameraRows.length + locationRows.length + techRows.length + otherRows.length;
+
+  if(loadError){
+    html = `<div class="section glass card" style="opacity:1;padding:0;"><div class="row" style="opacity:1;"><div class="k">Error</div><div class="v">${escapeHtml(loadError)}</div></div></div>` + html;
+  } else if(!hasGPS && locationRows.length === 0){
+    html += `<div class="empty">No GPS location saved in this photo (location was likely off when it was taken).</div>`;
+  }
+  if(totalTags <= 4 && !loadError){
+    html += `<div class="empty">No EXIF metadata found — this image may have been stripped of its data.</div>`;
+  }
+
+  results.innerHTML = html;
+  badge.textContent = '0 tags';
+  animateCount(badge, totalTags);
+}
+
+function section(dotClass, title, rows, gps, sectionIndex){
+  let rowsHtml = rows.map(([k,v], i) => `
+    <div class="row" style="--i:${i}">
+      <div class="k">${escapeHtml(k)}</div>
+      <div class="v">${escapeHtml(v)}</div>
+    </div>`).join('');
+
+  if(gps){
+    rowsHtml += `
+    <div class="row" style="--i:${rows.length}">
+      <div class="k">Map</div>
+      <div class="v"><a class="map-link" target="_blank" rel="noopener" href="https://maps.google.com/?q=${gps.lat},${gps.lon}">Open in Maps ↗</a></div>
+    </div>`;
+  }
+
+  return `
+  <div class="section" style="animation-delay:${sectionIndex * 80}ms">
+    <div class="section-title"><span class="dot ${dotClass}"></span>${escapeHtml(title)}</div>
+    <div class="glass card">${rowsHtml}</div>
+  </div>`;
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+</script>
+</body>
+</html>
