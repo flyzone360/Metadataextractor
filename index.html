@@ -3,21 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Metadata — by Raj_op_360</title>
-<script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.min.js"></script>
+<title>Toolkit — by Raj_op_360</title>
 <style>
   :root{
-    --violet:#7C5CFF;
-    --pink:#FF5CAC;
-    --cyan:#33D6FF;
-    --amber:#FFB454;
-    --lime:#8CFF7C;
-    --ink:#050611;
-    --glass:rgba(255,255,255,0.07);
-    --glass-brd:rgba(255,255,255,0.16);
-    --text:#F5F6FA;
-    --sub:rgba(245,246,250,0.58);
-    --sub2:rgba(245,246,250,0.38);
+    --violet:#7C5CFF; --pink:#FF5CAC; --cyan:#33D6FF; --amber:#FFB454; --lime:#8CFF7C;
+    --ink:#050611; --glass:rgba(255,255,255,0.07); --glass-brd:rgba(255,255,255,0.16);
+    --text:#F5F6FA; --sub:rgba(245,246,250,0.58); --sub2:rgba(245,246,250,0.38);
     --radius:26px;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
@@ -25,14 +16,8 @@
   body{
     background:var(--ink);
     font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-    color:var(--text);
-    min-height:100vh;
-    overflow-x:hidden;
-    padding:32px 16px 70px;
-    position:relative;
+    color:var(--text); min-height:100vh; overflow-x:hidden; padding:32px 16px 70px; position:relative;
   }
-
-  /* ---------- Living mesh background ---------- */
   .mesh{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;}
   .blob{position:absolute; border-radius:50%; filter:blur(70px); opacity:0.55; mix-blend-mode:screen;}
   .blob.b1{width:420px;height:420px; background:var(--violet); top:-120px; left:-100px; animation:float1 22s ease-in-out infinite;}
@@ -47,331 +32,1977 @@
 
   .wrap{max-width:560px; margin:0 auto; position:relative; z-index:2;}
 
-  /* ---------- Header ---------- */
-  .header{text-align:center; margin-bottom:26px; animation:dropIn .6s cubic-bezier(.2,1,.3,1);}
+  .header{text-align:center; margin-bottom:16px; animation:dropIn .6s cubic-bezier(.2,1,.3,1);}
   .header h1{
     font-size:34px; font-weight:800; letter-spacing:-0.03em; margin:0 0 6px;
     background:linear-gradient(100deg,#fff 20%, var(--cyan) 45%, var(--violet) 65%, var(--pink) 85%);
-    background-size:250% auto;
-    -webkit-background-clip:text; background-clip:text; color:transparent;
+    background-size:250% auto; -webkit-background-clip:text; background-clip:text; color:transparent;
     animation:shimmer 6s linear infinite;
   }
   .header p{margin:0; color:var(--sub); font-size:14.5px; font-weight:500;}
   @keyframes shimmer{to{background-position:250% center;}}
   @keyframes dropIn{from{opacity:0; transform:translateY(-14px) scale(.98);} to{opacity:1; transform:translateY(0) scale(1);}}
 
-  /* ---------- Glass base ---------- */
   .glass{
-    background:var(--glass);
-    -webkit-backdrop-filter:blur(28px) saturate(160%);
-    backdrop-filter:blur(28px) saturate(160%);
-    border:1px solid var(--glass-brd);
-    border-radius:var(--radius);
+    background:var(--glass); -webkit-backdrop-filter:blur(28px) saturate(160%); backdrop-filter:blur(28px) saturate(160%);
+    border:1px solid var(--glass-brd); border-radius:var(--radius);
     box-shadow:0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
   }
 
-  /* ---------- Drop zone ---------- */
-  .dropzone{
-    padding:44px 22px;
-    text-align:center;
-    cursor:pointer;
-    position:relative;
-    isolation:isolate;
-    transition:transform .35s cubic-bezier(.2,1,.3,1), box-shadow .35s ease;
-    animation:dropIn .6s cubic-bezier(.2,1,.3,1) .08s both;
-  }
-  .dropzone::before{
-    content:'';
-    position:absolute; inset:-2px; z-index:-1; border-radius:calc(var(--radius) + 2px);
+  /* ---- privacy accordion ---- */
+  .privacy{margin-bottom:16px; overflow:hidden; animation:dropIn .6s cubic-bezier(.2,1,.3,1) .04s both; border-color:rgba(140,255,124,0.28) !important;}
+  .privacy-head{display:flex; align-items:center; gap:12px; padding:15px 16px; cursor:pointer;}
+  .privacy-head .lock{width:34px;height:34px;border-radius:11px; flex:none; background:linear-gradient(155deg,var(--lime),var(--cyan));
+    display:flex;align-items:center;justify-content:center; font-size:16px; box-shadow:0 6px 16px rgba(140,255,124,0.35);}
+  .privacy-head .txt{flex:1;}
+  .privacy-head b{display:block; font-size:13.5px; font-weight:800;}
+  .privacy-head span{font-size:11.5px; color:var(--sub);}
+  .privacy-head .chev{width:18px;height:18px; stroke:var(--sub); transition:transform .3s ease; flex:none;}
+  .privacy.open .privacy-head .chev{transform:rotate(180deg);}
+  .privacy-body{max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.2,1,.3,1);}
+  .privacy.open .privacy-body{max-height:900px;}
+  .privacy-list{padding:0 18px 18px; margin:0; list-style:none;}
+  .privacy-list li{display:flex; gap:10px; font-size:12.5px; color:var(--sub); line-height:1.55; margin-bottom:11px;}
+  .privacy-list li:last-child{margin-bottom:0;}
+  .privacy-list .num{flex:none; width:20px;height:20px;border-radius:50%; background:rgba(140,255,124,0.15); color:var(--lime);
+    font-size:10.5px; font-weight:800; display:flex;align-items:center;justify-content:center; margin-top:1px;}
+
+  /* ---- tool picker grid ---- */
+  .tool-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; animation:dropIn .6s cubic-bezier(.2,1,.3,1) .06s both;}
+  .tool-card{padding:18px 12px; text-align:center; cursor:pointer; transition:transform .3s cubic-bezier(.2,1,.3,1);}
+  .tool-card:active{transform:scale(0.96);}
+  .tool-card.wide{grid-column:1 / -1;}
+  .tool-card .ic{width:46px;height:46px;border-radius:14px; margin:0 auto 9px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:inset 0 1px 1px rgba(255,255,255,0.5), inset 0 -5px 10px rgba(0,0,0,0.2);
+    animation:iconBreathe 5s ease-in-out infinite;}
+  .tool-card .ic svg{width:21px;height:21px;stroke:#fff;}
+  .tool-card h4{margin:0 0 3px; font-size:13px; font-weight:700; letter-spacing:-0.01em;}
+  .tool-card p{margin:0; font-size:10.5px; color:var(--sub2); line-height:1.3;}
+  @keyframes iconBreathe{0%,100%{transform:scale(1) rotate(0deg);} 50%{transform:scale(1.06) rotate(-2deg);}}
+
+  .section-label{font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:var(--sub2); margin:18px 4px 8px;}
+
+  /* ---- back pill ---- */
+  .back-pill{display:none; align-items:center; gap:6px; width:fit-content; background:var(--glass); border:1px solid var(--glass-brd);
+    border-radius:20px; padding:8px 14px 8px 10px; font-size:13px; font-weight:600; color:var(--sub); cursor:pointer; margin-bottom:16px; animation:dropIn .4s ease;}
+  .back-pill.show{display:flex;}
+  .back-pill svg{width:16px;height:16px;stroke:var(--sub);}
+
+  /* ---- panel ---- */
+  .panel{display:none;}
+  .panel.show{display:block; animation:fadeUp .4s ease;}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+
+  .panel-title{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+  .panel-title .ic{width:48px;height:48px;border-radius:15px; flex:none; display:flex;align-items:center;justify-content:center;
+    box-shadow:inset 0 1px 1px rgba(255,255,255,0.5), inset 0 -5px 10px rgba(0,0,0,0.2);}
+  .panel-title .ic svg{width:22px;height:22px;stroke:#fff;}
+  .panel-title h2{margin:0; font-size:18px; font-weight:800; letter-spacing:-0.01em;}
+  .panel-title p{margin:2px 0 0; font-size:12px; color:var(--sub);}
+
+  .limits{padding:12px 14px; margin-bottom:14px; font-size:11.5px; color:var(--sub); line-height:1.6;}
+  .limits b{color:var(--text); display:block; margin-bottom:4px; font-size:12px;}
+
+  .dropzone{padding:32px 20px; text-align:center; cursor:pointer; position:relative; isolation:isolate;
+    transition:transform .3s cubic-bezier(.2,1,.3,1); margin-bottom:14px;}
+  .dropzone::before{content:''; position:absolute; inset:-2px; z-index:-1; border-radius:calc(var(--radius) + 2px);
     background:conic-gradient(from 0deg, var(--violet), var(--cyan), var(--pink), var(--amber), var(--violet));
-    opacity:0; transition:opacity .35s ease;
-    animation:spin 6s linear infinite;
-  }
-  .dropzone:active{transform:scale(0.985);}
+    opacity:0; transition:opacity .3s ease; animation:spin 6s linear infinite;}
   .dropzone.drag{transform:scale(1.02);}
   .dropzone.drag::before{opacity:1;}
   @keyframes spin{to{transform:rotate(360deg);}}
-
-  .app-icon{
-    width:74px;height:74px;border-radius:22px;
-    background:linear-gradient(155deg,#8B6BFF 0%, #6B4CFF 45%, #FF5CAC 100%);
-    display:flex;align-items:center;justify-content:center;
-    margin:0 auto 18px;
-    position:relative;
-    box-shadow:0 10px 26px rgba(124,92,255,0.45), inset 0 1px 1px rgba(255,255,255,0.5), inset 0 -6px 12px rgba(0,0,0,0.2);
-    animation:iconBreathe 4s ease-in-out infinite;
-  }
-  .app-icon::after{
-    content:'';
-    position:absolute; inset:0; border-radius:22px;
-    background:linear-gradient(120deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 35%);
-    animation:shine 4.5s ease-in-out infinite;
-  }
-  .app-icon svg{width:32px;height:32px;stroke:#fff; position:relative; z-index:1; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.2));}
-  @keyframes iconBreathe{0%,100%{transform:scale(1) rotate(0deg);} 50%{transform:scale(1.05) rotate(-2deg);}}
-  @keyframes shine{0%,100%{opacity:0.4; transform:translateX(-10%);} 50%{opacity:0.9; transform:translateX(10%);}}
-
-  .dropzone h3{margin:0 0 4px; font-size:17px; font-weight:700; letter-spacing:-0.01em;}
-  .dropzone p{margin:0; font-size:13.5px; color:var(--sub);}
+  .dropzone .up-ic{width:42px;height:42px;border-radius:13px; margin:0 auto 10px;
+    background:linear-gradient(155deg,#8B6BFF,#6B4CFF,#FF5CAC); display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 20px rgba(124,92,255,0.4);}
+  .dropzone .up-ic svg{width:19px;height:19px;stroke:#fff;}
+  .dropzone h3{margin:0 0 3px; font-size:14.5px; font-weight:700;}
+  .dropzone p{margin:0; font-size:12px; color:var(--sub);}
   input[type=file]{display:none;}
 
-  /* ---------- Preview card ---------- */
-  .preview{
-    display:none;
-    padding:16px;
-    margin-top:16px;
-    align-items:center;
-  }
-  .preview.show{display:flex; gap:14px; animation:popIn .45s cubic-bezier(.2,1.4,.4,1);}
-  .preview img{
-    width:66px;height:66px;object-fit:cover;
-    border-radius:16px;
-    box-shadow:0 4px 14px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);
-  }
-  .preview .meta{flex:1; min-width:0;}
-  .preview .fname{font-weight:700; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  .preview .fsub{font-size:12.5px; color:var(--sub); margin-top:3px;}
-  .preview .badge{
-    background:linear-gradient(120deg,var(--violet),var(--pink));
-    color:#fff; font-size:12px; font-weight:700;
-    padding:6px 12px; border-radius:20px; white-space:nowrap;
-    box-shadow:0 4px 14px rgba(124,92,255,0.4);
-  }
-  @keyframes popIn{0%{opacity:0; transform:translateY(14px) scale(.92);} 60%{transform:translateY(-2px) scale(1.02);} 100%{opacity:1; transform:translateY(0) scale(1);}}
+  .file-chips{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 14px;}
+  .chip{display:flex; align-items:center; gap:8px; padding:8px 10px; background:var(--glass); border:1px solid var(--glass-brd);
+    border-radius:14px; font-size:12.5px; animation:popIn .35s cubic-bezier(.2,1.4,.4,1);}
+  .chip img{width:30px;height:30px;object-fit:cover;border-radius:8px;}
+  .chip .doc-ic{width:30px;height:30px;border-radius:8px;background:linear-gradient(155deg,#FF9F5C,#FF5CAC);
+    display:flex;align-items:center;justify-content:center; flex:none;}
+  .chip .doc-ic svg{width:14px;height:14px;stroke:#fff;}
+  .chip .cname{max-width:130px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;}
+  .chip .cx{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.12); display:flex;align-items:center;justify-content:center; cursor:pointer; flex:none;}
+  .chip .cx svg{width:10px;height:10px;stroke:var(--sub);}
+  @keyframes popIn{0%{opacity:0; transform:scale(.8);} 100%{opacity:1; transform:scale(1);}}
 
-  /* ---------- Loading (liquid ring) ---------- */
-  .loading{display:none; text-align:center; padding:38px 0; color:var(--sub); font-size:14px; font-weight:500;}
-  .loading.show{display:block; animation:fadeUp .3s ease;}
-  .liquid-ring{
-    width:46px;height:46px; margin:0 auto 14px; border-radius:50%;
+  /* ---- tool options ---- */
+  .opts{display:none; padding:16px; margin-bottom:14px;}
+  .opts.show{display:block; animation:fadeUp .35s ease;}
+  .opts h5{margin:14px 0 10px; font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:var(--sub);}
+  .opts h5:first-child{margin-top:0;}
+
+  .crop-wrap{position:relative; max-width:100%; margin:0 auto 10px; border-radius:14px; overflow:hidden; touch-action:none; line-height:0; background:#000;}
+  .crop-wrap img{display:block; width:100%; height:auto; user-select:none; -webkit-user-drag:none; -webkit-touch-callout:none; pointer-events:none; opacity:0.35;}
+  .crop-box{position:absolute; border:2px solid var(--cyan); cursor:move; box-shadow:0 0 0 2000px rgba(0,0,0,0.55);}
+  .crop-handle{position:absolute; width:20px;height:20px; margin:-10px; background:#fff; border:2px solid var(--cyan); border-radius:50%; box-shadow:0 2px 6px rgba(0,0,0,0.4);}
+  .crop-handle.nw{top:0;left:0; cursor:nwse-resize;}
+  .crop-handle.ne{top:0;right:0; margin-right:-10px; cursor:nesw-resize;}
+  .crop-handle.sw{bottom:0;left:0; margin-bottom:-10px; cursor:nesw-resize;}
+  .crop-handle.se{bottom:0;right:0; margin-right:-10px; margin-bottom:-10px; cursor:nwse-resize;}
+  .crop-tools{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+  .crop-reset{font-size:12px; color:var(--cyan); font-weight:700; cursor:pointer;}
+
+  .field-row{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+  .field-row label{font-size:12.5px; color:var(--sub); font-weight:600; flex:0 0 92px;}
+  .field-row input[type=number]{flex:1; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:10px;
+    padding:9px 10px; color:var(--text); font-size:13.5px; font-weight:600; width:100%;}
+  .lock-chip{display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--sub); cursor:pointer; margin-bottom:4px; justify-content:flex-end;}
+  .lock-chip input{accent-color:var(--violet);}
+
+  .pill-group{display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;}
+  .pill{flex:1; min-width:56px; text-align:center; padding:9px 6px; border-radius:12px; font-size:12px; font-weight:700; cursor:pointer;
+    background:rgba(255,255,255,0.05); border:1px solid var(--glass-brd); color:var(--sub); transition:all .2s ease;}
+  .pill.active{background:linear-gradient(120deg,var(--violet),var(--pink)); color:#fff; border-color:transparent;}
+
+  .slider-row{margin-bottom:4px;}
+  .slider-row .lbl{display:flex; justify-content:space-between; font-size:12px; color:var(--sub); margin-bottom:6px; font-weight:600;}
+  input[type=range]{width:100%; accent-color:var(--violet);}
+
+  .btn{width:100%; padding:15px; border:none; border-radius:18px; font-weight:700; font-size:15px; cursor:pointer;
+    transition:transform .2s cubic-bezier(.2,1,.3,1), opacity .2s ease; -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px);}
+  .btn-primary{background:linear-gradient(120deg,var(--violet),var(--pink)); color:#fff; box-shadow:0 8px 24px rgba(124,92,255,0.4);}
+  .btn-primary:disabled{opacity:0.35; cursor:not-allowed;}
+  .btn-primary:active:not(:disabled){transform:scale(0.97);}
+  .btn-ghost{background:var(--glass); border:1px solid var(--glass-brd); color:var(--text); margin-top:10px;}
+  .btn-ghost:active{transform:scale(0.97); background:rgba(255,255,255,0.12);}
+
+  .progress-wrap{display:none; text-align:center; padding:26px 0; color:var(--sub); font-size:13.5px; font-weight:500;}
+  .progress-wrap.show{display:block; animation:fadeUp .3s ease;}
+  .liquid-ring{width:42px;height:42px; margin:0 auto 12px; border-radius:50%;
     background:conic-gradient(from 0deg, var(--violet), var(--cyan), var(--pink), var(--amber), var(--violet));
     animation:spin 1.1s linear infinite;
     -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
-    mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
-  }
+    mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));}
+  #progressLabel{font-weight:700; color:var(--text); margin-bottom:2px;}
 
-  /* ---------- Results ---------- */
-  .results{margin-top:24px; display:none;}
-  .results.show{display:block;}
+  .result{display:none; padding:22px; text-align:center; animation:popIn .45s cubic-bezier(.2,1.4,.4,1);}
+  .result.show{display:block;}
+  .result .check{width:56px;height:56px;border-radius:50%; margin:0 auto 14px; background:linear-gradient(155deg,var(--lime),var(--cyan));
+    display:flex;align-items:center;justify-content:center; box-shadow:0 8px 22px rgba(140,255,124,0.35); animation:iconBreathe 3s ease-in-out infinite;}
+  .result .check svg{width:26px;height:26px;stroke:#08110a; stroke-width:3;}
+  .result h3{margin:0 0 4px; font-size:16px; font-weight:700;}
+  .result p{margin:0 0 16px; font-size:12.5px; color:var(--sub);}
 
-  .section{margin-bottom:20px; opacity:0; animation:fadeUp .5s cubic-bezier(.2,1,.3,1) forwards;}
-  .section-title{
-    display:flex; align-items:center; gap:9px;
-    font-size:12.5px; font-weight:800;
-    text-transform:uppercase; letter-spacing:0.06em;
-    color:var(--sub);
-    margin:0 0 9px 16px;
-  }
-  .dot{width:8px;height:8px;border-radius:50%;flex:none; box-shadow:0 0 10px 1px currentColor; animation:pulse 2.4s ease-in-out infinite;}
-  .dot.key{background:var(--cyan); color:var(--cyan);}
-  .dot.cam{background:var(--lime); color:var(--lime);}
-  .dot.geo{background:var(--pink); color:var(--pink);}
-  .dot.img{background:var(--amber); color:var(--amber);}
-  .dot.other{background:var(--violet); color:var(--violet);}
+  .note{font-size:11.5px; color:var(--sub2); text-align:center; margin-top:10px; line-height:1.5; padding:0 8px;}
+
+  /* ---- metadata report ---- */
+  .meta-results{margin-top:6px; display:none;}
+  .meta-results.show{display:block;}
+  .meta-section{margin-bottom:18px; opacity:0; animation:fadeUp .5s cubic-bezier(.2,1,.3,1) forwards;}
+  .meta-title{display:flex; align-items:center; gap:9px; font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:var(--sub); margin:0 0 8px 4px;}
+  .meta-dot{width:8px;height:8px;border-radius:50%;flex:none; box-shadow:0 0 10px 1px currentColor; animation:pulse 2.4s ease-in-out infinite;}
   @keyframes pulse{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:0.5; transform:scale(0.75);}}
-
-  .card{padding:0; overflow:hidden;}
-  .row{
-    display:flex; justify-content:space-between; align-items:flex-start;
-    gap:16px; padding:13px 18px;
-    border-bottom:1px solid rgba(255,255,255,0.08);
-    font-size:14.5px;
-    opacity:0; transform:translateX(-8px);
-    animation:rowIn .45s cubic-bezier(.2,1,.3,1) forwards;
-    animation-delay:calc(var(--i,0) * 45ms);
-  }
-  .row:last-child{border-bottom:none;}
-  .row:active{background:rgba(255,255,255,0.05);}
-  .row .k{color:var(--text); font-weight:600; flex:0 0 44%;}
-  .row .v{color:var(--sub); text-align:right; flex:1; word-break:break-word; font-variant-numeric:tabular-nums;}
+  .meta-card{padding:0; overflow:hidden;}
+  .meta-row{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; padding:12px 16px;
+    border-bottom:1px solid rgba(255,255,255,0.08); font-size:14px; opacity:0; transform:translateX(-8px);
+    animation:rowIn .45s cubic-bezier(.2,1,.3,1) forwards; animation-delay:calc(var(--i,0) * 40ms);}
+  .meta-row:last-child{border-bottom:none;}
+  .meta-row .k{color:var(--text); font-weight:600; flex:0 0 44%;}
+  .meta-row .v{color:var(--sub); text-align:right; flex:1; word-break:break-word; font-variant-numeric:tabular-nums;}
   @keyframes rowIn{to{opacity:1; transform:translateX(0);}}
+  .meta-empty{text-align:center; color:var(--sub2); font-size:13px; padding:16px; font-weight:500;}
+  .meta-map{display:inline-flex; align-items:center; gap:4px; color:var(--cyan); font-weight:700; text-decoration:none; font-size:13px;}
+  .meta-badge{display:inline-block; background:linear-gradient(120deg,var(--violet),var(--pink)); color:#fff; font-size:12px; font-weight:700;
+    padding:6px 14px; border-radius:20px; margin-bottom:16px; box-shadow:0 4px 14px rgba(124,92,255,0.4);}
 
-  .empty{text-align:center; color:var(--sub2); font-size:13.5px; padding:20px 16px; font-weight:500;}
+  .footer{text-align:center; margin-top:38px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.08); font-size:12.5px; color:var(--sub2);}
+  .footer b{background:linear-gradient(100deg,var(--cyan),var(--violet),var(--pink)); -webkit-background-clip:text; background-clip:text; color:transparent;
+    background-size:200% auto; animation:shimmer 5s linear infinite;}
 
-  .map-link{
-    display:inline-flex; align-items:center; gap:4px;
-    color:var(--cyan); font-weight:700; text-decoration:none; font-size:13px;
+  .toast{position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(20px);
+    background:rgba(20,22,34,0.9); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px);
+    border:1px solid var(--glass-brd); border-radius:16px; padding:12px 18px; font-size:13px; font-weight:600; color:var(--text);
+    display:flex; align-items:center; gap:8px; opacity:0; pointer-events:none; transition:opacity .3s ease, transform .3s ease; z-index:50;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4); max-width:90vw; text-align:center;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+
+  /* ---- loading screen ---- */
+  #loadingScreen{
+    position:fixed; inset:0; z-index:9999; background:var(--ink);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    overflow:hidden; transition:opacity .5s ease, visibility .5s ease;
   }
-
-  .footer{
-    text-align:center; margin-top:38px; padding-top:20px;
-    border-top:1px solid rgba(255,255,255,0.08);
-    font-size:12.5px; color:var(--sub2);
-  }
-  .footer b{
-    background:linear-gradient(100deg,var(--cyan),var(--violet),var(--pink));
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-    background-size:200% auto; animation:shimmer 5s linear infinite;
-  }
-
-  .reset-btn{
-    display:none; width:100%; margin-top:18px; padding:15px;
-    background:linear-gradient(120deg, rgba(124,92,255,0.25), rgba(255,92,172,0.25));
-    border:1px solid var(--glass-brd);
-    -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px);
-    border-radius:18px; color:#fff; font-weight:700; font-size:15px;
-    cursor:pointer; transition:transform .2s cubic-bezier(.2,1,.3,1), background .2s ease;
-  }
-  .reset-btn.show{display:block; animation:fadeUp .4s ease;}
-  .reset-btn:active{transform:scale(0.97); background:linear-gradient(120deg, rgba(124,92,255,0.4), rgba(255,92,172,0.4));}
-
-  @keyframes fadeUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
-
-  @media (prefers-reduced-motion: reduce){
-    *{animation:none !important; transition:none !important;}
-    .row, .section{opacity:1 !important; transform:none !important;}
-  }
+  #loadingScreen.hide{opacity:0; visibility:hidden; pointer-events:none;}
+  .chute-sky{position:relative; width:100%; max-width:280px; height:52vh; max-height:400px; overflow:hidden;}
+  .chute-track{position:absolute; left:50%; top:0; bottom:0; width:2px; background:rgba(255,255,255,0.07); transform:translateX(-50%);}
+  .parachute{position:absolute; left:50%; top:-14%; transform:translateX(-50%); font-size:54px; line-height:1;
+    transition:top .3s cubic-bezier(.3,.6,.4,1); filter:drop-shadow(0 10px 18px rgba(0,0,0,0.45));}
+  .load-brand{font-size:15px; font-weight:800; letter-spacing:-0.01em; color:var(--sub); margin-bottom:2px;}
+  .load-pct{font-size:46px; font-weight:800; letter-spacing:-0.02em;
+    background:linear-gradient(100deg,#fff 20%, var(--cyan) 45%, var(--violet) 65%, var(--pink) 85%);
+    background-size:250% auto; -webkit-background-clip:text; background-clip:text; color:transparent; animation:shimmer 6s linear infinite;}
+  .load-label{font-size:12.5px; color:var(--sub2); font-weight:600; margin-top:2px;}
+  .load-bar-track{width:200px; height:5px; border-radius:3px; background:rgba(255,255,255,0.08); margin-top:16px; overflow:hidden;}
+  .load-bar-fill{height:100%; width:0%; border-radius:3px; background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink)); transition:width .3s ease;}
 </style>
 </head>
 <body>
-
-<div class="mesh">
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-  <div class="blob b4"></div>
+<div id="loadingScreen">
+  <div class="load-brand">Toolkit</div>
+  <div class="chute-sky">
+    <div class="chute-track"></div>
+    <div class="parachute" id="parachute">🪂</div>
+  </div>
+  <div class="load-pct" id="loadPct">0%</div>
+  <div class="load-label" id="loadLabel">Packing your tools…</div>
+  <div class="load-bar-track"><div class="load-bar-fill" id="loadBar"></div></div>
 </div>
+<script>
+(function(){
+  var SCRIPTS = [
+    'https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.min.js',
+    'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js',
+    'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js',
+    'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js',
+    'https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js',
+    'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js',
+    'https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js'
+  ];
+  var total = SCRIPTS.length, loaded = 0;
+  var parachute = document.getElementById('parachute');
+  var pctEl = document.getElementById('loadPct');
+  var barEl = document.getElementById('loadBar');
+  var labelEl = document.getElementById('loadLabel');
+  var screenEl = document.getElementById('loadingScreen');
+  var labels = ['Packing your tools…','Unfolding the canopy…','Catching the wind…','Almost on the ground…','Touching down…'];
+
+  function update(){
+    var pct = Math.round((loaded/total)*100);
+    pctEl.textContent = pct + '%';
+    barEl.style.width = pct + '%';
+    parachute.style.top = (-14 + (pct/100)*86) + '%';
+    labelEl.textContent = labels[Math.min(labels.length-1, Math.floor((pct/100)*labels.length))];
+    if(loaded >= total){
+      labelEl.textContent = 'Ready!';
+      setTimeout(function(){
+        screenEl.classList.add('hide');
+        setTimeout(function(){ if(screenEl.parentNode) screenEl.parentNode.removeChild(screenEl); }, 550);
+      }, 350);
+    }
+  }
+  function loadScript(src){
+    return new Promise(function(resolve){
+      var s = document.createElement('script');
+      s.src = src;
+      s.onload = function(){ loaded++; update(); resolve(); };
+      s.onerror = function(){ loaded++; update(); resolve(); };
+      document.head.appendChild(s);
+    });
+  }
+  update();
+  Promise.all(SCRIPTS.map(loadScript));
+})();
+</script>
+<div class="mesh"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div></div>
 <div class="grain"></div>
 
 <div class="wrap">
 
   <div class="header">
-    <h1>Photo Metadata</h1>
-    <p>Drop an image to see everything hidden inside it</p>
+    <h1>Toolkit</h1>
+    <p>Metadata, PDFs, slides & photos — all in one place</p>
   </div>
 
-  <div class="dropzone glass" id="dropzone">
-    <div class="app-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>
+  <div class="glass privacy" id="privacy">
+    <div class="privacy-head" id="privacyHead">
+      <div class="lock">🔏</div>
+      <div class="txt"><b>Privacy — how this actually works</b><span>Tap for the honest, plain-English facts</span></div>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
     </div>
-    <h3>Upload a photo</h3>
-    <p>Tap to browse, or drag & drop</p>
-    <input type="file" id="fileInput" accept="image/*">
-  </div>
-
-  <div class="preview glass" id="preview">
-    <img id="previewImg" src="" alt="">
-    <div class="meta">
-      <div class="fname" id="fname">—</div>
-      <div class="fsub" id="fsub">—</div>
+    <div class="privacy-body">
+      <ul class="privacy-list">
+        <li><span class="num">1</span>Your files (photos, PDFs, slides) are read and processed entirely inside your own browser's memory — never uploaded to any server.</li>
+        <li><span class="num">2</span>There's no upload code in this page at all. You can check yourself: open your browser's DevTools → Network tab while converting — you won't see your file being sent anywhere.</li>
+        <li><span class="num">3</span>A handful of open-source code libraries (for reading PDFs, zips, slides) load once from a public CDN when the page opens. That's just program code — never your personal files.</li>
+        <li><span class="num">4</span>Because of point 3, you need internet the first time the page loads. After that, the actual conversions run offline, in memory.</li>
+        <li><span class="num">5</span>Nothing is stored permanently. Close or refresh the tab and everything — your files and results — is gone for good.</li>
+        <li><span class="num">6</span>When you tap Download, your browser saves the file the normal way — straight to your device's Downloads folder, like any other download.</li>
+        <li><span class="num">7</span>There's no backend, no database, no account and no analytics tracking what you convert.</li>
+        <li><span class="num">8</span>Since everything runs on your own device, very large files or long batches depend on your phone/laptop's own speed — not a server's.</li>
+      </ul>
     </div>
-    <div class="badge" id="badge">0 tags</div>
   </div>
 
-  <div class="loading" id="loading">
-    <div class="liquid-ring"></div>
-    Reading metadata…
+  <div class="back-pill" id="backPill">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    All tools
   </div>
 
-  <div class="results" id="results"></div>
+  <div id="toolGridWrap">
+    <div class="section-label">Analyze</div>
+    <div class="tool-grid" style="margin-bottom:6px;">
+      <div class="glass tool-card wide" data-tool="metadata">
+        <div class="ic" style="background:linear-gradient(155deg,#8B6BFF,#33D6FF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <h4>Photo Metadata</h4>
+        <p>See every EXIF/GPS/camera detail hidden in a photo</p>
+      </div>
+      <div class="glass tool-card" data-tool="stego">
+        <div class="ic" style="background:linear-gradient(155deg,#050611,#7C5CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0z"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div>
+        <h4>Secret Message in Photo</h4>
+        <p>Hide invisible text inside an image, or reveal one already hidden</p>
+      </div>
+      <div class="glass tool-card" data-tool="ela">
+        <div class="ic" style="background:linear-gradient(155deg,#FF9F5C,#FFD65C)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2a9 9 0 1 0 9 9h-9V2z"/><path d="M14 2.4A9 9 0 0 1 20.6 9H14V2.4z"/></svg></div>
+        <h4>Edit Detector</h4>
+        <p>See if a photo was likely edited or photoshopped</p>
+      </div>
+      <div class="glass tool-card wide" data-tool="jpegquality">
+        <div class="ic" style="background:linear-gradient(155deg,#33D6FF,#B48CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-6 3 4 5-8"/></svg></div>
+        <h4>JPEG Quality Detector</h4>
+        <p>Read a photo's hidden compression data to estimate its original save quality</p>
+      </div>
+    </div>
 
-  <button class="reset-btn" id="resetBtn">Choose another photo</button>
+    <div class="section-label">Images</div>
+    <div class="tool-grid" style="margin-bottom:6px;">
+      <div class="glass tool-card" data-tool="img2pdf">
+        <div class="ic" style="background:linear-gradient(155deg,#33D6FF,#7C5CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <h4>Images → PDF</h4>
+        <p>Combine JPG/PNG into one PDF</p>
+      </div>
+      <div class="glass tool-card" data-tool="imgedit">
+        <div class="ic" style="background:linear-gradient(155deg,#FF5CAC,#B48CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg></div>
+        <h4>Crop, Resize & Compress</h4>
+        <p>Crop, resize, target a file size, change format</p>
+      </div>
+      <div class="glass tool-card wide" data-tool="colorblind">
+        <div class="ic" style="background:linear-gradient(155deg,#FF5CAC,#33D6FF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18"/></svg></div>
+        <h4>Color Blindness Simulator</h4>
+        <p>See exactly how a photo looks to colorblind eyes</p>
+      </div>
+    </div>
+
+    <div class="section-label">PDF</div>
+    <div class="tool-grid" style="margin-bottom:6px;">
+      <div class="glass tool-card" data-tool="pdf2img">
+        <div class="ic" style="background:linear-gradient(155deg,#FFD65C,#FF9F5C)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="10" cy="13" r="1.5"/><path d="M8 18l3-3 2 2 3-4 2 3"/></svg></div>
+        <h4>PDF → Images</h4>
+        <p>Export pages as JPG/PNG</p>
+      </div>
+      <div class="glass tool-card" data-tool="pdfmerge">
+        <div class="ic" style="background:linear-gradient(155deg,#B48CFF,#7C5CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h5l5 5v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M13 2v5h5"/><path d="M9 15h6M9 12h6"/></svg></div>
+        <h4>Merge PDFs</h4>
+        <p>Join multiple PDFs into one</p>
+      </div>
+      <div class="glass tool-card" data-tool="pdfsplit">
+        <div class="ic" style="background:linear-gradient(155deg,#8CFF7C,#33D6FF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7v16H4z"/><path d="M13 4h7v16h-7z" stroke-dasharray="3 3"/></svg></div>
+        <h4>Split PDF</h4>
+        <p>Pull out a page range as a new PDF</p>
+      </div>
+      <div class="glass tool-card" data-tool="pdfrotate">
+        <div class="ic" style="background:linear-gradient(155deg,#FF9F5C,#FFD65C)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
+        <h4>Rotate PDF</h4>
+        <p>Rotate every page 90°/180°</p>
+      </div>
+    </div>
+
+    <div class="section-label">Slides</div>
+    <div class="tool-grid" style="margin-bottom:6px;">
+      <div class="glass tool-card" data-tool="pdf2ppt">
+        <div class="ic" style="background:linear-gradient(155deg,#FF9F5C,#FF5CAC)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <h4>PDF → PPT</h4>
+        <p>Every page becomes a slide</p>
+      </div>
+      <div class="glass tool-card" data-tool="ppt2pdf">
+        <div class="ic" style="background:linear-gradient(155deg,#33D6FF,#8CFF7C)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+        <h4>PPT → PDF</h4>
+        <p>Flatten a deck into a PDF</p>
+      </div>
+    </div>
+
+    <div class="section-label">Utilities</div>
+    <div class="tool-grid">
+      <div class="glass tool-card" data-tool="qrgen">
+        <div class="ic" style="background:linear-gradient(155deg,#050611,#33D6FF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 21h3M21 14v3"/></svg></div>
+        <h4>QR Code Generator</h4>
+        <p>Turn any text or link into a QR code</p>
+      </div>
+      <div class="glass tool-card" data-tool="palette">
+        <div class="ic" style="background:linear-gradient(155deg,#FF5CAC,#FFB454)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="8.5" cy="10.5" r="1.2" fill="currentColor"/><circle cx="12" cy="8" r="1.2" fill="currentColor"/><circle cx="15.5" cy="10.5" r="1.2" fill="currentColor"/><circle cx="10.5" cy="14.5" r="1.2" fill="currentColor"/></svg></div>
+        <h4>Color Palette</h4>
+        <p>Pull the dominant colors out of a photo</p>
+      </div>
+      <div class="glass tool-card" data-tool="hashcheck">
+        <div class="ic" style="background:linear-gradient(155deg,#8CFF7C,#7C5CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h4>File Checksum</h4>
+        <p>Verify a file's SHA-256 / SHA-1 hash</p>
+      </div>
+      <div class="glass tool-card wide" data-tool="wordcount">
+        <div class="ic" style="background:linear-gradient(155deg,#FFD65C,#33D6FF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+        <h4>Word Counter</h4>
+        <p>Words, characters & reading time — paste text or upload a PDF/TXT</p>
+      </div>
+      <div class="glass tool-card wide" data-tool="filecrypt">
+        <div class="ic" style="background:linear-gradient(155deg,#7C5CFF,#050611)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></div>
+        <h4>Password-Protect a File</h4>
+        <p>Lock any file with a password — real AES encryption, fully offline</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel">
+    <div class="panel-title">
+      <div class="ic" id="panelIcon"></div>
+      <div><h2 id="panelTitle">—</h2><p id="panelSubtitle">—</p></div>
+    </div>
+
+    <div class="glass limits" id="panelLimits" style="display:none;"></div>
+
+    <div class="glass dropzone" id="dropzone">
+      <div class="up-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 20h16"/></svg></div>
+      <h3 id="dzTitle">Tap to choose file</h3>
+      <p id="dzSub">or drag & drop here</p>
+      <input type="file" id="fileInput">
+    </div>
+
+    <div class="file-chips" id="fileChips"></div>
+    <div class="glass opts" id="opts"></div>
+
+    <button class="btn btn-primary" id="convertBtn" disabled>Convert</button>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="liquid-ring"></div>
+      <div id="progressLabel">Working…</div>
+      <div id="progressSub">Everything stays on your device the whole time</div>
+    </div>
+
+    <div class="meta-results" id="metaResults"></div>
+
+    <div class="glass result" id="result">
+      <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h3 id="resultTitle">Done!</h3>
+      <p id="resultSub">Your file is ready</p>
+      <button class="btn btn-primary" id="downloadBtn">Download</button>
+      <button class="btn btn-ghost" id="anotherBtn">Start over</button>
+    </div>
+
+    <div class="note" id="toolNote"></div>
+  </div>
 
   <div class="footer">Developer: <b>@Raj_op_360</b></div>
 </div>
 
+<div class="toast" id="toast">📂 Saved — check your Downloads folder</div>
+
 <script>
-const dropzone = document.getElementById('dropzone');
-const fileInput = document.getElementById('fileInput');
-const preview = document.getElementById('preview');
-const previewImg = document.getElementById('previewImg');
-const fname = document.getElementById('fname');
-const fsub = document.getElementById('fsub');
-const badge = document.getElementById('badge');
-const loading = document.getElementById('loading');
-const results = document.getElementById('results');
-const resetBtn = document.getElementById('resetBtn');
+// ---------------- state & elements ----------------
+const state = { tool:null, files:[], resultBlob:null, resultName:'', opts:{} };
+const els = {
+  privacy: document.getElementById('privacy'),
+  privacyHead: document.getElementById('privacyHead'),
+  toolGridWrap: document.getElementById('toolGridWrap'),
+  backPill: document.getElementById('backPill'),
+  panel: document.getElementById('panel'),
+  panelIcon: document.getElementById('panelIcon'),
+  panelTitle: document.getElementById('panelTitle'),
+  panelSubtitle: document.getElementById('panelSubtitle'),
+  panelLimits: document.getElementById('panelLimits'),
+  dropzone: document.getElementById('dropzone'),
+  dzTitle: document.getElementById('dzTitle'),
+  dzSub: document.getElementById('dzSub'),
+  fileInput: document.getElementById('fileInput'),
+  fileChips: document.getElementById('fileChips'),
+  opts: document.getElementById('opts'),
+  convertBtn: document.getElementById('convertBtn'),
+  progressWrap: document.getElementById('progressWrap'),
+  progressLabel: document.getElementById('progressLabel'),
+  metaResults: document.getElementById('metaResults'),
+  result: document.getElementById('result'),
+  resultTitle: document.getElementById('resultTitle'),
+  resultSub: document.getElementById('resultSub'),
+  downloadBtn: document.getElementById('downloadBtn'),
+  anotherBtn: document.getElementById('anotherBtn'),
+  toolNote: document.getElementById('toolNote'),
+  toast: document.getElementById('toast'),
+};
 
-dropzone.addEventListener('click', () => fileInput.click());
-fileInput.addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
+els.privacyHead.addEventListener('click', () => els.privacy.classList.toggle('open'));
 
-['dragover','dragenter'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.add('drag'); }));
-['dragleave','dragend','drop'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.remove('drag'); }));
-dropzone.addEventListener('drop', e => {
-  e.preventDefault();
-  const f = e.dataTransfer.files[0];
-  if(f) handleFile(f);
-});
-
-resetBtn.addEventListener('click', () => {
-  fileInput.value = '';
-  preview.classList.remove('show');
-  results.classList.remove('show');
-  results.innerHTML = '';
-  resetBtn.classList.remove('show');
-});
-
+function showToast(msg){
+  els.toast.textContent = msg;
+  els.toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => els.toast.classList.remove('show'), 3200);
+}
 function humanSize(bytes){
   if(bytes < 1024) return bytes + ' B';
   if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
   return (bytes/(1024*1024)).toFixed(2) + ' MB';
 }
 
-function fmtVal(v){
-  if(v == null) return '—';
-  if(v instanceof Date) return v.toLocaleString();
-  if(Array.isArray(v)) return v.map(fmtVal).join(', ');
-  if(typeof v === 'number') return Number.isInteger(v) ? v.toString() : v.toFixed(4).replace(/\.?0+$/,'');
-  if(typeof v === 'object'){
-    try { return JSON.stringify(v); } catch(e){ return String(v); }
+// ---------------- icons ----------------
+const ICONS = {
+  metadata:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>',
+  img2pdf:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>',
+  imgedit:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>',
+  pdf2img:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="10" cy="13" r="1.5"/><path d="M8 18l3-3 2 2 3-4 2 3"/></svg>',
+  pdfmerge:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h5l5 5v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M13 2v5h5"/><path d="M9 15h6M9 12h6"/></svg>',
+  pdfsplit:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7v16H4z"/><path d="M13 4h7v16h-7z" stroke-dasharray="3 3"/></svg>',
+  pdfrotate:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>',
+  pdf2ppt:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+  ppt2pdf:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>',
+  qrgen:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 21h3M21 14v3"/></svg>',
+  palette:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="8.5" cy="10.5" r="1.2" fill="currentColor"/><circle cx="12" cy="8" r="1.2" fill="currentColor"/><circle cx="15.5" cy="10.5" r="1.2" fill="currentColor"/><circle cx="10.5" cy="14.5" r="1.2" fill="currentColor"/></svg>',
+  hashcheck:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+  wordcount:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',
+  stego:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0z"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg>',
+  ela:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2a9 9 0 1 0 9 9h-9V2z"/><path d="M14 2.4A9 9 0 0 1 20.6 9H14V2.4z"/></svg>',
+  jpegquality:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-6 3 4 5-8"/></svg>',
+  colorblind:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18"/></svg>',
+  filecrypt:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg>',
+};
+const ICON_BG = {
+  metadata:'linear-gradient(155deg,#8B6BFF,#33D6FF)', img2pdf:'linear-gradient(155deg,#33D6FF,#7C5CFF)',
+  imgedit:'linear-gradient(155deg,#FF5CAC,#B48CFF)', pdf2img:'linear-gradient(155deg,#FFD65C,#FF9F5C)',
+  pdfmerge:'linear-gradient(155deg,#B48CFF,#7C5CFF)', pdfsplit:'linear-gradient(155deg,#8CFF7C,#33D6FF)',
+  pdfrotate:'linear-gradient(155deg,#FF9F5C,#FFD65C)', pdf2ppt:'linear-gradient(155deg,#FF9F5C,#FF5CAC)',
+  ppt2pdf:'linear-gradient(155deg,#33D6FF,#8CFF7C)',
+  qrgen:'linear-gradient(155deg,#050611,#33D6FF)', palette:'linear-gradient(155deg,#FF5CAC,#FFB454)',
+  hashcheck:'linear-gradient(155deg,#8CFF7C,#7C5CFF)', wordcount:'linear-gradient(155deg,#FFD65C,#33D6FF)',
+  stego:'linear-gradient(155deg,#050611,#7C5CFF)', ela:'linear-gradient(155deg,#FF9F5C,#FFD65C)',
+  jpegquality:'linear-gradient(155deg,#33D6FF,#B48CFF)', colorblind:'linear-gradient(155deg,#FF5CAC,#33D6FF)',
+  filecrypt:'linear-gradient(155deg,#7C5CFF,#050611)',
+};
+
+// ---------------- tool config ----------------
+const TOOLS = {
+  metadata: {
+    title:'Photo Metadata', subtitle:'See every EXIF/GPS/camera detail',
+    accept:'image/*', multiple:false, isReport:true,
+    dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
+    limitsHtml:'<b>What this can\'t do</b>Can\'t recover metadata an app (WhatsApp, Instagram, Telegram) already stripped before you got the photo · Can\'t decode proprietary MakerNote data for most Android/budget camera brands · Screenshots never contain camera EXIF — nothing to extract · PNGs usually carry little to no EXIF even straight from a camera · Not a forensic tool — can\'t detect edits or AI generation · Only still images are supported, not video',
+    convert: extractMetadata,
+  },
+  img2pdf: {
+    title:'Images → PDF', subtitle:'Combine JPG/PNG photos into one PDF',
+    accept:'image/jpeg,image/png', multiple:true,
+    dzTitle:'Tap to choose photos', dzSub:'or drag & drop — pick as many as you like',
+    note:'Pages are added in the order you pick them, each sized to match its photo.',
+    convert: convertImagesToPdf,
+  },
+  imgedit: {
+    title:'Crop, Resize & Compress', subtitle:'Crop, resize, target a size, or change format',
+    accept:'image/jpeg,image/png,image/webp', multiple:false,
+    dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
+    note:'Drag the corner handles to crop, or pick an aspect preset.',
+    renderOptions: renderImgEditOptions,
+    convert: convertImageEdit,
+  },
+  pdf2img: {
+    title:'PDF → Images', subtitle:'Export every page as JPG or PNG',
+    accept:'application/pdf,.pdf', multiple:false,
+    dzTitle:'Tap to choose a PDF', dzSub:'or drag & drop it here',
+    note:'One page → one image download. Multiple pages are bundled into a .zip.',
+    renderOptions: renderPdf2ImgOptions,
+    convert: convertPdfToImages,
+  },
+  pdfmerge: {
+    title:'Merge PDFs', subtitle:'Join multiple PDFs into one file',
+    accept:'application/pdf,.pdf', multiple:true,
+    dzTitle:'Tap to choose PDFs', dzSub:'pick 2 or more, in the order you want them merged',
+    note:'Files are merged in the order shown above — remove and re-add to reorder.',
+    convert: mergePdfs,
+  },
+  pdfsplit: {
+    title:'Split PDF', subtitle:'Pull out a page range as a new PDF',
+    accept:'application/pdf,.pdf', multiple:false,
+    dzTitle:'Tap to choose a PDF', dzSub:'or drag & drop it here',
+    note:'Pages outside your chosen range are left out of the new file.',
+    renderOptions: renderPdfSplitOptions,
+    convert: splitPdf,
+  },
+  pdfrotate: {
+    title:'Rotate PDF', subtitle:'Rotate every page 90° / 180°',
+    accept:'application/pdf,.pdf', multiple:false,
+    dzTitle:'Tap to choose a PDF', dzSub:'or drag & drop it here',
+    note:'Rotation applies to every page in the document.',
+    renderOptions: renderPdfRotateOptions,
+    convert: rotatePdf,
+  },
+  pdf2ppt: {
+    title:'PDF → PPT', subtitle:'Every page becomes a full-size slide',
+    accept:'application/pdf,.pdf', multiple:false,
+    dzTitle:'Tap to choose a PDF', dzSub:'or drag & drop it here',
+    note:'Each slide is a high-resolution image of the original page — text stays crisp but is not separately editable.',
+    convert: convertPdfToPptx,
+  },
+  ppt2pdf: {
+    title:'PPT → PDF', subtitle:'Flatten a .pptx deck into a PDF',
+    accept:'.pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation', multiple:false,
+    dzTitle:'Tap to choose a .pptx', dzSub:'or drag & drop it here',
+    note:'Best-effort layout from the slide XML. Very complex slides (charts, SmartArt, animations) may not look pixel-perfect.',
+    convert: convertPptxToPdf,
+  },
+  qrgen: {
+    title:'QR Code Generator', subtitle:'Turn any text or link into a scannable code',
+    noFile:true,
+    note:'Works fully offline once the page has loaded — nothing you type is sent anywhere.',
+    renderOptions: renderQrOptions,
+    convert: convertQr,
+  },
+  palette: {
+    title:'Color Palette', subtitle:'Pull the dominant colors out of a photo',
+    accept:'image/*', multiple:false, isReport:true,
+    dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
+    note:'Colors are estimated by sampling and grouping pixels — great for mood boards, not lab-accurate.',
+    convert: extractPalette,
+  },
+  hashcheck: {
+    title:'File Checksum', subtitle:"Verify a file's SHA-256 / SHA-1 hash",
+    accept:'*/*', multiple:false, isReport:true,
+    dzTitle:'Tap to choose any file', dzSub:'or drag & drop it here',
+    limitsHtml:'<b>What this can\'t do</b>MD5 isn\'t offered — modern browsers removed it from Web Crypto for security reasons, only SHA-1/256 are available · This only computes a hash, it can\'t tell you if a file is "safe", only whether it matches a hash you already trust',
+    convert: computeHashes,
+  },
+  wordcount: {
+    title:'Word Counter', subtitle:'Words, characters, sentences & reading time',
+    accept:'.pdf,.txt,text/plain,application/pdf', multiple:false, isReport:true, alwaysShowOptions:true,
+    dzTitle:'Tap to choose a PDF or .txt', dzSub:'optional — you can paste text below instead',
+    note:'Everything is counted locally — nothing leaves your device, including any PDF text.',
+    renderOptions: renderWordCountOptions,
+    convert: computeWordCount,
+    enableCheck: () => {
+      const t = (state.opts.wordcount && state.opts.wordcount.text || '').trim();
+      return t.length > 0 || state.files.length > 0;
+    },
+  },
+  stego: {
+    title:'Secret Message in Photo', subtitle:'Hide invisible text in an image, or reveal one',
+    accept:'image/*', multiple:false, alwaysShowOptions:true,
+    dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
+    limitsHtml:'<b>How this actually works</b>This uses steganography — your message is written into the least-significant bit of each pixel\'s color, changes too small for the eye to see · The result MUST be saved/shared as PNG — JPEG, WhatsApp, Instagram etc. all recompress images and will destroy the hidden data · Bigger photos can hold longer messages',
+    renderOptions: renderStegoOptions,
+    convert: convertStego,
+    enableCheck: () => {
+      if(!state.files.length) return false;
+      const o = state.opts.stego;
+      if(!o) return false;
+      return o.mode === 'hide' ? (o.message||'').trim().length > 0 : true;
+    },
+  },
+  ela: {
+    title:'Edit Detector', subtitle:'See if a photo was likely edited',
+    accept:'image/*', multiple:false,
+    dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
+    note:'Uses Error Level Analysis — a real forensic technique that highlights areas with different JPEG compression history than the rest of the photo.',
+    limitsHtml:'<b>What this can\'t do</b>It\'s a strong visual clue, not proof — heavily compressed or re-saved photos can show false positives · Works best on JPEGs straight from a camera or app, less reliably on already-edited/exported images',
+    convert: convertEla,
+  },
+  jpegquality: {
+    title:'JPEG Quality Detector', subtitle:"Estimate a photo's original save quality",
+    accept:'image/jpeg', multiple:false,
+    dzTitle:'Tap to choose a JPEG', dzSub:'or drag & drop it here',
+    note:'Reads the compression tables baked into the JPEG file itself and matches them against known quality presets.',
+    limitsHtml:'<b>What this can\'t do</b>Only works on JPEG files — PNG/WEBP don\'t store this data · If a photo was saved multiple times by different apps, this shows the most recent save, not the original',
+    convert: estimateJpegQuality,
+  },
+  colorblind: {
+    title:'Color Blindness Simulator', subtitle:'See a photo the way colorblind eyes do',
+    accept:'image/*', multiple:false, alwaysShowOptions:true,
+    dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
+    note:'Uses standard color-vision-deficiency transform matrices used in accessibility research.',
+    renderOptions: renderColorblindOptions,
+    convert: convertColorblind,
+  },
+  filecrypt: {
+    title:'Password-Protect a File', subtitle:'Real AES-256 encryption, fully offline',
+    accept:'*/*', multiple:false, alwaysShowOptions:true,
+    dzTitle:'Tap to choose a file', dzSub:'or drag & drop it here',
+    limitsHtml:'<b>Read before you use this</b>There is no password recovery — if you forget it, the file is gone forever, even we can\'t help since nothing is ever sent anywhere · Keep the original safe until you\'ve confirmed you can decrypt it again',
+    renderOptions: renderFileCryptOptions,
+    convert: convertFileCrypt,
+    enableCheck: () => {
+      const o = state.opts.filecrypt;
+      return state.files.length > 0 && o && (o.password||'').length > 0;
+    },
+  },
+};
+
+// ---------------- tool selection ----------------
+document.querySelectorAll('.tool-card').forEach(card => {
+  card.addEventListener('click', () => selectTool(card.dataset.tool));
+});
+els.backPill.addEventListener('click', () => {
+  state.tool = null;
+  els.toolGridWrap.style.display = '';
+  els.backPill.classList.remove('show');
+  els.panel.classList.remove('show');
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+function selectTool(key){
+  state.tool = key;
+  state.files = [];
+  state.resultBlob = null;
+  state.opts = {};
+  const cfg = TOOLS[key];
+
+  els.panelIcon.innerHTML = ICONS[key];
+  els.panelIcon.style.background = ICON_BG[key];
+  els.panelTitle.textContent = cfg.title;
+  els.panelSubtitle.textContent = cfg.subtitle;
+  els.dzTitle.textContent = cfg.dzTitle;
+  els.dzSub.textContent = cfg.dzSub;
+  els.toolNote.textContent = cfg.note || '';
+  els.fileInput.accept = cfg.accept;
+  els.fileInput.multiple = cfg.multiple;
+  els.fileInput.value = '';
+
+  if(cfg.limitsHtml){
+    els.panelLimits.innerHTML = cfg.limitsHtml.split(' · ').map((s,i) => i===0 ? s : '• '+s).join('<br>');
+    els.panelLimits.style.display = '';
+  } else {
+    els.panelLimits.style.display = 'none';
   }
-  return String(v);
+
+  els.fileChips.innerHTML = '';
+  els.opts.innerHTML = '';
+  els.opts.classList.remove('show');
+  els.convertBtn.disabled = true;
+  els.convertBtn.textContent = cfg.isReport ? (cfg.noFile ? 'Calculate' : 'Extract Metadata') : 'Convert';
+  els.progressWrap.classList.remove('show');
+  els.metaResults.innerHTML = '';
+  els.metaResults.classList.remove('show');
+  els.result.classList.remove('show');
+  els.downloadBtn.style.display = '';
+
+  if(cfg.noFile){
+    els.dropzone.style.display = 'none';
+    els.fileChips.style.display = 'none';
+    els.opts.style.display = '';
+    if(cfg.renderOptions){ cfg.renderOptions(els.opts, []); els.opts.classList.add('show'); }
+  } else {
+    els.dropzone.style.display = '';
+    els.fileChips.style.display = '';
+    els.opts.style.display = '';
+    if(cfg.alwaysShowOptions && cfg.renderOptions){ cfg.renderOptions(els.opts, []); els.opts.classList.add('show'); }
+  }
+  els.convertBtn.style.display = '';
+  refreshConvertEnabled();
+
+  els.toolGridWrap.style.display = 'none';
+  els.backPill.classList.add('show');
+  els.panel.classList.add('show');
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
-function animateCount(el, target){
-  const dur = 600;
-  const start = performance.now();
-  function step(now){
-    const p = Math.min(1, (now - start) / dur);
-    const eased = 1 - Math.pow(1 - p, 3);
-    el.textContent = `${Math.round(eased * target)} tags`;
-    if(p < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
+// ---------------- file intake ----------------
+els.dropzone.addEventListener('click', () => els.fileInput.click());
+els.fileInput.addEventListener('change', e => addFiles(Array.from(e.target.files)));
+['dragover','dragenter'].forEach(ev => els.dropzone.addEventListener(ev, e => { e.preventDefault(); els.dropzone.classList.add('drag'); }));
+['dragleave','dragend','drop'].forEach(ev => els.dropzone.addEventListener(ev, e => { e.preventDefault(); els.dropzone.classList.remove('drag'); }));
+els.dropzone.addEventListener('drop', e => { e.preventDefault(); addFiles(Array.from(e.dataTransfer.files)); });
+
+function addFiles(newFiles){
+  if(!newFiles.length) return;
+  const cfg = TOOLS[state.tool];
+  if(!cfg.multiple){ state.files = [newFiles[0]]; }
+  else { state.files = state.files.concat(newFiles); }
+  renderChips();
+  refreshOptions();
 }
 
-async function handleFile(file){
-  if(!file.type.startsWith('image/')){
-    alert('Please choose an image file.');
-    return;
-  }
-  results.classList.remove('show');
-  results.innerHTML = '';
-  resetBtn.classList.remove('show');
-  loading.classList.add('show');
-
-  const url = URL.createObjectURL(file);
-  previewImg.src = url;
-  fname.textContent = file.name;
-  fsub.textContent = `${humanSize(file.size)} · ${file.type || 'unknown type'}`;
-  preview.classList.remove('show');
-  void preview.offsetWidth;
-  preview.classList.add('show');
-
-  const img = new Image();
-  img.onload = async () => {
-    let tags = {};
-    let loadError = null;
-    try{
-      if(typeof exifr === 'undefined'){
-        throw new Error('Metadata engine failed to load — check your internet connection and reload the page.');
-      }
-      tags = await exifr.parse(file, { tiff:true, exif:true, gps:true, iptc:true, xmp:true, icc:true, jfif:true, translateValues:true, reviveValues:true }) || {};
-    }catch(e){
-      console.warn('exifr error', e);
-      loadError = e.message || String(e);
+function renderChips(){
+  els.fileChips.innerHTML = '';
+  state.files.forEach((f, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    if(f.type.startsWith('image/')){
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(f);
+      chip.appendChild(img);
+    } else {
+      const d = document.createElement('div');
+      d.className = 'doc-ic';
+      d.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
+      chip.appendChild(d);
     }
-
-    buildResults(file, img, tags, loadError);
-    loading.classList.remove('show');
-    results.classList.add('show');
-    resetBtn.classList.add('show');
-  };
-  img.src = url;
+    const name = document.createElement('span');
+    name.className = 'cname';
+    name.textContent = f.name;
+    chip.appendChild(name);
+    const x = document.createElement('div');
+    x.className = 'cx';
+    x.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+    x.addEventListener('click', () => { state.files.splice(i,1); renderChips(); refreshOptions(); });
+    chip.appendChild(x);
+    els.fileChips.appendChild(chip);
+  });
+  refreshConvertEnabled();
+}
+function refreshConvertEnabled(){
+  const cfg = TOOLS[state.tool];
+  if(cfg.enableCheck){ els.convertBtn.disabled = !cfg.enableCheck(); }
+  else { els.convertBtn.disabled = state.files.length === 0; }
 }
 
-// Field label map: key -> display label
-const LABELS = {
+function refreshOptions(){
+  const cfg = TOOLS[state.tool];
+  els.opts.innerHTML = '';
+  if(cfg.renderOptions && (state.files.length || cfg.alwaysShowOptions)){
+    cfg.renderOptions(els.opts, state.files);
+    els.opts.classList.add('show');
+  } else {
+    els.opts.classList.remove('show');
+  }
+  refreshConvertEnabled();
+}
+
+// ---------------- convert ----------------
+els.convertBtn.addEventListener('click', async () => {
+  const cfg = TOOLS[state.tool];
+  if(!cfg.noFile && !state.files.length) return;
+  els.dropzone.style.display = 'none';
+  els.fileChips.style.display = 'none';
+  els.opts.classList.remove('show');
+  els.opts.style.display = 'none';
+  els.convertBtn.style.display = 'none';
+  els.progressWrap.classList.add('show');
+  setProgress('Starting…');
+  try{
+    const out = await cfg.convert(state.files, setProgress);
+    els.progressWrap.classList.remove('show');
+    if(cfg.isReport){
+      els.resultTitle.textContent = cfg.noFile ? 'Calculation complete' : 'Extraction complete';
+      els.resultSub.textContent = cfg.noFile ? '' : state.files[0].name;
+      els.downloadBtn.style.display = 'none';
+    } else {
+      state.resultBlob = out.blob;
+      state.resultName = out.filename;
+      els.resultTitle.textContent = 'Done!';
+      if(out.blob){
+        els.resultSub.textContent = `${out.filename} · ${humanSize(out.blob.size)}`;
+        els.downloadBtn.style.display = '';
+      } else {
+        els.resultSub.textContent = out.filename || '';
+        els.downloadBtn.style.display = 'none';
+      }
+    }
+    els.result.classList.add('show');
+  }catch(e){
+    console.error(e);
+    els.progressWrap.classList.remove('show');
+    els.resultTitle.textContent = 'Something went wrong';
+    els.resultSub.textContent = (e && e.message) ? e.message : 'Please try a different file.';
+    els.result.classList.add('show');
+    els.downloadBtn.style.display = 'none';
+  }
+});
+
+function setProgress(text){ els.progressLabel.textContent = text; }
+
+els.downloadBtn.addEventListener('click', () => {
+  if(!state.resultBlob) return;
+  const url = URL.createObjectURL(state.resultBlob);
+  const a = document.createElement('a');
+  a.href = url; a.download = state.resultName;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  showToast('📂 Saved — check your Downloads folder');
+});
+
+els.anotherBtn.addEventListener('click', () => { selectTool(state.tool); });
+
+// ================= Images -> PDF =================
+async function convertImagesToPdf(files, progress){
+  const { jsPDF } = window.jspdf;
+  let doc = null;
+  for(let i=0; i<files.length; i++){
+    progress(`Adding image ${i+1} of ${files.length}…`);
+    const file = files[i];
+    const dataUrl = await fileToDataUrl(file);
+    const dims = await imageDims(dataUrl);
+    const wPt = dims.w * 72/96, hPt = dims.h * 72/96;
+    if(!doc){ doc = new jsPDF({ orientation: wPt > hPt ? 'l' : 'p', unit:'pt', format:[wPt, hPt] }); }
+    else { doc.addPage([wPt, hPt], wPt > hPt ? 'l' : 'p'); }
+    const fmt = file.type === 'image/png' ? 'PNG' : 'JPEG';
+    doc.addImage(dataUrl, fmt, 0, 0, wPt, hPt);
+  }
+  progress('Finalizing PDF…');
+  const blob = doc.output('blob');
+  const base = files.length === 1 ? files[0].name.replace(/\.[^.]+$/,'') : 'images';
+  return { blob, filename: `${base}.pdf` };
+}
+function fileToDataUrl(file){
+  return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+}
+function imageDims(dataUrl){
+  return new Promise((res, rej) => { const img = new Image(); img.onload = () => res({ w: img.naturalWidth, h: img.naturalHeight }); img.onerror = rej; img.src = dataUrl; });
+}
+
+// ================= PDF -> Images =================
+function renderPdf2ImgOptions(container){
+  state.opts.pdf2img = { format:'JPEG', quality:90 };
+  container.innerHTML = `
+    <h5>Output format</h5>
+    <div class="pill-group" id="fmtPills"><div class="pill active" data-fmt="JPEG">JPG</div><div class="pill" data-fmt="PNG">PNG</div></div>
+    <div class="slider-row" id="qualityRow">
+      <div class="lbl"><span>Quality</span><span id="qVal">90%</span></div>
+      <input type="range" min="30" max="100" value="90" id="qSlider">
+    </div>`;
+  container.querySelectorAll('#fmtPills .pill').forEach(p => {
+    p.addEventListener('click', () => {
+      container.querySelectorAll('#fmtPills .pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state.opts.pdf2img.format = p.dataset.fmt;
+      container.querySelector('#qualityRow').style.display = p.dataset.fmt === 'PNG' ? 'none' : '';
+    });
+  });
+  container.querySelector('#qSlider').addEventListener('input', e => {
+    state.opts.pdf2img.quality = +e.target.value;
+    container.querySelector('#qVal').textContent = e.target.value + '%';
+  });
+}
+async function convertPdfToImages(files, progress){
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.worker.min.js';
+  const file = files[0];
+  const opts = state.opts.pdf2img || { format:'JPEG', quality:90 };
+  progress('Reading PDF…');
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  const ext = opts.format === 'PNG' ? 'png' : 'jpg';
+  const mime = opts.format === 'PNG' ? 'image/png' : 'image/jpeg';
+  const base = file.name.replace(/\.pdf$/i,'');
+  const pages = [];
+  for(let p=1; p<=pdf.numPages; p++){
+    progress(`Rendering page ${p} of ${pdf.numPages}…`);
+    const page = await pdf.getPage(p);
+    const viewport = page.getViewport({ scale: 2 });
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width; canvas.height = viewport.height;
+    const ctx = canvas.getContext('2d');
+    await page.render({ canvasContext: ctx, viewport }).promise;
+    pages.push(canvas.toDataURL(mime, opts.quality/100));
+  }
+  if(pages.length === 1){
+    const blob = await (await fetch(pages[0])).blob();
+    return { blob, filename: `${base}.${ext}` };
+  }
+  progress('Zipping images…');
+  const zip = new JSZip();
+  pages.forEach((dataUrl, i) => zip.file(`page-${String(i+1).padStart(2,'0')}.${ext}`, dataUrl.split(',')[1], { base64:true }));
+  const blob = await zip.generateAsync({ type:'blob' });
+  return { blob, filename: `${base}-images.zip` };
+}
+
+// ================= Merge PDFs =================
+async function mergePdfs(files, progress){
+  const merged = await PDFLib.PDFDocument.create();
+  for(let i=0; i<files.length; i++){
+    progress(`Adding ${files[i].name} (${i+1} of ${files.length})…`);
+    const bytes = await files[i].arrayBuffer();
+    const src = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption:true });
+    const copied = await merged.copyPages(src, src.getPageIndices());
+    copied.forEach(p => merged.addPage(p));
+  }
+  progress('Saving merged PDF…');
+  const bytes = await merged.save();
+  return { blob: new Blob([bytes], { type:'application/pdf' }), filename:'merged.pdf' };
+}
+
+// ================= Split PDF =================
+function renderPdfSplitOptions(container, files){
+  state.opts.pdfsplit = { from:1, to:1 };
+  container.innerHTML = `
+    <h5>Page range</h5>
+    <div class="field-row"><label>From page</label><input type="number" id="fromPage" min="1" value="1"></div>
+    <div class="field-row"><label>To page</label><input type="number" id="toPage" min="1" value="1"></div>
+    <div class="note" style="margin-top:0; padding:0;" id="pageCountNote">Loading page count…</div>`;
+  const fromF = container.querySelector('#fromPage'), toF = container.querySelector('#toPage');
+  PDFLib.PDFDocument.load(files[0].arrayBuffer ? null : null); // no-op placeholder (avoids lints)
+  files[0].arrayBuffer().then(bytes => PDFLib.PDFDocument.load(bytes, { ignoreEncryption:true })).then(doc => {
+    const count = doc.getPageCount();
+    toF.value = count; toF.max = count; fromF.max = count;
+    state.opts.pdfsplit = { from:1, to:count };
+    container.querySelector('#pageCountNote').textContent = `This PDF has ${count} pages`;
+  }).catch(() => { container.querySelector('#pageCountNote').textContent = 'Could not read page count.'; });
+  fromF.addEventListener('input', () => state.opts.pdfsplit.from = +fromF.value);
+  toF.addEventListener('input', () => state.opts.pdfsplit.to = +toF.value);
+}
+async function splitPdf(files, progress){
+  progress('Reading PDF…');
+  const bytes = await files[0].arrayBuffer();
+  const src = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption:true });
+  const count = src.getPageCount();
+  let { from, to } = state.opts.pdfsplit || { from:1, to:count };
+  from = Math.max(1, Math.min(count, from)); to = Math.max(from, Math.min(count, to));
+  progress(`Extracting pages ${from}–${to}…`);
+  const out = await PDFLib.PDFDocument.create();
+  const indices = []; for(let i=from-1; i<=to-1; i++) indices.push(i);
+  const copied = await out.copyPages(src, indices);
+  copied.forEach(p => out.addPage(p));
+  const outBytes = await out.save();
+  const base = files[0].name.replace(/\.pdf$/i,'');
+  return { blob: new Blob([outBytes], { type:'application/pdf' }), filename: `${base}-p${from}-${to}.pdf` };
+}
+
+// ================= Rotate PDF =================
+function renderPdfRotateOptions(container){
+  state.opts.pdfrotate = { angle:90 };
+  container.innerHTML = `
+    <h5>Rotate by</h5>
+    <div class="pill-group" id="rotPills">
+      <div class="pill active" data-a="90">90° CW</div>
+      <div class="pill" data-a="180">180°</div>
+      <div class="pill" data-a="270">90° CCW</div>
+    </div>`;
+  container.querySelectorAll('#rotPills .pill').forEach(p => {
+    p.addEventListener('click', () => {
+      container.querySelectorAll('#rotPills .pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state.opts.pdfrotate.angle = +p.dataset.a;
+    });
+  });
+}
+async function rotatePdf(files, progress){
+  progress('Rotating pages…');
+  const bytes = await files[0].arrayBuffer();
+  const doc = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption:true });
+  const angle = (state.opts.pdfrotate && state.opts.pdfrotate.angle) || 90;
+  doc.getPages().forEach(p => {
+    const current = p.getRotation().angle || 0;
+    p.setRotation(PDFLib.degrees((current + angle) % 360));
+  });
+  progress('Saving PDF…');
+  const outBytes = await doc.save();
+  const base = files[0].name.replace(/\.pdf$/i,'');
+  return { blob: new Blob([outBytes], { type:'application/pdf' }), filename: `${base}-rotated.pdf` };
+}
+
+// ================= PDF -> PPTX =================
+async function convertPdfToPptx(files, progress){
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.worker.min.js';
+  const file = files[0];
+  progress('Reading PDF…');
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  const pptx = new PptxGenJS();
+  let layoutSet = false;
+  for(let p=1; p<=pdf.numPages; p++){
+    progress(`Rendering page ${p} of ${pdf.numPages}…`);
+    const page = await pdf.getPage(p);
+    const viewport = page.getViewport({ scale: 2 });
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width; canvas.height = viewport.height;
+    const ctx = canvas.getContext('2d');
+    await page.render({ canvasContext: ctx, viewport }).promise;
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+    if(!layoutSet){
+      const wIn = 10, hIn = 10 * (viewport.height/viewport.width);
+      pptx.defineLayout({ name:'CUSTOM', width: wIn, height: hIn });
+      pptx.layout = 'CUSTOM';
+      layoutSet = true;
+    }
+    const slide = pptx.addSlide();
+    slide.addImage({ data: dataUrl, x:0, y:0, w:'100%', h:'100%' });
+  }
+  progress('Packaging .pptx…');
+  const blob = await pptx.write({ outputType:'blob' });
+  const base = file.name.replace(/\.pdf$/i,'');
+  return { blob, filename: `${base}.pptx` };
+}
+
+// ================= PPTX -> PDF =================
+async function convertPptxToPdf(files, progress){
+  const { jsPDF } = window.jspdf;
+  const file = files[0];
+  progress('Unpacking .pptx…');
+  const buf = await file.arrayBuffer();
+  const zip = await JSZip.loadAsync(buf);
+  const presXml = await zip.file('ppt/presentation.xml').async('string');
+  const presDoc = new DOMParser().parseFromString(presXml, 'application/xml');
+  const sldSz = presDoc.getElementsByTagName('p:sldSz')[0];
+  const cx = sldSz ? parseInt(sldSz.getAttribute('cx')) : 9144000;
+  const cy = sldSz ? parseInt(sldSz.getAttribute('cy')) : 6858000;
+  const EMU_PT = 12700;
+  const pageW = cx / EMU_PT, pageH = cy / EMU_PT;
+  const slideFiles = Object.keys(zip.files)
+    .filter(n => /^ppt\/slides\/slide\d+\.xml$/.test(n))
+    .sort((a,b) => parseInt(a.match(/slide(\d+)\.xml/)[1]) - parseInt(b.match(/slide(\d+)\.xml/)[1]));
+  if(!slideFiles.length) throw new Error('No slides found in this file.');
+  let doc = null;
+  for(let i=0; i<slideFiles.length; i++){
+    progress(`Rebuilding slide ${i+1} of ${slideFiles.length}…`);
+    const slidePath = slideFiles[i];
+    const slideName = slidePath.split('/').pop();
+    const slideXml = await zip.file(slidePath).async('string');
+    const sDoc = new DOMParser().parseFromString(slideXml, 'application/xml');
+    let rels = {};
+    const relsPath = `ppt/slides/_rels/${slideName}.rels`;
+    if(zip.file(relsPath)){
+      const relsXml = await zip.file(relsPath).async('string');
+      const rDoc = new DOMParser().parseFromString(relsXml, 'application/xml');
+      Array.from(rDoc.getElementsByTagName('Relationship')).forEach(r => { rels[r.getAttribute('Id')] = r.getAttribute('Target'); });
+    }
+    if(!doc){ doc = new jsPDF({ orientation: pageW > pageH ? 'l':'p', unit:'pt', format:[pageW, pageH] }); }
+    else{ doc.addPage([pageW, pageH], pageW > pageH ? 'l':'p'); }
+    const spTree = sDoc.getElementsByTagName('p:spTree')[0];
+    if(spTree){
+      const nodes = Array.from(spTree.childNodes).filter(n => n.nodeType === 1);
+      for(const node of nodes){
+        const tag = node.nodeName;
+        if(tag === 'p:pic'){ await renderPicture(doc, node, rels, zip, EMU_PT); }
+        else if(tag === 'p:sp'){ renderTextShape(doc, node, EMU_PT, pageH); }
+      }
+    }
+  }
+  progress('Packaging PDF…');
+  const blob = doc.output('blob');
+  const base = file.name.replace(/\.pptx$/i,'');
+  return { blob, filename: `${base}.pdf` };
+}
+function getXfrm(spPrNode, EMU_PT){
+  if(!spPrNode) return null;
+  const xfrm = spPrNode.getElementsByTagName('a:xfrm')[0];
+  if(!xfrm) return null;
+  const off = xfrm.getElementsByTagName('a:off')[0];
+  const ext = xfrm.getElementsByTagName('a:ext')[0];
+  if(!off || !ext) return null;
+  return { x: parseInt(off.getAttribute('x'))/EMU_PT, y: parseInt(off.getAttribute('y'))/EMU_PT,
+    w: parseInt(ext.getAttribute('cx'))/EMU_PT, h: parseInt(ext.getAttribute('cy'))/EMU_PT };
+}
+async function renderPicture(doc, picNode, rels, zip, EMU_PT){
+  const blip = picNode.getElementsByTagName('a:blip')[0];
+  if(!blip) return;
+  const rId = blip.getAttribute('r:embed');
+  const target = rels[rId];
+  if(!target) return;
+  const mediaPath = 'ppt/media/' + target.split('/').pop();
+  const mediaFile = zip.file(mediaPath);
+  if(!mediaFile) return;
+  const spPr = picNode.getElementsByTagName('p:spPr')[0];
+  const box = getXfrm(spPr, EMU_PT);
+  if(!box) return;
+  const ext = mediaPath.split('.').pop().toLowerCase();
+  let fmt = 'JPEG';
+  if(ext === 'png') fmt = 'PNG'; else if(ext === 'gif') fmt = 'GIF'; else if(ext !== 'jpg' && ext !== 'jpeg') return;
+  try{
+    const b64 = await mediaFile.async('base64');
+    doc.addImage(`data:image/${ext === 'jpg' ? 'jpeg' : ext};base64,${b64}`, fmt, box.x, box.y, box.w, box.h);
+  }catch(e){ /* skip image that fails to decode */ }
+}
+function renderTextShape(doc, spNode, EMU_PT, pageH){
+  const txBody = spNode.getElementsByTagName('p:txBody')[0];
+  if(!txBody) return;
+  const spPr = spNode.getElementsByTagName('p:spPr')[0];
+  const box = getXfrm(spPr, EMU_PT);
+  const paras = Array.from(txBody.getElementsByTagName('a:p'));
+  let lines = []; let maxSz = 0;
+  paras.forEach(p => {
+    const runs = Array.from(p.getElementsByTagName('a:r'));
+    let line = '';
+    runs.forEach(r => {
+      const t = r.getElementsByTagName('a:t')[0];
+      if(t && t.textContent) line += t.textContent;
+      const rPr = r.getElementsByTagName('a:rPr')[0];
+      if(rPr && rPr.getAttribute('sz')) maxSz = Math.max(maxSz, parseInt(rPr.getAttribute('sz'))/100);
+    });
+    if(line) lines.push(line);
+  });
+  if(!lines.length) return;
+  const fontSize = maxSz || 18;
+  const x = box ? box.x : 40;
+  let y = box ? box.y + fontSize : 40 + fontSize;
+  const maxWidth = box ? box.w : 500;
+  doc.setFontSize(fontSize); doc.setTextColor(20,20,20);
+  lines.forEach(line => {
+    const wrapped = doc.splitTextToSize(line, maxWidth);
+    wrapped.forEach(wl => { if(y > pageH - 20) return; doc.text(wl, x, y); y += fontSize * 1.25; });
+  });
+}
+
+// ================= Crop, Resize & Compress =================
+function renderImgEditOptions(container, files){
+  const file = files[0];
+  container.innerHTML = `
+    <h5>Crop</h5>
+    <div class="crop-wrap" id="cropWrap">
+      <img id="cropImg" draggable="false" src="${URL.createObjectURL(file)}">
+      <div class="crop-box" id="cropBox">
+        <div class="crop-handle nw" data-h="nw"></div>
+        <div class="crop-handle ne" data-h="ne"></div>
+        <div class="crop-handle sw" data-h="sw"></div>
+        <div class="crop-handle se" data-h="se"></div>
+      </div>
+    </div>
+    <div class="pill-group" id="aspectPills">
+      <div class="pill active" data-r="0">Free</div><div class="pill" data-r="1">1:1</div>
+      <div class="pill" data-r="1.333">4:3</div><div class="pill" data-r="1.778">16:9</div>
+    </div>
+    <div class="crop-reset" id="cropReset" style="text-align:center; margin-bottom:14px;">Reset crop (use full image)</div>
+
+    <h5>Resize output</h5>
+    <div class="field-row"><label>Width (px)</label><input type="number" id="wField" min="1"></div>
+    <div class="field-row"><label>Height (px)</label><input type="number" id="hField" min="1"></div>
+    <label class="lock-chip"><input type="checkbox" id="lockAspect" checked> Lock aspect ratio</label>
+
+    <h5>Format</h5>
+    <div class="pill-group" id="imgFmtPills">
+      <div class="pill active" data-fmt="image/jpeg">JPG</div><div class="pill" data-fmt="image/png">PNG</div><div class="pill" data-fmt="image/webp">WEBP</div>
+    </div>
+
+    <h5>Compression</h5>
+    <div class="pill-group" id="modePills">
+      <div class="pill active" data-mode="quality">By quality</div><div class="pill" data-mode="size">Target size</div>
+    </div>
+    <div class="slider-row" id="qualityRow">
+      <div class="lbl"><span>Quality</span><span id="imgQVal">90%</span></div>
+      <input type="range" min="30" max="100" value="90" id="imgQSlider">
+    </div>
+    <div class="field-row" id="targetSizeRow" style="display:none;">
+      <label>Target (KB)</label><input type="number" id="targetKb" min="5" value="200">
+    </div>
+  `;
+
+  const cropImg = container.querySelector('#cropImg');
+  const cropWrap = container.querySelector('#cropWrap');
+  const cropBox = container.querySelector('#cropBox');
+  const wField = container.querySelector('#wField');
+  const hField = container.querySelector('#hField');
+  const lockAspect = container.querySelector('#lockAspect');
+
+  state.opts.imgedit = { crop:null, natW:0, natH:0, format:'image/jpeg', quality:90, mode:'quality', targetKB:200, imgEl:null };
+
+  function setBox(r){ cropBox.style.left=r.left+'px'; cropBox.style.top=r.top+'px'; cropBox.style.width=r.width+'px'; cropBox.style.height=r.height+'px'; }
+  function boxRect(){ return { left:parseFloat(cropBox.style.left)||0, top:parseFloat(cropBox.style.top)||0, width:parseFloat(cropBox.style.width)||0, height:parseFloat(cropBox.style.height)||0 }; }
+  function finalizeCrop(){
+    const rect = cropWrap.getBoundingClientRect();
+    const scale = state.opts.imgedit.natW / rect.width;
+    const b = boxRect();
+    const crop = { x:Math.round(b.left*scale), y:Math.round(b.top*scale), w:Math.round(b.width*scale), h:Math.round(b.height*scale) };
+    state.opts.imgedit.crop = crop;
+    wField.value = crop.w; hField.value = crop.h;
+  }
+  function resetBox(){
+    const rect = cropWrap.getBoundingClientRect();
+    const insetX = rect.width * 0.1, insetY = rect.height * 0.1;
+    setBox({ left:insetX, top:insetY, width:rect.width - insetX*2, height:rect.height - insetY*2 });
+    finalizeCrop();
+  }
+
+  cropImg.onload = () => {
+    state.opts.imgedit.natW = cropImg.naturalWidth;
+    state.opts.imgedit.natH = cropImg.naturalHeight;
+    state.opts.imgedit.imgEl = cropImg;
+    resetBox();
+  };
+
+  let mode = null, startPt = null, startBox = null, fixedPt = null;
+  function localPt(e){
+    const rect = cropWrap.getBoundingClientRect();
+    const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    const cy = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+    return { x:cx, y:cy, wrapW:rect.width, wrapH:rect.height };
+  }
+  cropBox.querySelectorAll('.crop-handle').forEach(h => {
+    h.addEventListener('pointerdown', e => {
+      e.stopPropagation();
+      mode = h.dataset.h;
+      const b = boxRect();
+      if(mode==='nw') fixedPt = { x:b.left+b.width, y:b.top+b.height };
+      if(mode==='ne') fixedPt = { x:b.left, y:b.top+b.height };
+      if(mode==='sw') fixedPt = { x:b.left+b.width, y:b.top };
+      if(mode==='se') fixedPt = { x:b.left, y:b.top };
+    });
+  });
+  cropBox.addEventListener('pointerdown', e => {
+    if(mode) return;
+    if(e.target.classList.contains('crop-handle')) return;
+    mode = 'move';
+    startPt = localPt(e);
+    startBox = boxRect();
+  });
+  cropWrap.addEventListener('pointermove', e => {
+    if(!mode) return;
+    const p = localPt(e);
+    let r;
+    if(mode === 'move'){
+      const dx = p.x - startPt.x, dy = p.y - startPt.y;
+      let left = Math.max(0, Math.min(p.wrapW - startBox.width, startBox.left + dx));
+      let top = Math.max(0, Math.min(p.wrapH - startBox.height, startBox.top + dy));
+      r = { left, top, width:startBox.width, height:startBox.height };
+    } else {
+      const nx = Math.max(0, Math.min(p.wrapW, p.x)), ny = Math.max(0, Math.min(p.wrapH, p.y));
+      let left = Math.min(fixedPt.x, nx), top = Math.min(fixedPt.y, ny);
+      let width = Math.max(24, Math.abs(nx - fixedPt.x)), height = Math.max(24, Math.abs(ny - fixedPt.y));
+      r = { left, top, width, height };
+    }
+    setBox(r);
+  });
+  window.addEventListener('pointerup', () => { if(!mode) return; mode = null; finalizeCrop(); });
+
+  container.querySelector('#cropReset').addEventListener('click', resetBox);
+
+  container.querySelectorAll('#aspectPills .pill').forEach(p => {
+    p.addEventListener('click', () => {
+      container.querySelectorAll('#aspectPills .pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      const ratio = parseFloat(p.dataset.r);
+      if(ratio === 0) return;
+      const rect = cropWrap.getBoundingClientRect();
+      let w = rect.width * 0.82, h = w / ratio;
+      if(h > rect.height * 0.82){ h = rect.height * 0.82; w = h * ratio; }
+      setBox({ left:(rect.width-w)/2, top:(rect.height-h)/2, width:w, height:h });
+      finalizeCrop();
+    });
+  });
+
+  wField.addEventListener('input', () => {
+    const c = state.opts.imgedit.crop;
+    const aspect = c ? c.w/c.h : 1;
+    if(lockAspect.checked) hField.value = Math.round(wField.value / aspect);
+  });
+  hField.addEventListener('input', () => {
+    const c = state.opts.imgedit.crop;
+    const aspect = c ? c.w/c.h : 1;
+    if(lockAspect.checked) wField.value = Math.round(hField.value * aspect);
+  });
+
+  container.querySelectorAll('#imgFmtPills .pill').forEach(p => {
+    p.addEventListener('click', () => {
+      container.querySelectorAll('#imgFmtPills .pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state.opts.imgedit.format = p.dataset.fmt;
+    });
+  });
+
+  container.querySelectorAll('#modePills .pill').forEach(p => {
+    p.addEventListener('click', () => {
+      container.querySelectorAll('#modePills .pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state.opts.imgedit.mode = p.dataset.mode;
+      const isSize = p.dataset.mode === 'size';
+      container.querySelector('#qualityRow').style.display = isSize ? 'none' : '';
+      container.querySelector('#targetSizeRow').style.display = isSize ? '' : 'none';
+      if(isSize && state.opts.imgedit.format === 'image/png'){
+        state.opts.imgedit.format = 'image/jpeg';
+        container.querySelectorAll('#imgFmtPills .pill').forEach(x => x.classList.toggle('active', x.dataset.fmt==='image/jpeg'));
+      }
+    });
+  });
+  container.querySelector('#imgQSlider').addEventListener('input', e => {
+    state.opts.imgedit.quality = +e.target.value;
+    container.querySelector('#imgQVal').textContent = e.target.value + '%';
+  });
+  container.querySelector('#targetKb').addEventListener('input', e => { state.opts.imgedit.targetKB = +e.target.value; });
+
+  state.opts.imgedit._wField = wField;
+  state.opts.imgedit._hField = hField;
+}
+
+async function convertImageEdit(files, progress){
+  progress('Cropping & resizing…');
+  const o = state.opts.imgedit;
+  const file = files[0];
+  const img = (o.imgEl && o.imgEl.complete) ? o.imgEl : await loadImageFromFile(file);
+  const crop = o.crop || { x:0, y:0, w:img.naturalWidth, h:img.naturalHeight };
+  const outW = parseInt(o._wField ? o._wField.value : crop.w) || crop.w;
+  const outH = parseInt(o._hField ? o._hField.value : crop.h) || crop.h;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = outW; canvas.height = outH;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, crop.x, crop.y, crop.w, crop.h, 0, 0, outW, outH);
+
+  const mime = o.format || 'image/jpeg';
+  let blob;
+  if(o.mode === 'size' && mime !== 'image/png'){
+    progress('Searching for target size…');
+    const targetBytes = (o.targetKB || 200) * 1024;
+    let lo = 0.05, hi = 1.0, best = null;
+    for(let i=0; i<7; i++){
+      const mid = (lo + hi) / 2;
+      const b = await new Promise(res => canvas.toBlob(res, mime, mid));
+      if(b.size > targetBytes){ hi = mid; } else { best = b; lo = mid; }
+    }
+    blob = best || await new Promise(res => canvas.toBlob(res, mime, lo));
+  } else {
+    progress('Encoding image…');
+    blob = await new Promise(res => canvas.toBlob(res, mime, (o.quality || 90) / 100));
+  }
+
+  const extMap = { 'image/jpeg':'jpg', 'image/png':'png', 'image/webp':'webp' };
+  const base = file.name.replace(/\.[^.]+$/,'');
+  return { blob, filename: `${base}-edited.${extMap[mime]}` };
+}
+function loadImageFromFile(file){
+  return new Promise((res, rej) => { const img = new Image(); img.onload = () => res(img); img.onerror = rej; img.src = URL.createObjectURL(file); });
+}
+
+// ================= QR Code Generator =================
+function renderQrOptions(container){
+  state.opts.qrgen = { text:'' };
+  container.innerHTML = `
+    <h5>Content</h5>
+    <textarea id="qrText" rows="3" placeholder="Paste a link or type any text…"
+      style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:12px; padding:12px; color:var(--text); font-size:14px; font-family:inherit; resize:vertical;"></textarea>
+    <h5>Size</h5>
+    <div class="pill-group" id="qrSizePills">
+      <div class="pill" data-s="256">Small</div><div class="pill active" data-s="512">Medium</div><div class="pill" data-s="1024">Large</div>
+    </div>`;
+  state.opts.qrgen.size = 512;
+  container.querySelector('#qrText').addEventListener('input', e => {
+    state.opts.qrgen.text = e.target.value;
+    els.convertBtn.disabled = e.target.value.trim().length === 0;
+  });
+  container.querySelectorAll('#qrSizePills .pill').forEach(p => {
+    p.addEventListener('click', () => {
+      container.querySelectorAll('#qrSizePills .pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state.opts.qrgen.size = +p.dataset.s;
+    });
+  });
+}
+async function convertQr(files, progress){
+  progress('Generating QR code…');
+  if(typeof QRCode === 'undefined') throw new Error('QR engine failed to load — check your internet connection and reload the page.');
+  const o = state.opts.qrgen;
+  const holder = document.createElement('div');
+  holder.style.cssText = 'position:fixed; left:-9999px; top:-9999px;';
+  document.body.appendChild(holder);
+  new QRCode(holder, { text: o.text, width: o.size, height: o.size, correctLevel: QRCode.CorrectLevel.M });
+  await new Promise(r => setTimeout(r, 60));
+  const canvas = holder.querySelector('canvas');
+  if(!canvas){ document.body.removeChild(holder); throw new Error('Could not render the QR code — try shorter text.'); }
+  const dataUrl = canvas.toDataURL('image/png');
+  document.body.removeChild(holder);
+  const blob = await (await fetch(dataUrl)).blob();
+  return { blob, filename:'qr-code.png' };
+}
+
+// ================= Color Palette Extractor =================
+async function extractPalette(files, progress){
+  progress('Sampling colors…');
+  const file = files[0];
+  const img = await loadImageFromFile(file);
+  const size = 120;
+  const canvas = document.createElement('canvas');
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, size, size);
+  const data = ctx.getImageData(0, 0, size, size).data;
+
+  const buckets = {};
+  for(let i=0; i<data.length; i+=4){
+    const a = data[i+3]; if(a < 128) continue;
+    const r = data[i], g = data[i+1], b = data[i+2];
+    const key = [Math.round(r/24), Math.round(g/24), Math.round(b/24)].join(',');
+    if(!buckets[key]) buckets[key] = { r:0, g:0, b:0, n:0 };
+    buckets[key].r += r; buckets[key].g += g; buckets[key].b += b; buckets[key].n++;
+  }
+  const top = Object.values(buckets).sort((a,b) => b.n - a.n).slice(0, 8);
+  const totalPixels = (size*size);
+  const swatches = top.map(c => {
+    const r = Math.round(c.r/c.n), g = Math.round(c.g/c.n), b = Math.round(c.b/c.n);
+    const hex = '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('').toUpperCase();
+    const pct = ((c.n/totalPixels)*100).toFixed(1);
+    return { hex, r, g, b, pct };
+  });
+
+  let html = `<div class="meta-badge">${swatches.length} colors found</div>`;
+  html += `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--pink); color:var(--pink)"></span>Dominant Colors</div><div class="meta-card glass">`;
+  html += swatches.map((s,i) => `
+    <div class="meta-row" style="--i:${i}; align-items:center;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:28px;height:28px;border-radius:8px; background:${s.hex}; border:1px solid rgba(255,255,255,0.2); flex:none;"></div>
+        <div class="k" style="font-family:ui-monospace,monospace;">${s.hex}</div>
+      </div>
+      <div class="v">${s.pct}% · rgb(${s.r},${s.g},${s.b})</div>
+    </div>`).join('');
+  html += `</div></div>`;
+
+  els.metaResults.innerHTML = html;
+  els.metaResults.classList.add('show');
+  return { blob:null, filename:file.name };
+}
+
+// ================= File Checksum =================
+async function computeHashes(files, progress){
+  const file = files[0];
+  progress('Reading file…');
+  const buf = await file.arrayBuffer();
+  progress('Computing SHA-256…');
+  const sha256 = await crypto.subtle.digest('SHA-256', buf);
+  progress('Computing SHA-1…');
+  const sha1 = await crypto.subtle.digest('SHA-1', buf);
+  const toHex = b => Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2,'0')).join('');
+
+  const rows = [
+    ['File Name', file.name], ['File Size', humanSize(file.size)],
+    ['SHA-256', toHex(sha256)], ['SHA-1', toHex(sha1)],
+  ];
+  let html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--lime); color:var(--lime)"></span>Checksum</div><div class="meta-card glass">`;
+  html += rows.map(([k,v],i) => `<div class="meta-row" style="--i:${i}"><div class="k">${metaEscape(k)}</div><div class="v" style="font-family:ui-monospace,monospace; font-size:11.5px;">${metaEscape(v)}</div></div>`).join('');
+  html += `</div></div><div class="meta-empty">Compare this hash to the one published by the file's source to confirm it wasn't corrupted or tampered with.</div>`;
+  els.metaResults.innerHTML = html;
+  els.metaResults.classList.add('show');
+  return { blob:null, filename:file.name };
+}
+
+// ================= Word Counter =================
+function renderWordCountOptions(container, files){
+  state.opts.wordcount = state.opts.wordcount || { text:'' };
+  container.innerHTML = `
+    <h5>Or paste text here</h5>
+    <textarea id="wcText" rows="5" placeholder="Paste or type text here…"
+      style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:12px; padding:12px; color:var(--text); font-size:14px; font-family:inherit; resize:vertical;">${state.opts.wordcount.text||''}</textarea>`;
+  container.querySelector('#wcText').addEventListener('input', e => {
+    state.opts.wordcount.text = e.target.value;
+    refreshConvertEnabled();
+  });
+}
+async function extractPdfText(file, progress){
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.worker.min.js';
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  let text = '';
+  for(let p=1; p<=pdf.numPages; p++){
+    progress(`Reading page ${p} of ${pdf.numPages}…`);
+    const page = await pdf.getPage(p);
+    const content = await page.getTextContent();
+    text += content.items.map(it => it.str).join(' ') + '\n\n';
+  }
+  return text;
+}
+async function computeWordCount(files, progress){
+  let text = (state.opts.wordcount && state.opts.wordcount.text) || '';
+  if(files.length){
+    const file = files[0];
+    progress('Reading file…');
+    if(/\.pdf$/i.test(file.name) || file.type === 'application/pdf'){
+      text = await extractPdfText(file, progress);
+    } else {
+      text = await file.text();
+    }
+  }
+  const words = (text.match(/\S+/g) || []).length;
+  const chars = text.length;
+  const charsNoSpace = text.replace(/\s/g,'').length;
+  const sentences = (text.match(/[.!?]+(\s|$)/g) || []).length || (text.trim() ? 1 : 0);
+  const paragraphs = (text.split(/\n\s*\n/).filter(p => p.trim().length)).length || (text.trim() ? 1 : 0);
+  const readMins = Math.max(1, Math.ceil(words/200));
+  const speakMins = Math.max(1, Math.ceil(words/130));
+
+  const rows = [
+    ['Words', words], ['Characters', chars], ['Characters (no spaces)', charsNoSpace],
+    ['Sentences', sentences], ['Paragraphs', paragraphs],
+    ['Reading time', `~${readMins} min`], ['Speaking time', `~${speakMins} min`],
+  ];
+  let html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--amber); color:var(--amber)"></span>Text Stats</div><div class="meta-card glass">`;
+  html += rows.map(([k,v],i) => `<div class="meta-row" style="--i:${i}"><div class="k">${metaEscape(k)}</div><div class="v">${metaEscape(v)}</div></div>`).join('');
+  html += `</div></div>`;
+  els.metaResults.innerHTML = html;
+  els.metaResults.classList.add('show');
+  return { blob:null, filename:'text' };
+}
+
+// ================= Secret Message in Photo (Steganography) =================
+function renderStegoOptions(container, files){
+  state.opts.stego = state.opts.stego || { mode:'hide', message:'' };
+  container.innerHTML = `
+    <h5>Mode</h5>
+    <div class="pill-group" id="stegoModePills">
+      <div class="pill ${state.opts.stego.mode==='hide'?'active':''}" data-m="hide">Hide a message</div>
+      <div class="pill ${state.opts.stego.mode==='reveal'?'active':''}" data-m="reveal">Reveal a message</div>
+    </div>
+    <div id="stegoHideFields" style="display:${state.opts.stego.mode==='hide'?'':'none'}">
+      <h5>Secret message</h5>
+      <textarea id="stegoMsg" rows="3" placeholder="Type the secret text to hide inside this photo…"
+        style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:12px; padding:12px; color:var(--text); font-size:14px; font-family:inherit; resize:vertical;">${state.opts.stego.message||''}</textarea>
+    </div>`;
+  container.querySelectorAll('#stegoModePills .pill').forEach(p => {
+    p.addEventListener('click', () => {
+      container.querySelectorAll('#stegoModePills .pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state.opts.stego.mode = p.dataset.m;
+      container.querySelector('#stegoHideFields').style.display = p.dataset.m === 'hide' ? '' : 'none';
+      refreshConvertEnabled();
+    });
+  });
+  const msgField = container.querySelector('#stegoMsg');
+  if(msgField) msgField.addEventListener('input', e => { state.opts.stego.message = e.target.value; refreshConvertEnabled(); });
+}
+function bitsFromBytes(bytes){
+  const bits = [];
+  for(const b of bytes){ for(let i=7; i>=0; i--) bits.push((b>>i)&1); }
+  return bits;
+}
+function bytesFromBits(bits){
+  const bytes = [];
+  for(let i=0; i<bits.length; i+=8){
+    let byte = 0;
+    for(let j=0; j<8; j++) byte = (byte<<1) | (bits[i+j]||0);
+    bytes.push(byte);
+  }
+  return bytes;
+}
+async function convertStego(files, progress){
+  const o = state.opts.stego;
+  const file = files[0];
+  const img = await loadImageFromFile(file);
+  const w = img.naturalWidth, h = img.naturalHeight;
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  const imgData = ctx.getImageData(0, 0, w, h);
+  const data = imgData.data;
+  const capacityBits = w * h * 3;
+
+  if(o.mode === 'hide'){
+    progress('Encoding secret message…');
+    const msgBytes = new TextEncoder().encode(o.message);
+    const lenBytes = new Uint8Array(4);
+    new DataView(lenBytes.buffer).setUint32(0, msgBytes.length, false);
+    const allBytes = new Uint8Array(4 + msgBytes.length);
+    allBytes.set(lenBytes, 0); allBytes.set(msgBytes, 4);
+    const bits = bitsFromBytes(allBytes);
+    if(bits.length > capacityBits){
+      const maxBytes = Math.floor(capacityBits/8) - 4;
+      throw new Error(`Message too long for this photo. This ${w}×${h} image can hold about ${maxBytes} characters — try a shorter message or a bigger photo.`);
+    }
+    let bitIdx = 0;
+    for(let p=0; p<w*h && bitIdx<bits.length; p++){
+      for(let c=0; c<3 && bitIdx<bits.length; c++){
+        const idx = p*4 + c;
+        data[idx] = (data[idx] & 0xFE) | bits[bitIdx];
+        bitIdx++;
+      }
+    }
+    ctx.putImageData(imgData, 0, 0);
+    progress('Saving PNG…');
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+    const base = file.name.replace(/\.[^.]+$/,'');
+    return { blob, filename: `${base}-hidden.png` };
+  }
+
+  progress('Scanning for hidden data…');
+  const headerBits = [];
+  let bitIdx = 0;
+  scanHeader:
+  for(let p=0; p<w*h; p++){
+    for(let c=0; c<3; c++){
+      if(bitIdx >= 32) break scanHeader;
+      headerBits.push(data[p*4+c] & 1);
+      bitIdx++;
+    }
+  }
+  const msgLen = new DataView(new Uint8Array(bytesFromBits(headerBits)).buffer).getUint32(0, false);
+  if(!(msgLen > 0 && msgLen < capacityBits/8)){
+    els.metaResults.innerHTML = `<div class="meta-empty">No hidden message was found in this image. (It may be a plain photo, or the data was destroyed by compression/resizing when it was shared.)</div>`;
+    els.metaResults.classList.add('show');
+    return { blob:null, filename:file.name };
+  }
+  const totalBits = 32 + msgLen*8;
+  const bits = [];
+  bitIdx = 0;
+  scanMsg:
+  for(let p=0; p<w*h; p++){
+    for(let c=0; c<3; c++){
+      if(bitIdx >= totalBits) break scanMsg;
+      bits.push(data[p*4+c] & 1);
+      bitIdx++;
+    }
+  }
+  const msgBytes = new Uint8Array(bytesFromBits(bits.slice(32)));
+  let text;
+  try{ text = new TextDecoder('utf-8', { fatal:true }).decode(msgBytes); }
+  catch(e){
+    els.metaResults.innerHTML = `<div class="meta-empty">No valid hidden message was found in this image.</div>`;
+    els.metaResults.classList.add('show');
+    return { blob:null, filename:file.name };
+  }
+  els.metaResults.innerHTML = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--violet); color:var(--violet)"></span>Hidden Message Found</div><div class="meta-card glass"><div class="meta-row" style="opacity:1; display:block;"><div class="v" style="text-align:left; white-space:pre-wrap; font-family:ui-monospace,monospace; color:var(--text);">${metaEscape(text)}</div></div></div></div>`;
+  els.metaResults.classList.add('show');
+  return { blob:null, filename:file.name };
+}
+
+// ================= Edit Detector (Error Level Analysis) =================
+async function convertEla(files, progress){
+  const file = files[0];
+  progress('Loading photo…');
+  const img = await loadImageFromFile(file);
+  const w = img.naturalWidth, h = img.naturalHeight;
+  const c1 = document.createElement('canvas'); c1.width = w; c1.height = h;
+  const ctx1 = c1.getContext('2d'); ctx1.drawImage(img, 0, 0);
+  const originalData = ctx1.getImageData(0, 0, w, h).data;
+
+  progress('Re-compressing at reference quality…');
+  const compressedUrl = c1.toDataURL('image/jpeg', 0.9);
+  const img2 = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = compressedUrl; });
+  const c2 = document.createElement('canvas'); c2.width = w; c2.height = h;
+  const ctx2 = c2.getContext('2d'); ctx2.drawImage(img2, 0, 0);
+  const compData = ctx2.getImageData(0, 0, w, h).data;
+
+  progress('Computing differences…');
+  const out = ctx1.createImageData(w, h);
+  const outData = out.data;
+  const SCALE = 12;
+  let diffSum = 0;
+  for(let i=0; i<originalData.length; i+=4){
+    const avg = (Math.abs(originalData[i]-compData[i]) + Math.abs(originalData[i+1]-compData[i+1]) + Math.abs(originalData[i+2]-compData[i+2])) / 3;
+    diffSum += avg;
+    const amp = Math.min(255, avg*SCALE);
+    outData[i] = amp; outData[i+1] = amp; outData[i+2] = amp; outData[i+3] = 255;
+  }
+  const meanDiff = diffSum / (w*h);
+  const score = Math.min(100, Math.round((meanDiff / 20) * 100));
+  let verdict, verdictColor;
+  if(score < 15){ verdict = 'Likely Not Edited'; verdictColor = 'var(--lime)'; }
+  else if(score < 35){ verdict = 'Possibly Edited'; verdictColor = 'var(--amber)'; }
+  else if(score < 60){ verdict = 'Likely Edited'; verdictColor = 'var(--pink)'; }
+  else { verdict = 'Roughly Edited'; verdictColor = 'var(--pink)'; }
+
+  const outCanvas = document.createElement('canvas'); outCanvas.width = w; outCanvas.height = h;
+  outCanvas.getContext('2d').putImageData(out, 0, 0);
+  const previewUrl = outCanvas.toDataURL('image/png');
+
+  els.metaResults.innerHTML = `
+    <div class="meta-section" style="opacity:1;">
+      <div class="meta-title"><span class="meta-dot" style="background:var(--amber); color:var(--amber)"></span>Error Level Analysis</div>
+      <div class="meta-card glass" style="padding:14px;">
+        <div style="text-align:center; margin-bottom:14px;">
+          <div style="font-size:40px; font-weight:800; letter-spacing:-0.02em; color:${verdictColor};">${score}%</div>
+          <div style="font-size:15px; font-weight:700; color:${verdictColor}; margin-top:-4px;">${verdict}</div>
+        </div>
+        <img src="${previewUrl}" style="width:100%; border-radius:12px; display:block; margin-bottom:10px;">
+        <div style="font-size:12px; color:var(--sub); line-height:1.6;">Bright, glowing patches usually mean that part of the photo has a different compression history than the rest — a common sign of edits, pasted elements, or touch-ups.</div>
+        <div style="font-size:11px; color:var(--sub2); line-height:1.5; margin-top:8px;">⚠️ This is an estimator and can be wrong sometimes — treat the score as a clue, not proof.</div>
+      </div>
+    </div>`;
+  els.metaResults.classList.add('show');
+
+  progress('Preparing download…');
+  const blob = await (await fetch(previewUrl)).blob();
+  const base = file.name.replace(/\.[^.]+$/,'');
+  return { blob, filename: `${base}-edit-map.png` };
+}
+
+// ================= JPEG Quality Detector =================
+const STD_LUMA_QTABLE = [16,11,10,16,24,40,51,61,12,12,14,19,26,58,60,55,14,13,16,24,40,57,69,56,14,17,22,29,51,87,80,62,18,22,37,56,68,109,103,77,24,35,55,64,81,104,113,92,49,64,78,87,103,121,120,101,72,92,95,98,112,100,103,99];
+async function estimateJpegQuality(files, progress){
+  const file = files[0];
+  progress('Reading JPEG structure…');
+  const buf = new Uint8Array(await file.arrayBuffer());
+  if(!(buf[0]===0xFF && buf[1]===0xD8)){
+    els.metaResults.innerHTML = `<div class="meta-empty">This isn't a JPEG file — quantization data only exists in JPEGs, not PNG/WEBP, so quality can't be estimated.</div>`;
+    els.metaResults.classList.add('show');
+    return { blob:null, filename:file.name };
+  }
+  let table = null;
+  let i = 2;
+  while(i < buf.length - 1){
+    if(buf[i] !== 0xFF){ i++; continue; }
+    const marker = buf[i+1];
+    if(marker === 0x01 || (marker >= 0xD0 && marker <= 0xD9)){ i += 2; continue; }
+    if(i+3 >= buf.length) break;
+    const segLen = (buf[i+2]<<8) | buf[i+3];
+    if(marker === 0xDB){
+      let p = i+4;
+      const segEnd = i+2+segLen;
+      while(p < segEnd){
+        const pqTq = buf[p]; p++;
+        const precision = pqTq >> 4;
+        const tableId = pqTq & 0x0F;
+        const values = [];
+        for(let k=0; k<64; k++){
+          if(precision===0){ values.push(buf[p]); p+=1; } else { values.push((buf[p]<<8)|buf[p+1]); p+=2; }
+        }
+        if(tableId===0 && !table) table = values;
+      }
+    }
+    if(marker === 0xDA) break;
+    i = i+2+segLen;
+  }
+  if(!table){
+    els.metaResults.innerHTML = `<div class="meta-empty">Couldn't find compression tables in this JPEG to estimate quality.</div>`;
+    els.metaResults.classList.add('show');
+    return { blob:null, filename:file.name };
+  }
+  progress('Matching against standard quality presets…');
+  let bestQ = 50, bestDiff = Infinity;
+  for(let q=1; q<=100; q++){
+    const scale = q < 50 ? 5000/q : 200 - q*2;
+    let diff = 0;
+    for(let k=0; k<64; k++){
+      const scaled = Math.min(255, Math.max(1, Math.floor((STD_LUMA_QTABLE[k]*scale + 50)/100)));
+      diff += Math.abs(scaled - table[k]);
+    }
+    if(diff < bestDiff){ bestDiff = diff; bestQ = q; }
+  }
+  let note;
+  if(bestQ >= 90) note = 'High quality — probably straight from a camera or barely compressed.';
+  else if(bestQ >= 70) note = 'Good quality — typical of most phone photos and apps.';
+  else if(bestQ >= 40) note = 'Noticeably compressed — likely been shared/re-saved a few times (e.g. WhatsApp, social media).';
+  else note = 'Heavily compressed — this photo has probably been through several rounds of saving/sharing.';
+
+  els.metaResults.innerHTML = `
+    <div class="meta-section" style="opacity:1;">
+      <div class="meta-title"><span class="meta-dot" style="background:var(--cyan); color:var(--cyan)"></span>JPEG Quality</div>
+      <div class="meta-card glass" style="padding:14px;">
+        <div style="text-align:center; margin-bottom:10px;">
+          <div style="font-size:40px; font-weight:800; letter-spacing:-0.02em; color:var(--cyan);">~${bestQ}</div>
+          <div style="font-size:13px; color:var(--sub);">estimated quality out of 100</div>
+        </div>
+        <div style="font-size:12.5px; color:var(--sub); line-height:1.6;">${note}</div>
+        <div style="font-size:11px; color:var(--sub2); line-height:1.5; margin-top:8px;">⚠️ This is an estimate based on standard compression tables — some editing apps use custom tables that won't match exactly.</div>
+      </div>
+    </div>`;
+  els.metaResults.classList.add('show');
+  return { blob:null, filename:file.name };
+}
+
+// ================= Color Blindness Simulator =================
+function renderColorblindOptions(container){
+  state.opts.colorblind = state.opts.colorblind || { type:'protanopia' };
+  container.innerHTML = `
+    <h5>Simulate</h5>
+    <div class="pill-group" id="cbPills">
+      <div class="pill ${state.opts.colorblind.type==='protanopia'?'active':''}" data-t="protanopia">Protanopia</div>
+      <div class="pill ${state.opts.colorblind.type==='deuteranopia'?'active':''}" data-t="deuteranopia">Deuteranopia</div>
+      <div class="pill ${state.opts.colorblind.type==='tritanopia'?'active':''}" data-t="tritanopia">Tritanopia</div>
+      <div class="pill ${state.opts.colorblind.type==='achromatopsia'?'active':''}" data-t="achromatopsia">Full (B&W)</div>
+    </div>
+    <div class="note" style="margin-top:2px; padding:0; text-align:left;">Red-green blindness (protanopia/deuteranopia) affects about 1 in 12 men. Tritanopia (blue-yellow) is much rarer.</div>`;
+  container.querySelectorAll('#cbPills .pill').forEach(p => {
+    p.addEventListener('click', () => {
+      container.querySelectorAll('#cbPills .pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state.opts.colorblind.type = p.dataset.t;
+    });
+  });
+}
+const CB_MATRICES = {
+  protanopia:   [0.567,0.433,0,  0.558,0.442,0,  0,0.242,0.758],
+  deuteranopia: [0.625,0.375,0,  0.7,0.3,0,      0,0.3,0.7],
+  tritanopia:   [0.95,0.05,0,    0,0.433,0.567,  0,0.475,0.525],
+};
+async function convertColorblind(files, progress){
+  progress('Simulating color vision…');
+  const file = files[0];
+  const type = (state.opts.colorblind && state.opts.colorblind.type) || 'protanopia';
+  const img = await loadImageFromFile(file);
+  const w = img.naturalWidth, h = img.naturalHeight;
+  const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  const imgData = ctx.getImageData(0, 0, w, h);
+  const data = imgData.data;
+
+  if(type === 'achromatopsia'){
+    for(let i=0; i<data.length; i+=4){
+      const gray = data[i]*0.299 + data[i+1]*0.587 + data[i+2]*0.114;
+      data[i] = data[i+1] = data[i+2] = gray;
+    }
+  } else {
+    const m = CB_MATRICES[type];
+    for(let i=0; i<data.length; i+=4){
+      const r = data[i], g = data[i+1], b = data[i+2];
+      data[i]   = Math.min(255, Math.max(0, r*m[0] + g*m[1] + b*m[2]));
+      data[i+1] = Math.min(255, Math.max(0, r*m[3] + g*m[4] + b*m[5]));
+      data[i+2] = Math.min(255, Math.max(0, r*m[6] + g*m[7] + b*m[8]));
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+  const previewUrl = canvas.toDataURL('image/png');
+
+  els.metaResults.innerHTML = `
+    <div class="meta-section" style="opacity:1;">
+      <div class="meta-title"><span class="meta-dot" style="background:var(--pink); color:var(--pink)"></span>Simulated View</div>
+      <div class="meta-card glass" style="padding:14px;">
+        <img src="${previewUrl}" style="width:100%; border-radius:12px; display:block;">
+      </div>
+    </div>`;
+  els.metaResults.classList.add('show');
+
+  progress('Preparing download…');
+  const blob = await (await fetch(previewUrl)).blob();
+  const base = file.name.replace(/\.[^.]+$/,'');
+  return { blob, filename: `${base}-${type}.png` };
+}
+
+// ================= Password-Protect a File =================
+function renderFileCryptOptions(container){
+  state.opts.filecrypt = state.opts.filecrypt || { mode:'encrypt', password:'' };
+  container.innerHTML = `
+    <h5>Mode</h5>
+    <div class="pill-group" id="fcModePills">
+      <div class="pill ${state.opts.filecrypt.mode==='encrypt'?'active':''}" data-m="encrypt">Encrypt</div>
+      <div class="pill ${state.opts.filecrypt.mode==='decrypt'?'active':''}" data-m="decrypt">Decrypt</div>
+    </div>
+    <h5>Password</h5>
+    <input type="password" id="fcPass" placeholder="Choose a strong password"
+      style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:10px; padding:11px; color:var(--text); font-size:13.5px;">`;
+  container.querySelectorAll('#fcModePills .pill').forEach(p => {
+    p.addEventListener('click', () => {
+      container.querySelectorAll('#fcModePills .pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state.opts.filecrypt.mode = p.dataset.m;
+      refreshConvertEnabled();
+    });
+  });
+  container.querySelector('#fcPass').addEventListener('input', e => {
+    state.opts.filecrypt.password = e.target.value;
+    refreshConvertEnabled();
+  });
+}
+async function deriveAesKey(password, salt, usage){
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt, iterations:200000, hash:'SHA-256' },
+    keyMaterial, { name:'AES-GCM', length:256 }, false, [usage]
+  );
+}
+async function convertFileCrypt(files, progress){
+  const o = state.opts.filecrypt;
+  const file = files[0];
+  if(o.mode === 'encrypt'){
+    progress('Deriving encryption key…');
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const key = await deriveAesKey(o.password, salt, 'encrypt');
+    const nameBytes = new TextEncoder().encode(file.name);
+    const fileBytes = new Uint8Array(await file.arrayBuffer());
+    const header = new Uint8Array(2 + nameBytes.length);
+    new DataView(header.buffer).setUint16(0, nameBytes.length, false);
+    header.set(nameBytes, 2);
+    const plain = new Uint8Array(header.length + fileBytes.length);
+    plain.set(header, 0); plain.set(fileBytes, header.length);
+    progress('Encrypting…');
+    const cipher = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key, plain);
+    const out = new Uint8Array(16 + 12 + cipher.byteLength);
+    out.set(salt, 0); out.set(iv, 16); out.set(new Uint8Array(cipher), 28);
+    return { blob: new Blob([out], { type:'application/octet-stream' }), filename: `${file.name}.enc` };
+  } else {
+    progress('Reading encrypted file…');
+    const buf = new Uint8Array(await file.arrayBuffer());
+    if(buf.length < 29) throw new Error("This doesn't look like a valid encrypted file.");
+    const salt = buf.slice(0,16), iv = buf.slice(16,28), cipher = buf.slice(28);
+    const key = await deriveAesKey(o.password, salt, 'decrypt');
+    progress('Decrypting…');
+    let plainBuf;
+    try{ plainBuf = await crypto.subtle.decrypt({ name:'AES-GCM', iv }, key, cipher); }
+    catch(e){ throw new Error('Wrong password, or this file is corrupted.'); }
+    const plain = new Uint8Array(plainBuf);
+    const nameLen = new DataView(plain.buffer, 0, 2).getUint16(0, false);
+    const originalName = new TextDecoder().decode(plain.slice(2, 2+nameLen));
+    const fileBytes = plain.slice(2+nameLen);
+    return { blob: new Blob([fileBytes]), filename: originalName || 'decrypted-file' };
+  }
+}
+
+// ================= Photo Metadata =================
+const META_LABELS = {
   Make:'Camera Make', Model:'Camera Model', LensModel:'Lens', LensMake:'Lens Make',
   DateTimeOriginal:'Date Taken', CreateDate:'Date Created', ModifyDate:'Date Modified',
   FNumber:'Aperture (f/)', ApertureValue:'Aperture Value', ExposureTime:'Shutter Speed',
@@ -394,20 +2025,42 @@ const LABELS = {
   FlashpixVersion:'Flashpix Version', InteropIndex:'Interop Index', InteropVersion:'Interop Version',
   YCbCrPositioning:'YCbCr Positioning', GPSVersionID:'GPS Version',
 };
+function metaLabel(key){ return META_LABELS[key] || key.replace(/([a-z])([A-Z])/g,'$1 $2').replace(/^./,c=>c.toUpperCase()); }
+const META_CAMERA = ['Make','Model','LensModel','LensMake','FNumber','ApertureValue','MaxApertureValue','ExposureTime','ShutterSpeedValue','ISO','SensitivityType','RecommendedExposureIndex','FocalLength','FocalLengthIn35mmFormat','Flash','ExposureProgram','ExposureMode','MeteringMode','WhiteBalance','ExposureCompensation','DigitalZoomRatio','SubjectDistance','BrightnessValue','OffsetTimeOriginal','SubSecTimeOriginal'];
+const META_LOCATION = ['latitude','longitude','GPSAltitude','GPSImgDirection','GPSSpeed','GPSTimeStamp','GPSDateStamp','GPSVersionID'];
+const META_TECH = ['Orientation','ColorSpace','XResolution','YResolution','ResolutionUnit','BitsPerSample','Compression','PhotometricInterpretation','ImageWidth','ImageHeight','ExifImageWidth','ExifImageHeight','Software','ModifyDate','SceneCaptureType','LightSource','Contrast','Saturation','Sharpness','GainControl','SensingMethod','FileSource','CustomRendered','ExifVersion','FlashpixVersion','InteropIndex','InteropVersion','YCbCrPositioning'];
 
-function label(key){
-  return LABELS[key] || key.replace(/([a-z])([A-Z])/g,'$1 $2').replace(/^./,c=>c.toUpperCase());
+function metaFmt(v){
+  if(v == null) return '—';
+  if(v instanceof Date) return v.toLocaleString();
+  if(Array.isArray(v)) return v.map(metaFmt).join(', ');
+  if(typeof v === 'number') return Number.isInteger(v) ? v.toString() : v.toFixed(4).replace(/\.?0+$/,'');
+  if(typeof v === 'object'){ try { return JSON.stringify(v); } catch(e){ return String(v); } }
+  return String(v);
+}
+function metaEscape(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+async function extractMetadata(files, progress){
+  const file = files[0];
+  progress('Reading image…');
+  const url = URL.createObjectURL(file);
+  const img = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = url; });
+
+  let tags = {}, loadError = null;
+  try{
+    if(typeof exifr === 'undefined') throw new Error('Metadata engine failed to load — check your internet connection and reload the page.');
+    progress('Extracting EXIF/GPS/IPTC/XMP…');
+    tags = await exifr.parse(file, { tiff:true, exif:true, gps:true, iptc:true, xmp:true, icc:true, jfif:true, translateValues:true, reviveValues:true }) || {};
+  }catch(e){ loadError = e.message || String(e); }
+
+  buildMetaResults(file, img, tags, loadError);
+  return { blob:null, filename:file.name };
 }
 
-// Priority buckets (importance order)
-const CAMERA     = ['Make','Model','LensModel','LensMake','FNumber','ApertureValue','MaxApertureValue','ExposureTime','ShutterSpeedValue','ISO','SensitivityType','RecommendedExposureIndex','FocalLength','FocalLengthIn35mmFormat','Flash','ExposureProgram','ExposureMode','MeteringMode','WhiteBalance','ExposureCompensation','DigitalZoomRatio','SubjectDistance','BrightnessValue','OffsetTimeOriginal','SubSecTimeOriginal'];
-const LOCATION   = ['latitude','longitude','GPSAltitude','GPSImgDirection','GPSSpeed','GPSTimeStamp','GPSDateStamp','GPSVersionID'];
-const IMAGE_TECH = ['Orientation','ColorSpace','XResolution','YResolution','ResolutionUnit','BitsPerSample','Compression','PhotometricInterpretation','ImageWidth','ImageHeight','ExifImageWidth','ExifImageHeight','Software','ModifyDate','SceneCaptureType','LightSource','Contrast','Saturation','Sharpness','GainControl','SensingMethod','FileSource','CustomRendered','ExifVersion','FlashpixVersion','InteropIndex','InteropVersion','YCbCrPositioning'];
-
-function buildResults(file, img, tags, loadError){
+function buildMetaResults(file, img, tags, loadError){
   const flat = {};
   Object.keys(tags).forEach(k => {
-    if(/^\d+$/.test(k)) return; // skip stray numeric-indexed junk keys
+    if(/^\d+$/.test(k)) return;
     const v = tags[k];
     if(v === undefined || v === null || v === '') return;
     if(typeof v === 'object' && !Array.isArray(v) && !(v instanceof Date)){
@@ -425,117 +2078,85 @@ function buildResults(file, img, tags, loadError){
   });
 
   const naturalW = img.naturalWidth, naturalH = img.naturalHeight;
-
-  const keyInfoRows = [
-    ['File Name', file.name],
-    ['Dimensions', `${naturalW} × ${naturalH} px`],
-    ['File Type', file.type || 'unknown'],
-    ['File Size', humanSize(file.size)],
-  ];
-  if(flat.DateTimeOriginal) keyInfoRows.push(['Date Taken', fmtVal(flat.DateTimeOriginal)]);
-  else if(flat.CreateDate) keyInfoRows.push(['Date Created', fmtVal(flat.CreateDate)]);
-
+  const humanSz = humanSize(file.size);
+  const keyInfoRows = [ ['File Name', file.name], ['Dimensions', `${naturalW} × ${naturalH} px`], ['File Type', file.type || 'unknown'], ['File Size', humanSz] ];
+  if(flat.DateTimeOriginal) keyInfoRows.push(['Date Taken', metaFmt(flat.DateTimeOriginal)]);
+  else if(flat.CreateDate) keyInfoRows.push(['Date Created', metaFmt(flat.CreateDate)]);
   const usedKeys = new Set(['DateTimeOriginal','CreateDate']);
 
   const cameraRows = [];
-  CAMERA.forEach(k => {
+  META_CAMERA.forEach(k => {
     if(flat[k] !== undefined){
       let v = flat[k];
-      if(k==='FNumber') v = 'f/' + fmtVal(v);
+      if(k==='FNumber') v = 'f/' + metaFmt(v);
       else if(k==='ExposureTime') v = (v < 1 ? `1/${Math.round(1/v)} s` : `${v} s`);
-      else if(k==='FocalLength') v = fmtVal(v) + ' mm';
-      else if(k==='FocalLengthIn35mmFormat') v = fmtVal(v) + ' mm';
-      else v = fmtVal(v);
-      cameraRows.push([label(k), v]);
-      usedKeys.add(k);
+      else if(k==='FocalLength' || k==='FocalLengthIn35mmFormat') v = metaFmt(v) + ' mm';
+      else v = metaFmt(v);
+      cameraRows.push([metaLabel(k), v]); usedKeys.add(k);
     }
   });
 
-  const locationRows = [];
-  let hasGPS = false;
+  const locationRows = []; let hasGPS = false;
   if(flat.latitude !== undefined && flat.longitude !== undefined){
     hasGPS = true;
     locationRows.push(['Coordinates', `${flat.latitude.toFixed(6)}, ${flat.longitude.toFixed(6)}`]);
     usedKeys.add('latitude'); usedKeys.add('longitude');
   }
-  LOCATION.forEach(k => {
+  META_LOCATION.forEach(k => {
     if(k==='latitude'||k==='longitude') return;
     if(flat[k] !== undefined){
-      const val = fmtVal(flat[k]);
+      const val = metaFmt(flat[k]);
       if(/NaN/.test(val)) return;
-      locationRows.push([label(k), val]);
-      usedKeys.add(k);
+      locationRows.push([metaLabel(k), val]); usedKeys.add(k);
     }
   });
 
   const techRows = [];
-  IMAGE_TECH.forEach(k => {
-    if(flat[k] !== undefined){
-      techRows.push([label(k), fmtVal(flat[k])]);
-      usedKeys.add(k);
-    }
-  });
+  META_TECH.forEach(k => { if(flat[k] !== undefined){ techRows.push([metaLabel(k), metaFmt(flat[k])]); usedKeys.add(k); } });
 
   const otherRows = [];
   Object.keys(flat).sort().forEach(k => {
     if(usedKeys.has(k)) return;
     if(k.toLowerCase().includes('thumbnail')) return;
-    let v = flat[k];
+    const v = flat[k];
     if(v instanceof Uint8Array || (v && v.buffer)) return;
-    otherRows.push([label(k), fmtVal(v)]);
+    otherRows.push([metaLabel(k), metaFmt(v)]);
   });
 
   let html = '';
   let sectionDelay = 0;
-
-  html += section('key','Key Info', keyInfoRows, null, sectionDelay++);
-  if(cameraRows.length) html += section('cam','Camera & Capture', cameraRows, null, sectionDelay++);
-  if(locationRows.length){
-    html += section('geo','Location', locationRows, hasGPS ? {lat:flat.latitude, lon:flat.longitude} : null, sectionDelay++);
-  }
-  if(techRows.length) html += section('img','Image & Technical', techRows, null, sectionDelay++);
-  if(otherRows.length) html += section('other','All Other Metadata', otherRows, null, sectionDelay++);
+  html += metaSection('key','Key Info', keyInfoRows, null, sectionDelay++);
+  if(cameraRows.length) html += metaSection('cam','Camera & Capture', cameraRows, null, sectionDelay++);
+  if(locationRows.length) html += metaSection('geo','Location', locationRows, hasGPS ? {lat:flat.latitude, lon:flat.longitude} : null, sectionDelay++);
+  if(techRows.length) html += metaSection('img','Image & Technical', techRows, null, sectionDelay++);
+  if(otherRows.length) html += metaSection('other','All Other Metadata', otherRows, null, sectionDelay++);
 
   const totalTags = keyInfoRows.length + cameraRows.length + locationRows.length + techRows.length + otherRows.length;
+  let intro = `<div class="meta-badge">${totalTags} tags found</div>`;
 
   if(loadError){
-    html = `<div class="section glass card" style="opacity:1;padding:0;"><div class="row" style="opacity:1;"><div class="k">Error</div><div class="v">${escapeHtml(loadError)}</div></div></div>` + html;
+    html = `<div class="meta-card glass"><div class="meta-row" style="opacity:1;"><div class="k">Error</div><div class="v">${metaEscape(loadError)}</div></div></div>` + html;
+    intro = '';
   } else if(!hasGPS && locationRows.length === 0){
-    html += `<div class="empty">No GPS location saved in this photo (location was likely off when it was taken).</div>`;
+    html += `<div class="meta-empty">No GPS location saved in this photo (location was likely off when it was taken).</div>`;
   }
   if(totalTags <= 4 && !loadError){
-    html += `<div class="empty">No EXIF metadata found — this image may have been stripped of its data.</div>`;
+    html += `<div class="meta-empty">No EXIF metadata found — this image may have been stripped of its data (see "What this can't do" above).</div>`;
   }
 
-  results.innerHTML = html;
-  badge.textContent = '0 tags';
-  animateCount(badge, totalTags);
+  els.metaResults.innerHTML = intro + html;
+  els.metaResults.classList.add('show');
 }
-
-function section(dotClass, title, rows, gps, sectionIndex){
-  let rowsHtml = rows.map(([k,v], i) => `
-    <div class="row" style="--i:${i}">
-      <div class="k">${escapeHtml(k)}</div>
-      <div class="v">${escapeHtml(v)}</div>
-    </div>`).join('');
-
+function metaSection(dotClass, title, rows, gps, sectionIndex){
+  let rowsHtml = rows.map(([k,v], i) => `<div class="meta-row" style="--i:${i}"><div class="k">${metaEscape(k)}</div><div class="v">${metaEscape(v)}</div></div>`).join('');
   if(gps){
-    rowsHtml += `
-    <div class="row" style="--i:${rows.length}">
-      <div class="k">Map</div>
-      <div class="v"><a class="map-link" target="_blank" rel="noopener" href="https://maps.google.com/?q=${gps.lat},${gps.lon}">Open in Maps ↗</a></div>
-    </div>`;
+    rowsHtml += `<div class="meta-row" style="--i:${rows.length}"><div class="k">Map</div><div class="v"><a class="meta-map" target="_blank" rel="noopener" href="https://maps.google.com/?q=${gps.lat},${gps.lon}">Open in Maps ↗</a></div></div>`;
   }
-
-  return `
-  <div class="section" style="animation-delay:${sectionIndex * 80}ms">
-    <div class="section-title"><span class="dot ${dotClass}"></span>${escapeHtml(title)}</div>
-    <div class="glass card">${rowsHtml}</div>
+  const dotColor = { key:'var(--cyan)', cam:'var(--lime)', geo:'var(--pink)', img:'var(--amber)', other:'var(--violet)' }[dotClass];
+  return `<div class="meta-section" style="animation-delay:${sectionIndex*80}ms">
+    <div class="meta-title"><span class="meta-dot" style="background:${dotColor}; color:${dotColor}"></span>${metaEscape(title)}</div>
+    <div class="meta-card glass">${rowsHtml}</div>
   </div>`;
-}
-
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 </script>
 </body>
