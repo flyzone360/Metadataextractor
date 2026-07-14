@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Toolkit — by Raj_op_360</title>
+<title>One Tool Space — Every Tool, One Place | by Raj_op_360</title>
+<meta name="description" content="One Tool Space: a free, private, all-in-one toolkit for photo metadata, PDF conversion, image editing, steganography, encryption, QR codes, and more — everything runs on your own device, nothing is ever uploaded.">
+<meta name="keywords" content="online toolkit, image to pdf, pdf to ppt, photo metadata viewer, exif viewer, qr code generator, file converter online, crop resize image, password protect file, steganography tool, one tool space">
+<meta property="og:title" content="One Tool Space — Every Tool, One Place">
+<meta property="og:description" content="Free, private, all-in-one browser toolkit: PDF converters, photo metadata, image editing, encryption, QR codes and more — 100% on-device.">
+<meta property="og:type" content="website">
 <style>
   :root{
     --violet:#7C5CFF; --pink:#FF5CAC; --cyan:#33D6FF; --amber:#FFB454; --lime:#8CFF7C;
@@ -33,13 +38,22 @@
   .wrap{max-width:560px; margin:0 auto; position:relative; z-index:2;}
 
   .header{text-align:center; margin-bottom:16px; animation:dropIn .6s cubic-bezier(.2,1,.3,1);}
-  .header h1{
-    font-size:34px; font-weight:800; letter-spacing:-0.03em; margin:0 0 6px;
-    background:linear-gradient(100deg,#fff 20%, var(--cyan) 45%, var(--violet) 65%, var(--pink) 85%);
-    background-size:250% auto; -webkit-background-clip:text; background-clip:text; color:transparent;
-    animation:shimmer 6s linear infinite;
+  .brand-mark{
+    width:52px; height:52px; border-radius:16px; margin:0 auto 12px;
+    background:linear-gradient(155deg,#8B6BFF 0%, #6B4CFF 45%, #FF5CAC 100%);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 24px rgba(124,92,255,0.4), inset 0 1px 1px rgba(255,255,255,0.5), inset 0 -5px 10px rgba(0,0,0,0.2);
+    animation:iconBreathe 5s ease-in-out infinite;
   }
-  .header p{margin:0; color:var(--sub); font-size:14.5px; font-weight:500;}
+  .brand-mark svg{width:24px; height:24px;}
+  .header h1{
+    font-size:30px; font-weight:800; letter-spacing:-0.035em; margin:0 0 5px;
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    background:linear-gradient(100deg,#fff 15%, var(--cyan) 42%, var(--violet) 62%, var(--pink) 88%);
+    background-size:250% auto; -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:shimmer 7s linear infinite;
+  }
+  .header p{margin:0; color:var(--sub); font-size:13.5px; font-weight:500; letter-spacing:0.01em;}
   @keyframes shimmer{to{background-position:250% center;}}
   @keyframes dropIn{from{opacity:0; transform:translateY(-14px) scale(.98);} to{opacity:1; transform:translateY(0) scale(1);}}
 
@@ -243,11 +257,82 @@
   .load-label{font-size:12.5px; color:var(--sub2); font-weight:600; margin-top:2px;}
   .load-bar-track{width:200px; height:5px; border-radius:3px; background:rgba(255,255,255,0.08); margin-top:16px; overflow:hidden;}
   .load-bar-fill{height:100%; width:0%; border-radius:3px; background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink)); transition:width .3s ease;}
+
+  .seo-block{margin-top:22px; padding:0 6px;}
+  .seo-block h2{font-size:12px; font-weight:800; color:var(--sub2); text-transform:uppercase; letter-spacing:0.05em; margin:0 0 8px;}
+  .seo-block p{font-size:11px; color:var(--sub2); line-height:1.7; margin:0;}
+  .seo-block b{color:var(--sub); font-weight:600;}
+
+  /* ---- support strip (typewriter text + brand line + support button) ---- */
+  .support-strip{display:flex; align-items:center; gap:10px; margin-bottom:16px; animation:dropIn .6s cubic-bezier(.2,1,.3,1) .05s both;}
+  .wave-text{
+    flex:1; min-width:0; overflow:hidden; white-space:nowrap; text-align:right;
+    color:#fff; -webkit-text-stroke:0.6px #000; text-stroke:0.6px #000;
+    text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;
+    font-weight:800; font-size:13.5px; letter-spacing:0.01em;
+  }
+  .wave-text::after{content:'|'; margin-left:2px; animation:blinkCursor 0.9s step-end infinite;}
+  @keyframes blinkCursor{0%,100%{opacity:1;} 50%{opacity:0;}}
+  .brand-line{flex:none; width:34px; height:2px; border-radius:2px;
+    background:linear-gradient(90deg, transparent, var(--violet), var(--cyan), var(--pink), transparent);
+    background-size:200% auto; animation:brandLineMove 4s ease-in-out infinite;
+    box-shadow:0 0 8px rgba(124,92,255,0.5);}
+  @keyframes brandLineMove{0%,100%{background-position:0% 0;} 50%{background-position:100% 0;}}
+  .support-btn{flex:none; padding:10px 16px; border:none; border-radius:14px;
+    background:linear-gradient(120deg,#FF5CAC,#7C5CFF); color:#fff; font-weight:800; font-size:12.5px; cursor:pointer;
+    box-shadow:0 6px 18px rgba(255,92,172,0.35); display:flex; align-items:center; gap:6px; transition:transform .2s ease;}
+  .support-btn:active{transform:scale(0.94);}
+
+  /* ---- support modal ---- */
+  .modal-backdrop{position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.6); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+    display:none; align-items:center; justify-content:center; padding:20px;}
+  .modal-backdrop.show{display:flex; animation:fadeUp .25s ease;}
+  .modal-card{max-width:380px; width:100%; padding:26px 22px; position:relative; animation:popIn .35s cubic-bezier(.2,1.4,.4,1);}
+  .modal-close{position:absolute; top:14px; right:14px; width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.1);
+    display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:13px; color:var(--sub);}
+
+  /* ---- search bar ---- */
+  .search-bar{display:flex; align-items:center; gap:10px; padding:12px 16px; margin-bottom:16px; animation:dropIn .6s cubic-bezier(.2,1,.3,1) .07s both;}
+  .search-bar svg{width:18px; height:18px; stroke:var(--sub2); flex:none;}
+  .search-bar input{flex:1; background:none; border:none; outline:none; color:var(--text); font-size:14px; font-family:inherit;}
+  .search-bar input::placeholder{color:var(--sub2);}
+
+  /* ---- favorite star ---- */
+  .tool-card{position:relative;}
+  .fav-star{position:absolute; top:8px; right:8px; width:22px; height:22px; border-radius:50%; background:rgba(0,0,0,0.25);
+    display:flex; align-items:center; justify-content:center; font-size:12px; color:rgba(255,255,255,0.35); cursor:pointer; z-index:2; transition:transform .15s ease;}
+  .fav-star.active{color:#FFD65C;}
+  .fav-star:active{transform:scale(0.85);}
+  .tool-section{margin-bottom:6px;}
+
+  /* ---- jump-to-section nav menu ---- */
+  .nav-menu-btn{
+    position:fixed; top:18px; right:16px; z-index:400;
+    width:42px; height:42px; border-radius:14px;
+    background:rgba(255,255,255,0.08); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px);
+    border:1px solid var(--glass-brd);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.3);
+  }
+  .nav-menu-btn svg{width:19px; height:19px; stroke:var(--text);}
+  .nav-menu-btn:active{transform:scale(0.92);}
+  .nav-menu-backdrop{
+    position:fixed; inset:0; z-index:399; background:rgba(0,0,0,0.5);
+    display:none; align-items:flex-start; justify-content:flex-end;
+    padding:66px 16px 0 0;
+  }
+  .nav-menu-backdrop.show{display:flex; animation:fadeUp .2s ease;}
+  .nav-menu-panel{width:220px; max-height:72vh; overflow-y:auto; padding:8px;}
+  .nav-item{
+    padding:12px 14px; border-radius:12px; font-size:13.5px; font-weight:700; color:var(--text);
+    cursor:pointer; transition:background .15s ease;
+  }
+  .nav-item:active{background:rgba(255,255,255,0.1);}
 </style>
 </head>
 <body>
 <div id="loadingScreen">
-  <div class="load-brand">Toolkit</div>
+  <div class="load-brand">One Tool Space</div>
   <div class="chute-sky">
     <div class="chute-track"></div>
     <div class="parachute" id="parachute">🪂</div>
@@ -265,7 +350,8 @@
     'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js',
     'https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js',
     'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js',
-    'https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js'
+    'https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js',
+    'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js'
   ];
   var total = SCRIPTS.length, loaded = 0;
   var parachute = document.getElementById('parachute');
@@ -303,13 +389,29 @@
 })();
 </script>
 <div class="mesh"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div></div>
+
+<button class="nav-menu-btn" id="navMenuBtn" aria-label="Jump to section">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+</button>
+<div class="nav-menu-backdrop" id="navMenuBackdrop">
+  <div class="nav-menu-panel glass" id="navMenuPanel"></div>
+</div>
 <div class="grain"></div>
 
 <div class="wrap">
 
   <div class="header">
-    <h1>Toolkit</h1>
-    <p>Metadata, PDFs, slides & photos — all in one place</p>
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    </div>
+    <h1>One Tool Space</h1>
+    <p>Every tool, one place — nowhere else to go</p>
+  </div>
+
+  <div class="support-strip">
+    <div class="wave-text" id="waveText"></div>
+    <div class="brand-line"></div>
+    <button class="support-btn" id="supportBtn">❤️ Support</button>
   </div>
 
   <div class="glass privacy" id="privacy">
@@ -337,117 +439,13 @@
     All tools
   </div>
 
-  <div id="toolGridWrap">
-    <div class="section-label">Analyze</div>
-    <div class="tool-grid" style="margin-bottom:6px;">
-      <div class="glass tool-card wide" data-tool="metadata">
-        <div class="ic" style="background:linear-gradient(155deg,#8B6BFF,#33D6FF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div>
-        <h4>Photo Metadata</h4>
-        <p>See every EXIF/GPS/camera detail hidden in a photo</p>
-      </div>
-      <div class="glass tool-card" data-tool="stego">
-        <div class="ic" style="background:linear-gradient(155deg,#050611,#7C5CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0z"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div>
-        <h4>Secret Message in Photo</h4>
-        <p>Hide invisible text inside an image, or reveal one already hidden</p>
-      </div>
-      <div class="glass tool-card" data-tool="ela">
-        <div class="ic" style="background:linear-gradient(155deg,#FF9F5C,#FFD65C)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2a9 9 0 1 0 9 9h-9V2z"/><path d="M14 2.4A9 9 0 0 1 20.6 9H14V2.4z"/></svg></div>
-        <h4>Edit Detector</h4>
-        <p>See if a photo was likely edited or photoshopped</p>
-      </div>
-      <div class="glass tool-card wide" data-tool="jpegquality">
-        <div class="ic" style="background:linear-gradient(155deg,#33D6FF,#B48CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-6 3 4 5-8"/></svg></div>
-        <h4>JPEG Quality Detector</h4>
-        <p>Read a photo's hidden compression data to estimate its original save quality</p>
-      </div>
-    </div>
-
-    <div class="section-label">Images</div>
-    <div class="tool-grid" style="margin-bottom:6px;">
-      <div class="glass tool-card" data-tool="img2pdf">
-        <div class="ic" style="background:linear-gradient(155deg,#33D6FF,#7C5CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div>
-        <h4>Images → PDF</h4>
-        <p>Combine JPG/PNG into one PDF</p>
-      </div>
-      <div class="glass tool-card" data-tool="imgedit">
-        <div class="ic" style="background:linear-gradient(155deg,#FF5CAC,#B48CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg></div>
-        <h4>Crop, Resize & Compress</h4>
-        <p>Crop, resize, target a file size, change format</p>
-      </div>
-      <div class="glass tool-card wide" data-tool="colorblind">
-        <div class="ic" style="background:linear-gradient(155deg,#FF5CAC,#33D6FF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18"/></svg></div>
-        <h4>Color Blindness Simulator</h4>
-        <p>See exactly how a photo looks to colorblind eyes</p>
-      </div>
-    </div>
-
-    <div class="section-label">PDF</div>
-    <div class="tool-grid" style="margin-bottom:6px;">
-      <div class="glass tool-card" data-tool="pdf2img">
-        <div class="ic" style="background:linear-gradient(155deg,#FFD65C,#FF9F5C)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="10" cy="13" r="1.5"/><path d="M8 18l3-3 2 2 3-4 2 3"/></svg></div>
-        <h4>PDF → Images</h4>
-        <p>Export pages as JPG/PNG</p>
-      </div>
-      <div class="glass tool-card" data-tool="pdfmerge">
-        <div class="ic" style="background:linear-gradient(155deg,#B48CFF,#7C5CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h5l5 5v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M13 2v5h5"/><path d="M9 15h6M9 12h6"/></svg></div>
-        <h4>Merge PDFs</h4>
-        <p>Join multiple PDFs into one</p>
-      </div>
-      <div class="glass tool-card" data-tool="pdfsplit">
-        <div class="ic" style="background:linear-gradient(155deg,#8CFF7C,#33D6FF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7v16H4z"/><path d="M13 4h7v16h-7z" stroke-dasharray="3 3"/></svg></div>
-        <h4>Split PDF</h4>
-        <p>Pull out a page range as a new PDF</p>
-      </div>
-      <div class="glass tool-card" data-tool="pdfrotate">
-        <div class="ic" style="background:linear-gradient(155deg,#FF9F5C,#FFD65C)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
-        <h4>Rotate PDF</h4>
-        <p>Rotate every page 90°/180°</p>
-      </div>
-    </div>
-
-    <div class="section-label">Slides</div>
-    <div class="tool-grid" style="margin-bottom:6px;">
-      <div class="glass tool-card" data-tool="pdf2ppt">
-        <div class="ic" style="background:linear-gradient(155deg,#FF9F5C,#FF5CAC)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
-        <h4>PDF → PPT</h4>
-        <p>Every page becomes a slide</p>
-      </div>
-      <div class="glass tool-card" data-tool="ppt2pdf">
-        <div class="ic" style="background:linear-gradient(155deg,#33D6FF,#8CFF7C)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
-        <h4>PPT → PDF</h4>
-        <p>Flatten a deck into a PDF</p>
-      </div>
-    </div>
-
-    <div class="section-label">Utilities</div>
-    <div class="tool-grid">
-      <div class="glass tool-card" data-tool="qrgen">
-        <div class="ic" style="background:linear-gradient(155deg,#050611,#33D6FF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 21h3M21 14v3"/></svg></div>
-        <h4>QR Code Generator</h4>
-        <p>Turn any text or link into a QR code</p>
-      </div>
-      <div class="glass tool-card" data-tool="palette">
-        <div class="ic" style="background:linear-gradient(155deg,#FF5CAC,#FFB454)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="8.5" cy="10.5" r="1.2" fill="currentColor"/><circle cx="12" cy="8" r="1.2" fill="currentColor"/><circle cx="15.5" cy="10.5" r="1.2" fill="currentColor"/><circle cx="10.5" cy="14.5" r="1.2" fill="currentColor"/></svg></div>
-        <h4>Color Palette</h4>
-        <p>Pull the dominant colors out of a photo</p>
-      </div>
-      <div class="glass tool-card" data-tool="hashcheck">
-        <div class="ic" style="background:linear-gradient(155deg,#8CFF7C,#7C5CFF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-        <h4>File Checksum</h4>
-        <p>Verify a file's SHA-256 / SHA-1 hash</p>
-      </div>
-      <div class="glass tool-card wide" data-tool="wordcount">
-        <div class="ic" style="background:linear-gradient(155deg,#FFD65C,#33D6FF)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
-        <h4>Word Counter</h4>
-        <p>Words, characters & reading time — paste text or upload a PDF/TXT</p>
-      </div>
-      <div class="glass tool-card wide" data-tool="filecrypt">
-        <div class="ic" style="background:linear-gradient(155deg,#7C5CFF,#050611)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></div>
-        <h4>Password-Protect a File</h4>
-        <p>Lock any file with a password — real AES encryption, fully offline</p>
-      </div>
-    </div>
+  <div class="glass search-bar" id="searchBar">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input type="text" id="searchInput" placeholder="Search 30+ tools…" autocomplete="off">
   </div>
+
+  <div id="toolGridWrap"></div>
+
 
   <div class="panel" id="panel">
     <div class="panel-title">
@@ -489,7 +487,37 @@
   </div>
 
   <div class="footer">Developer: <b>@Raj_op_360</b></div>
+
+  <div class="modal-backdrop" id="supportBackdrop">
+    <div class="modal-card glass" id="supportModal">
+      <div class="modal-close" id="supportClose">✕</div>
+      <div style="font-size:34px; text-align:center; margin-bottom:8px;">❤️</div>
+      <h3 style="text-align:center; margin:0 0 12px; font-size:19px; font-weight:800;">Support Development</h3>
+      <p style="font-size:13px; color:var(--sub); line-height:1.7; margin:0 0 10px;">This project has no ads, no account system, and no server processing — everything you've used runs for free, straight from your browser.</p>
+      <p style="font-size:13px; color:var(--sub); line-height:1.7; margin:0 0 20px;">If these tools saved you time, any support helps <b style="color:var(--text)">renew the domain</b>, funds <b style="color:var(--text)">building more tools</b>, and keeps One Tool Space ad-free, account-free, and private — forever.</p>
+      <a href="https://razorpay.me/@dopemy" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none; display:block; text-align:center; box-sizing:border-box;">I want to support bro ❤️</a>
+    </div>
+  </div>
+
+  <div class="seo-block">
+    <h2>One Tool Space — every tool, one place</h2>
+    <p>One Tool Space is a free, all-in-one online toolkit that runs entirely inside your browser — no signup, no server, no uploads. Use it as a <b>photo metadata viewer</b> to see hidden EXIF and GPS data, an <b>image to PDF converter</b> and <b>PDF to image converter</b>, a <b>PDF to PPT</b> and <b>PPT to PDF converter</b>, a tool to <b>merge, split, and rotate PDFs</b>, a <b>crop and resize image tool</b> with compression down to a target file size, a <b>QR code generator and scanner</b>, a <b>steganography tool</b> to hide or reveal secret messages inside photos, a photo <b>edit detector</b> and <b>JPEG quality checker</b>, a <b>color blindness simulator</b>, and a way to <b>password-protect any file</b> with real AES-256 encryption — all for free, all on-device, all in one place.</p>
+  </div>
 </div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "One Tool Space",
+  "url": "https://onetoolspace.example.com/",
+  "applicationCategory": "Utility",
+  "operatingSystem": "Any (runs in browser)",
+  "description": "A free, private, all-in-one browser toolkit for photo metadata, PDF conversion, image editing, steganography, encryption, QR codes and more — everything runs on-device, nothing is uploaded to a server.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Raj_op_360" }
+}
+</script>
 
 <div class="toast" id="toast">📂 Saved — check your Downloads folder</div>
 
@@ -523,6 +551,7 @@ const els = {
   anotherBtn: document.getElementById('anotherBtn'),
   toolNote: document.getElementById('toolNote'),
   toast: document.getElementById('toast'),
+  searchInput: document.getElementById('searchInput'),
 };
 
 els.privacyHead.addEventListener('click', () => els.privacy.classList.toggle('open'));
@@ -538,6 +567,98 @@ function humanSize(bytes){
   if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
   return (bytes/(1024*1024)).toFixed(2) + ' MB';
 }
+const TA_STYLE = 'width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:12px; padding:12px; color:var(--text); font-size:14px; font-family:inherit; resize:vertical;';
+const copyRegistry = [];
+function pushCopy(v){ copyRegistry.push(v); return copyRegistry.length - 1; }
+function copyRow(k, v){
+  const idx = pushCopy(v);
+  return `<div class="meta-row" style="--i:0"><div class="k">${metaEscape(k)}</div><div class="v" style="display:flex; align-items:center; gap:8px; justify-content:flex-end;"><span style="word-break:break-word;">${metaEscape(v)}</span><span class="copy-btn" data-idx="${idx}" style="background:rgba(255,255,255,0.1); border-radius:6px; padding:4px 8px; font-size:10px; color:var(--cyan); cursor:pointer; flex:none;">Copy</span></div></div>`;
+}
+function copyToClipboard(text){
+  return new Promise((resolve, reject) => {
+    if(navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext){
+      navigator.clipboard.writeText(text).then(resolve).catch(() => fallbackCopy(text, resolve, reject));
+    } else {
+      fallbackCopy(text, resolve, reject);
+    }
+  });
+}
+function fallbackCopy(text, resolve, reject){
+  try{
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed; left:-9999px; top:0; opacity:0;';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    ok ? resolve() : reject(new Error('execCommand failed'));
+  }catch(e){ reject(e); }
+}
+document.addEventListener('click', function(e){
+  if(e.target && e.target.classList && e.target.classList.contains('copy-btn')){
+    const idx = +e.target.getAttribute('data-idx');
+    const text = copyRegistry[idx];
+    if(text != null){
+      const btn = e.target;
+      const orig = btn.textContent;
+      copyToClipboard(String(text)).then(function(){
+        btn.textContent = 'Copied!';
+        setTimeout(function(){ btn.textContent = orig; }, 1200);
+      }).catch(function(){
+        btn.textContent = "Couldn't copy";
+        setTimeout(function(){ btn.textContent = orig; }, 1500);
+      });
+    }
+  }
+});
+
+// ---------------- typewriter phrase cycle ----------------
+(function(){
+  const phrases = ['No Login','No Ads','No Account','No Uploads','Everything Offline','No Data Saved','We Need Support'];
+  const el = document.getElementById('waveText');
+  if(!el) return;
+  let phraseIdx = 0;
+
+  function typeCycle(){
+    const phrase = phrases[phraseIdx];
+    let i = 0;
+    el.textContent = '';
+    const typeTimer = setInterval(() => {
+      i++;
+      el.textContent = phrase.slice(0, i);
+      if(i >= phrase.length){
+        clearInterval(typeTimer);
+        setTimeout(eraseCycle, 1000);
+      }
+    }, 60);
+  }
+  function eraseCycle(){
+    const phrase = phrases[phraseIdx];
+    let j = phrase.length;
+    const eraseTimer = setInterval(() => {
+      j--;
+      el.textContent = phrase.slice(0, j);
+      if(j <= 0){
+        clearInterval(eraseTimer);
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+        setTimeout(typeCycle, 250);
+      }
+    }, 32);
+  }
+  typeCycle();
+})();
+
+// ---------------- support modal ----------------
+(function(){
+  const btn = document.getElementById('supportBtn');
+  const backdrop = document.getElementById('supportBackdrop');
+  const closeBtn = document.getElementById('supportClose');
+  if(!btn || !backdrop) return;
+  btn.addEventListener('click', () => backdrop.classList.add('show'));
+  closeBtn.addEventListener('click', () => backdrop.classList.remove('show'));
+  backdrop.addEventListener('click', (e) => { if(e.target === backdrop) backdrop.classList.remove('show'); });
+})();
 
 // ---------------- icons ----------------
 const ICONS = {
@@ -559,6 +680,18 @@ const ICONS = {
   jpegquality:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-6 3 4 5-8"/></svg>',
   colorblind:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18"/></svg>',
   filecrypt:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg>',
+  qrscan:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V4a1 1 0 0 1 1-1h3M3 17v3a1 1 0 0 0 1 1h3M21 7V4a1 1 0 0 0-1-1h-3M21 17v3a1 1 0 0 1-1 1h-3"/><path d="M7 12h10"/></svg>',
+  casetext:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4h6a4 4 0 0 1 0 8H4M10 12h6a4 4 0 0 1 0 8H4"/></svg>',
+  encodetext:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>',
+  jsonfmt:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2M16 3h2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2"/></svg>',
+  diff:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg>',
+  pwgen:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-9.6 9.6M15.5 7.5l3 3L22 7l-3-3M8 15a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg>',
+  pwstrength:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  agecalc:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+  emicalc:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>',
+  unitconv:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7l8.7 5 8.7-5M12 22V12"/></svg>',
+  imgb64:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><path d="M15 5h6M15 9h6M13 15h8M13 19h8"/></svg>',
+  favicon:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3"/></svg>',
 };
 const ICON_BG = {
   metadata:'linear-gradient(155deg,#8B6BFF,#33D6FF)', img2pdf:'linear-gradient(155deg,#33D6FF,#7C5CFF)',
@@ -570,7 +703,13 @@ const ICON_BG = {
   hashcheck:'linear-gradient(155deg,#8CFF7C,#7C5CFF)', wordcount:'linear-gradient(155deg,#FFD65C,#33D6FF)',
   stego:'linear-gradient(155deg,#050611,#7C5CFF)', ela:'linear-gradient(155deg,#FF9F5C,#FFD65C)',
   jpegquality:'linear-gradient(155deg,#33D6FF,#B48CFF)', colorblind:'linear-gradient(155deg,#FF5CAC,#33D6FF)',
-  filecrypt:'linear-gradient(155deg,#7C5CFF,#050611)',
+  filecrypt:'linear-gradient(155deg,#7C5CFF,#050611)', qrscan:'linear-gradient(155deg,#050611,#8CFF7C)',
+  casetext:'linear-gradient(155deg,#FFD65C,#FF9F5C)', encodetext:'linear-gradient(155deg,#33D6FF,#7C5CFF)',
+  jsonfmt:'linear-gradient(155deg,#8CFF7C,#33D6FF)', diff:'linear-gradient(155deg,#FF5CAC,#FFB454)',
+  pwgen:'linear-gradient(155deg,#7C5CFF,#FF5CAC)', pwstrength:'linear-gradient(155deg,#FFB454,#FF5CAC)',
+  agecalc:'linear-gradient(155deg,#33D6FF,#8CFF7C)', emicalc:'linear-gradient(155deg,#8CFF7C,#FFD65C)',
+  unitconv:'linear-gradient(155deg,#B48CFF,#33D6FF)', imgb64:'linear-gradient(155deg,#FF9F5C,#7C5CFF)',
+  favicon:'linear-gradient(155deg,#33D6FF,#FFD65C)',
 };
 
 // ---------------- tool config ----------------
@@ -724,22 +863,232 @@ const TOOLS = {
       const o = state.opts.filecrypt;
       return state.files.length > 0 && o && (o.password||'').length > 0;
     },
+    onError: (e) => {
+      if(state.opts.filecrypt) state.opts.filecrypt.password = '';
+      els.dropzone.style.display = 'none';
+      els.fileChips.style.display = '';
+      els.opts.style.display = '';
+      renderFileCryptOptions(els.opts);
+      const errBox = document.createElement('div');
+      errBox.style.cssText = 'color:#FF5CAC; font-size:12.5px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;';
+      errBox.textContent = '⚠ ' + ((e && e.message) || 'Something went wrong — try again.');
+      els.opts.insertBefore(errBox, els.opts.firstChild);
+      els.opts.classList.add('show');
+      els.convertBtn.style.display = '';
+      els.convertBtn.textContent = 'Try again';
+      refreshConvertEnabled();
+    },
+  },
+  qrscan: {
+    title:'QR Code Scanner', subtitle:'Decode a QR code from any photo',
+    accept:'image/*', multiple:false, isReport:true, actionLabel:'Scan QR Code',
+    dzTitle:'Tap to choose a photo with a QR code', dzSub:'or drag & drop it here',
+    note:'Works fully offline — the photo never leaves your device.',
+    convert: convertQrScan,
+  },
+  casetext: {
+    title:'Text Case Converter', subtitle:'Every text case format at once',
+    noFile:true, isReport:true, actionLabel:'Convert Case',
+    note:'Everything is computed locally — nothing you type leaves your device.',
+    renderOptions: renderCaseOptions, convert: convertCaseText,
+    enableCheck: () => (state.opts.casetext && state.opts.casetext.text || '').trim().length > 0,
+  },
+  encodetext: {
+    title:'Encode / Decode Text', subtitle:'Base64, URL, and HTML entities',
+    noFile:true, isReport:true, actionLabel:'Run',
+    note:'Everything is computed locally — nothing you type leaves your device.',
+    renderOptions: renderEncodeOptions, convert: convertEncodeText,
+    enableCheck: () => (state.opts.encodetext && state.opts.encodetext.text || '').trim().length > 0,
+  },
+  jsonfmt: {
+    title:'JSON Formatter', subtitle:'Validate, pretty-print & minify JSON',
+    noFile:true, isReport:true, actionLabel:'Format',
+    note:'Everything is computed locally — nothing you paste leaves your device.',
+    renderOptions: renderJsonOptions, convert: convertJsonFmt,
+    enableCheck: () => (state.opts.jsonfmt && state.opts.jsonfmt.text || '').trim().length > 0,
+  },
+  diff: {
+    title:'Text Diff Checker', subtitle:'See exactly what changed between two texts',
+    noFile:true, isReport:true, actionLabel:'Compare',
+    note:'Everything is computed locally — nothing you paste leaves your device.',
+    renderOptions: renderDiffOptions, convert: convertDiff,
+    enableCheck: () => {
+      const o = state.opts.diff;
+      return !!(o && (o.a || o.b));
+    },
+  },
+  pwgen: {
+    title:'Password Generator', subtitle:'Strong, random, cryptographically secure',
+    noFile:true, isReport:true, actionLabel:'Generate',
+    note:'Uses your browser\'s built-in secure random generator — never stored or sent anywhere.',
+    renderOptions: renderPwGenOptions, convert: convertPwGen,
+    enableCheck: () => true,
+  },
+  pwstrength: {
+    title:'Password Strength Checker', subtitle:'Entropy & estimated crack time',
+    noFile:true, isReport:true, actionLabel:'Check Strength',
+    renderOptions: renderPwStrengthOptions, convert: convertPwStrength,
+    enableCheck: () => (state.opts.pwstrength && state.opts.pwstrength.text || '').length > 0,
+  },
+  agecalc: {
+    title:'Age Calculator', subtitle:'Exact age, total days lived & next birthday',
+    noFile:true, isReport:true, actionLabel:'Calculate Age',
+    renderOptions: renderAgeOptions, convert: convertAge,
+    enableCheck: () => !!(state.opts.agecalc && state.opts.agecalc.dob),
+  },
+  emicalc: {
+    title:'EMI / Loan Calculator', subtitle:'Monthly payment, interest & total cost',
+    noFile:true, isReport:true, actionLabel:'Calculate EMI',
+    renderOptions: renderEmiOptions, convert: convertEmi,
+    enableCheck: () => true,
+  },
+  unitconv: {
+    title:'Unit Converter', subtitle:'Length, weight & temperature',
+    noFile:true, isReport:true, actionLabel:'Convert Units',
+    renderOptions: renderUnitOptions, convert: convertUnit,
+    enableCheck: () => true,
+  },
+  imgb64: {
+    title:'Image ↔ Base64', subtitle:'Convert a photo to text and back',
+    accept:'image/*', multiple:false, alwaysShowOptions:true, actionLabel:'Run',
+    dzTitle:'Tap to choose a photo', dzSub:'only needed for Image → Base64 mode',
+    renderOptions: renderImgB64Options, convert: convertImgB64,
+    enableCheck: () => {
+      const o = state.opts.imgb64;
+      if(!o) return false;
+      return o.mode==='img2b64' ? state.files.length>0 : (o.text||'').trim().length>0;
+    },
+  },
+  favicon: {
+    title:'Favicon Generator', subtitle:'One photo → a full favicon pack',
+    accept:'image/*', multiple:false,
+    dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
+    note:'Generates 16, 32, 48, 180, 192 and 512px PNGs, zipped together.',
+    convert: convertFavicon,
   },
 };
 
+// ---------------- data-driven tool grid (categories, favorites, recently used) ----------------
+const CATEGORIES = [
+  { label:'⭐ Quick Actions', keys:['img2pdf','pdf2img','metadata','imgedit','pdfmerge','qrscan'] },
+  { label:'🔥 Most Popular', keys:['img2pdf','pdf2ppt','metadata','pwgen','qrgen','agecalc'] },
+  { label:'📷 Images', keys:['img2pdf','imgedit','metadata','stego','ela','jpegquality','colorblind','imgb64','palette','favicon'] },
+  { label:'📄 PDF', keys:['pdfmerge','pdfsplit','pdfrotate','pdf2img','pdf2ppt','ppt2pdf'] },
+  { label:'🧾 Text & Code', keys:['casetext','jsonfmt','encodetext','diff','pwgen','pwstrength','hashcheck'] },
+  { label:'🧮 Calculators', keys:['agecalc','emicalc','unitconv'] },
+  { label:'🔧 Utilities', keys:['qrgen','qrscan','wordcount','filecrypt'] },
+];
+function getFavorites(){ try{ return JSON.parse(localStorage.getItem('ots_favorites')||'[]'); }catch(e){ return []; } }
+function toggleFavorite(key){
+  let favs = getFavorites();
+  favs = favs.includes(key) ? favs.filter(k=>k!==key) : favs.concat([key]);
+  try{ localStorage.setItem('ots_favorites', JSON.stringify(favs)); }catch(e){}
+}
+function getRecents(){ try{ return JSON.parse(localStorage.getItem('ots_recents')||'[]'); }catch(e){ return []; } }
+function pushRecent(key){
+  let r = getRecents().filter(k=>k!==key);
+  r.unshift(key);
+  try{ localStorage.setItem('ots_recents', JSON.stringify(r.slice(0,6))); }catch(e){}
+}
+function renderToolCard(key){
+  const t = TOOLS[key];
+  if(!t) return '';
+  const isFav = getFavorites().includes(key);
+  return `<div class="glass tool-card" data-tool="${key}">
+    <div class="fav-star ${isFav?'active':''}" data-fav="${key}">★</div>
+    <div class="ic" style="background:${ICON_BG[key]}">${ICONS[key]}</div>
+    <h4>${metaEscape(t.title)}</h4>
+    <p>${metaEscape(t.subtitle)}</p>
+  </div>`;
+}
+function slugify(label){ return 'sec-' + label.replace(/[^\w]+/g,'-').toLowerCase().replace(/^-+|-+$/g,''); }
+function renderCategory(label, keys){
+  if(!keys || !keys.length) return '';
+  return `<div class="tool-section" id="${slugify(label)}"><div class="section-label">${metaEscape(label)}</div><div class="tool-grid">${keys.map(renderToolCard).join('')}</div></div>`;
+}
+function renderAllGrids(){
+  let html = '';
+  const favs = getFavorites(), recents = getRecents().filter(k => TOOLS[k]);
+  if(favs.length) html += renderCategory('⭐ My Favorites', favs);
+  if(recents.length) html += renderCategory('🕐 Recently Used', recents);
+  CATEGORIES.forEach(c => { html += renderCategory(c.label, c.keys); });
+  els.toolGridWrap.innerHTML = html;
+  attachCardListeners();
+  applySearchFilter();
+}
+function attachCardListeners(){
+  els.toolGridWrap.querySelectorAll('.tool-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if(e.target.classList.contains('fav-star')) return;
+      selectTool(card.dataset.tool);
+    });
+  });
+  els.toolGridWrap.querySelectorAll('.fav-star').forEach(star => {
+    star.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFavorite(star.getAttribute('data-fav'));
+      renderAllGrids();
+    });
+  });
+}
+function applySearchFilter(){
+  const q = (els.searchInput && els.searchInput.value || '').trim().toLowerCase();
+  els.toolGridWrap.querySelectorAll('.tool-section').forEach(section => {
+    let anyVisible = false;
+    section.querySelectorAll('.tool-card').forEach(card => {
+      const match = !q || card.textContent.toLowerCase().includes(q);
+      card.style.display = match ? '' : 'none';
+      if(match) anyVisible = true;
+    });
+    section.style.display = anyVisible ? '' : 'none';
+  });
+}
+if(els.searchInput) els.searchInput.addEventListener('input', applySearchFilter);
+renderAllGrids();
+
+// ---------------- jump-to-section nav menu ----------------
+(function(){
+  const btn = document.getElementById('navMenuBtn');
+  const backdrop = document.getElementById('navMenuBackdrop');
+  const panel = document.getElementById('navMenuPanel');
+  if(!btn || !backdrop || !panel) return;
+
+  let html = `<div class="nav-item" data-target="privacy">🔏 Privacy</div>`;
+  CATEGORIES.forEach(c => { html += `<div class="nav-item" data-target="${slugify(c.label)}">${c.label}</div>`; });
+  html += `<div class="nav-item" data-target="__support">❤️ Support</div>`;
+  panel.innerHTML = html;
+
+  panel.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      backdrop.classList.remove('show');
+      const target = item.dataset.target;
+      if(target === '__support'){ setTimeout(() => document.getElementById('supportBtn').click(), 150); return; }
+      const wasInPanel = !!state.tool;
+      if(wasInPanel) els.backPill.click();
+      setTimeout(() => {
+        const el = document.getElementById(target);
+        if(el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+      }, wasInPanel ? 200 : 0);
+    });
+  });
+
+  btn.addEventListener('click', () => backdrop.classList.toggle('show'));
+  backdrop.addEventListener('click', (e) => { if(e.target === backdrop) backdrop.classList.remove('show'); });
+})();
+
 // ---------------- tool selection ----------------
-document.querySelectorAll('.tool-card').forEach(card => {
-  card.addEventListener('click', () => selectTool(card.dataset.tool));
-});
 els.backPill.addEventListener('click', () => {
   state.tool = null;
   els.toolGridWrap.style.display = '';
+  document.getElementById('searchBar').style.display = '';
   els.backPill.classList.remove('show');
   els.panel.classList.remove('show');
+  renderAllGrids();
   window.scrollTo({top:0, behavior:'smooth'});
 });
 
 function selectTool(key){
+  pushRecent(key);
   state.tool = key;
   state.files = [];
   state.resultBlob = null;
@@ -768,7 +1117,7 @@ function selectTool(key){
   els.opts.innerHTML = '';
   els.opts.classList.remove('show');
   els.convertBtn.disabled = true;
-  els.convertBtn.textContent = cfg.isReport ? (cfg.noFile ? 'Calculate' : 'Extract Metadata') : 'Convert';
+  els.convertBtn.textContent = cfg.actionLabel || (cfg.isReport ? (cfg.noFile ? 'Calculate' : 'Extract Metadata') : 'Convert');
   els.progressWrap.classList.remove('show');
   els.metaResults.innerHTML = '';
   els.metaResults.classList.remove('show');
@@ -790,6 +1139,7 @@ function selectTool(key){
   refreshConvertEnabled();
 
   els.toolGridWrap.style.display = 'none';
+  document.getElementById('searchBar').style.display = 'none';
   els.backPill.classList.add('show');
   els.panel.classList.add('show');
   window.scrollTo({top:0, behavior:'smooth'});
@@ -860,7 +1210,8 @@ function refreshOptions(){
 // ---------------- convert ----------------
 els.convertBtn.addEventListener('click', async () => {
   const cfg = TOOLS[state.tool];
-  if(!cfg.noFile && !state.files.length) return;
+  const gateOk = cfg.enableCheck ? cfg.enableCheck() : (cfg.noFile || state.files.length > 0);
+  if(!gateOk) return;
   els.dropzone.style.display = 'none';
   els.fileChips.style.display = 'none';
   els.opts.classList.remove('show');
@@ -891,6 +1242,7 @@ els.convertBtn.addEventListener('click', async () => {
   }catch(e){
     console.error(e);
     els.progressWrap.classList.remove('show');
+    if(cfg.onError){ cfg.onError(e); return; }
     els.resultTitle.textContent = 'Something went wrong';
     els.resultSub.textContent = (e && e.message) ? e.message : 'Please try a different file.';
     els.result.classList.add('show');
@@ -1999,6 +2351,402 @@ async function convertFileCrypt(files, progress){
     const fileBytes = plain.slice(2+nameLen);
     return { blob: new Blob([fileBytes]), filename: originalName || 'decrypted-file' };
   }
+}
+
+// ================= Text Case Converter =================
+function renderCaseOptions(container){
+  state.opts.casetext = state.opts.casetext || { text:'' };
+  container.innerHTML = `<h5>Your text</h5><textarea id="caseText" rows="4" placeholder="Type or paste text…" style="${TA_STYLE}">${state.opts.casetext.text||''}</textarea>`;
+  container.querySelector('#caseText').addEventListener('input', e => { state.opts.casetext.text = e.target.value; refreshConvertEnabled(); });
+}
+async function convertCaseText(files, progress){
+  const text = (state.opts.casetext && state.opts.casetext.text) || '';
+  if(!text.trim()) throw new Error('Type some text first.');
+  const upper = text.toUpperCase();
+  const lower = text.toLowerCase();
+  const title = text.replace(/\w\S*/g, t => t[0].toUpperCase()+t.slice(1).toLowerCase());
+  const sentence = text.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase());
+  const words = text.trim().split(/\s+/).filter(Boolean);
+  const camel = words.map((w,i) => i===0 ? w.toLowerCase() : w[0].toUpperCase()+w.slice(1).toLowerCase()).join('');
+  const pascal = words.map(w => w[0].toUpperCase()+w.slice(1).toLowerCase()).join('');
+  const snake = words.map(w => w.toLowerCase()).join('_');
+  const kebab = words.map(w => w.toLowerCase()).join('-');
+  let html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--cyan); color:var(--cyan)"></span>All Formats</div><div class="meta-card glass">`;
+  html += copyRow('UPPERCASE', upper) + copyRow('lowercase', lower) + copyRow('Title Case', title) + copyRow('Sentence case', sentence)
+    + copyRow('camelCase', camel) + copyRow('PascalCase', pascal) + copyRow('snake_case', snake) + copyRow('kebab-case', kebab);
+  html += `</div></div>`;
+  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
+  return { blob:null, filename:'text' };
+}
+
+// ================= Text Encoder/Decoder =================
+function renderEncodeOptions(container){
+  state.opts.encodetext = state.opts.encodetext || { type:'base64', action:'encode', text:'' };
+  const o = state.opts.encodetext;
+  container.innerHTML = `
+    <h5>Type</h5>
+    <div class="pill-group" id="encTypePills">
+      <div class="pill ${o.type==='base64'?'active':''}" data-t="base64">Base64</div>
+      <div class="pill ${o.type==='url'?'active':''}" data-t="url">URL</div>
+      <div class="pill ${o.type==='html'?'active':''}" data-t="html">HTML Entities</div>
+    </div>
+    <h5>Action</h5>
+    <div class="pill-group" id="encActionPills">
+      <div class="pill ${o.action==='encode'?'active':''}" data-a="encode">Encode</div>
+      <div class="pill ${o.action==='decode'?'active':''}" data-a="decode">Decode</div>
+    </div>
+    <h5>Input</h5>
+    <textarea id="encText" rows="4" placeholder="Type or paste text…" style="${TA_STYLE}">${o.text||''}</textarea>`;
+  container.querySelectorAll('#encTypePills .pill').forEach(p => p.addEventListener('click', () => { container.querySelectorAll('#encTypePills .pill').forEach(x=>x.classList.remove('active')); p.classList.add('active'); o.type = p.dataset.t; }));
+  container.querySelectorAll('#encActionPills .pill').forEach(p => p.addEventListener('click', () => { container.querySelectorAll('#encActionPills .pill').forEach(x=>x.classList.remove('active')); p.classList.add('active'); o.action = p.dataset.a; }));
+  container.querySelector('#encText').addEventListener('input', e => { o.text = e.target.value; refreshConvertEnabled(); });
+}
+async function convertEncodeText(files, progress){
+  const o = state.opts.encodetext;
+  const text = (o && o.text) || '';
+  if(!text.trim()) throw new Error('Type some text first.');
+  let result;
+  try{
+    if(o.type==='base64'){ result = o.action==='encode' ? btoa(unescape(encodeURIComponent(text))) : decodeURIComponent(escape(atob(text))); }
+    else if(o.type==='url'){ result = o.action==='encode' ? encodeURIComponent(text) : decodeURIComponent(text); }
+    else if(o.action==='encode'){ const d=document.createElement('div'); d.textContent=text; result=d.innerHTML; }
+    else { const d=document.createElement('textarea'); d.innerHTML=text; result=d.value; }
+  }catch(e){ throw new Error(`Could not ${o.action} that text — check it's valid ${o.type}.`); }
+  let html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--violet); color:var(--violet)"></span>Result</div><div class="meta-card glass">${copyRow('Output', result)}</div></div>`;
+  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
+  return { blob:null, filename:'text' };
+}
+
+// ================= JSON Formatter & Validator =================
+function renderJsonOptions(container){
+  state.opts.jsonfmt = state.opts.jsonfmt || { text:'' };
+  container.innerHTML = `<h5>Paste JSON</h5><textarea id="jsonText" rows="6" placeholder='{"hello":"world"}' style="${TA_STYLE} font-family:ui-monospace,monospace; font-size:12.5px;">${state.opts.jsonfmt.text||''}</textarea>`;
+  container.querySelector('#jsonText').addEventListener('input', e => { state.opts.jsonfmt.text = e.target.value; refreshConvertEnabled(); });
+}
+async function convertJsonFmt(files, progress){
+  const text = (state.opts.jsonfmt && state.opts.jsonfmt.text) || '';
+  if(!text.trim()) throw new Error('Paste some JSON first.');
+  let parsed;
+  try{ parsed = JSON.parse(text); }
+  catch(e){
+    els.metaResults.innerHTML = `<div class="meta-empty">⚠ Invalid JSON: ${metaEscape(e.message)}</div>`;
+    els.metaResults.classList.add('show');
+    return { blob:null, filename:'json' };
+  }
+  const pretty = JSON.stringify(parsed, null, 2);
+  const minified = JSON.stringify(parsed);
+  let html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--lime); color:var(--lime)"></span>Valid JSON ✓</div><div class="meta-card glass" style="padding:14px;">`;
+  html += `<div style="font-size:11px; color:var(--sub); margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">Formatted <span class="copy-btn" data-idx="${pushCopy(pretty)}" style="background:rgba(255,255,255,0.1);border-radius:6px;padding:4px 8px;font-size:10px;color:var(--cyan);cursor:pointer;">Copy</span></div>`;
+  html += `<pre style="white-space:pre-wrap; word-break:break-word; font-family:ui-monospace,monospace; font-size:11.5px; color:var(--text); background:rgba(0,0,0,0.25); border-radius:10px; padding:10px; max-height:260px; overflow:auto; margin:0 0 12px;">${metaEscape(pretty)}</pre>`;
+  html += `<div style="font-size:11px; color:var(--sub); margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">Minified <span class="copy-btn" data-idx="${pushCopy(minified)}" style="background:rgba(255,255,255,0.1);border-radius:6px;padding:4px 8px;font-size:10px;color:var(--cyan);cursor:pointer;">Copy</span></div>`;
+  html += `<pre style="white-space:pre-wrap; word-break:break-word; font-family:ui-monospace,monospace; font-size:11.5px; color:var(--sub); background:rgba(0,0,0,0.25); border-radius:10px; padding:10px; max-height:100px; overflow:auto; margin:0;">${metaEscape(minified)}</pre></div></div>`;
+  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
+  return { blob:null, filename:'json' };
+}
+
+// ================= Text Diff Checker =================
+function renderDiffOptions(container){
+  state.opts.diff = state.opts.diff || { a:'', b:'' };
+  container.innerHTML = `
+    <h5>Original text</h5><textarea id="diffA" rows="4" placeholder="Paste the first version…" style="${TA_STYLE}">${state.opts.diff.a||''}</textarea>
+    <h5>Changed text</h5><textarea id="diffB" rows="4" placeholder="Paste the second version…" style="${TA_STYLE}">${state.opts.diff.b||''}</textarea>`;
+  container.querySelector('#diffA').addEventListener('input', e => { state.opts.diff.a = e.target.value; refreshConvertEnabled(); });
+  container.querySelector('#diffB').addEventListener('input', e => { state.opts.diff.b = e.target.value; refreshConvertEnabled(); });
+}
+function lcsDiffLines(a,b){
+  const la=a.length, lb=b.length;
+  const dp = Array.from({length:la+1}, () => new Array(lb+1).fill(0));
+  for(let i=la-1;i>=0;i--) for(let j=lb-1;j>=0;j--) dp[i][j] = a[i]===b[j] ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j], dp[i][j+1]);
+  const out=[]; let i=0,j=0;
+  while(i<la && j<lb){
+    if(a[i]===b[j]){ out.push({t:'same', v:a[i]}); i++; j++; }
+    else if(dp[i+1][j] >= dp[i][j+1]){ out.push({t:'del', v:a[i]}); i++; }
+    else { out.push({t:'add', v:b[j]}); j++; }
+  }
+  while(i<la){ out.push({t:'del', v:a[i]}); i++; }
+  while(j<lb){ out.push({t:'add', v:b[j]}); j++; }
+  return out;
+}
+async function convertDiff(files, progress){
+  const o = state.opts.diff || {};
+  if(!o.a && !o.b) throw new Error('Paste both versions of the text first.');
+  const diff = lcsDiffLines((o.a||'').split('\n'), (o.b||'').split('\n'));
+  const added = diff.filter(d=>d.t==='add').length, removed = diff.filter(d=>d.t==='del').length;
+  const rows = diff.map(d => {
+    const bg = d.t==='add' ? 'rgba(140,255,124,0.12)' : d.t==='del' ? 'rgba(255,92,172,0.12)' : 'transparent';
+    const prefix = d.t==='add' ? '+ ' : d.t==='del' ? '\u2212 ' : '  ';
+    const color = d.t==='add' ? 'var(--lime)' : d.t==='del' ? 'var(--pink)' : 'var(--sub)';
+    return `<div style="padding:3px 10px; background:${bg}; color:${color}; font-family:ui-monospace,monospace; font-size:12px; white-space:pre-wrap; word-break:break-word;">${metaEscape(prefix+d.v)}</div>`;
+  }).join('');
+  let html = `<div class="meta-badge">${added} added · ${removed} removed</div><div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--pink); color:var(--pink)"></span>Differences</div><div class="meta-card glass" style="padding:6px 0; max-height:340px; overflow:auto;">${rows}</div></div>`;
+  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
+  return { blob:null, filename:'diff' };
+}
+
+// ================= Password Generator =================
+function renderPwGenOptions(container){
+  state.opts.pwgen = state.opts.pwgen || { length:16, upper:true, lower:true, numbers:true, symbols:true };
+  const o = state.opts.pwgen;
+  container.innerHTML = `
+    <h5>Length: <span id="pwLenVal">${o.length}</span></h5>
+    <input type="range" min="6" max="64" value="${o.length}" id="pwLen">
+    <div style="height:12px"></div>
+    <label class="lock-chip" style="justify-content:flex-start;"><input type="checkbox" id="pwUpper" ${o.upper?'checked':''}> Uppercase (A-Z)</label>
+    <label class="lock-chip" style="justify-content:flex-start;"><input type="checkbox" id="pwLower" ${o.lower?'checked':''}> Lowercase (a-z)</label>
+    <label class="lock-chip" style="justify-content:flex-start;"><input type="checkbox" id="pwNum" ${o.numbers?'checked':''}> Numbers (0-9)</label>
+    <label class="lock-chip" style="justify-content:flex-start;"><input type="checkbox" id="pwSym" ${o.symbols?'checked':''}> Symbols (!@#$…)</label>`;
+  container.querySelector('#pwLen').addEventListener('input', e => { o.length = +e.target.value; container.querySelector('#pwLenVal').textContent = e.target.value; });
+  container.querySelector('#pwUpper').addEventListener('change', e => { o.upper = e.target.checked; });
+  container.querySelector('#pwLower').addEventListener('change', e => { o.lower = e.target.checked; });
+  container.querySelector('#pwNum').addEventListener('change', e => { o.numbers = e.target.checked; });
+  container.querySelector('#pwSym').addEventListener('change', e => { o.symbols = e.target.checked; });
+}
+async function convertPwGen(files, progress){
+  const o = state.opts.pwgen || { length:16, upper:true, lower:true, numbers:true, symbols:true };
+  let chars = '';
+  if(o.upper) chars += 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  if(o.lower) chars += 'abcdefghijkmnpqrstuvwxyz';
+  if(o.numbers) chars += '23456789';
+  if(o.symbols) chars += '!@#$%^&*()-_=+[]{}';
+  if(!chars) throw new Error('Pick at least one character type.');
+  const arr = new Uint32Array(o.length);
+  crypto.getRandomValues(arr);
+  let pw = '';
+  for(let i=0; i<o.length; i++) pw += chars[arr[i] % chars.length];
+  let html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--violet); color:var(--violet)"></span>Generated Password</div><div class="meta-card glass">${copyRow('Password', pw)}</div></div><div class="note">Generated with your browser's secure random generator — never stored, never sent anywhere. Tap the button again for a new one.</div>`;
+  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
+  return { blob:null, filename:'password' };
+}
+
+// ================= Password Strength Checker =================
+function renderPwStrengthOptions(container){
+  state.opts.pwstrength = state.opts.pwstrength || { text:'' };
+  container.innerHTML = `<h5>Password to check</h5><input type="text" id="pwsText" placeholder="Type a password…" value="${state.opts.pwstrength.text||''}"
+    style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:10px; padding:11px; color:var(--text); font-size:14px; font-family:ui-monospace,monospace;">
+    <div class="note" style="text-align:left; padding:0; margin-top:8px;">Checked entirely on your device — never sent anywhere, not even to us.</div>`;
+  container.querySelector('#pwsText').addEventListener('input', e => { state.opts.pwstrength.text = e.target.value; refreshConvertEnabled(); });
+}
+async function convertPwStrength(files, progress){
+  const pw = (state.opts.pwstrength && state.opts.pwstrength.text) || '';
+  if(!pw) throw new Error('Type a password first.');
+  let pool = 0;
+  if(/[a-z]/.test(pw)) pool += 26;
+  if(/[A-Z]/.test(pw)) pool += 26;
+  if(/[0-9]/.test(pw)) pool += 10;
+  if(/[^a-zA-Z0-9]/.test(pw)) pool += 32;
+  const entropy = Math.log2(Math.pow(pool||1, pw.length));
+  const seconds = Math.pow(2, entropy) / 1e10;
+  let crackTime;
+  if(seconds < 1) crackTime = 'Instantly';
+  else if(seconds < 60) crackTime = Math.round(seconds)+' seconds';
+  else if(seconds < 3600) crackTime = Math.round(seconds/60)+' minutes';
+  else if(seconds < 86400) crackTime = Math.round(seconds/3600)+' hours';
+  else if(seconds < 31536000) crackTime = Math.round(seconds/86400)+' days';
+  else if(seconds < 31536000*100) crackTime = Math.round(seconds/31536000)+' years';
+  else crackTime = 'Centuries';
+  let label, color;
+  if(entropy < 28){ label='Very Weak'; color='var(--pink)'; }
+  else if(entropy < 45){ label='Weak'; color='var(--amber)'; }
+  else if(entropy < 60){ label='Reasonable'; color='var(--amber)'; }
+  else if(entropy < 80){ label='Strong'; color='var(--lime)'; }
+  else { label='Very Strong'; color='var(--lime)'; }
+  const html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:${color}; color:${color}"></span>Password Strength</div><div class="meta-card glass" style="padding:14px;">
+    <div style="text-align:center; margin-bottom:10px;"><div style="font-size:26px; font-weight:800; color:${color};">${label}</div><div style="font-size:12px; color:var(--sub); margin-top:2px;">~${Math.round(entropy)} bits of entropy</div></div>
+    <div style="font-size:12.5px; color:var(--sub); text-align:center;">Estimated time to crack offline: <b style="color:var(--text);">${crackTime}</b></div>
+  </div></div><div class="note">⚠ Rough estimate assuming a fast offline attack — real results vary by how the password is stored.</div>`;
+  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
+  return { blob:null, filename:'password-strength' };
+}
+
+// ================= Age Calculator =================
+function renderAgeOptions(container){
+  state.opts.agecalc = state.opts.agecalc || { dob:'' };
+  container.innerHTML = `<h5>Date of birth</h5><input type="date" id="dobField" value="${state.opts.agecalc.dob||''}"
+    style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:10px; padding:11px; color:var(--text); font-size:14px;">`;
+  container.querySelector('#dobField').addEventListener('input', e => { state.opts.agecalc.dob = e.target.value; refreshConvertEnabled(); });
+}
+async function convertAge(files, progress){
+  const dobStr = state.opts.agecalc && state.opts.agecalc.dob;
+  if(!dobStr) throw new Error('Pick a date of birth first.');
+  const dob = new Date(dobStr+'T00:00:00'), now = new Date();
+  if(dob > now) throw new Error("That date hasn't happened yet.");
+  let years = now.getFullYear()-dob.getFullYear(), months = now.getMonth()-dob.getMonth(), days = now.getDate()-dob.getDate();
+  if(days<0){ months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+  if(months<0){ years--; months+=12; }
+  const totalDays = Math.floor((now-dob)/86400000);
+  const nextBday = new Date(now.getFullYear(), dob.getMonth(), dob.getDate());
+  if(nextBday < now) nextBday.setFullYear(now.getFullYear()+1);
+  const daysToBday = Math.ceil((nextBday-now)/86400000);
+  const rows = [
+    ['Age', `${years} years, ${months} months, ${days} days`],
+    ['Total days lived', totalDays.toLocaleString()],
+    ['Total weeks lived', Math.floor(totalDays/7).toLocaleString()],
+    ['Next birthday in', `${daysToBday} days`],
+  ];
+  let html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--cyan); color:var(--cyan)"></span>Age Breakdown</div><div class="meta-card glass">`;
+  html += rows.map(([k,v],i)=>`<div class="meta-row" style="--i:${i}"><div class="k">${metaEscape(k)}</div><div class="v">${metaEscape(v)}</div></div>`).join('');
+  html += `</div></div>`;
+  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
+  return { blob:null, filename:'age' };
+}
+
+// ================= EMI / Loan Calculator =================
+function renderEmiOptions(container){
+  state.opts.emicalc = state.opts.emicalc || { principal:500000, rate:9.5, tenure:5 };
+  const o = state.opts.emicalc;
+  container.innerHTML = `
+    <div class="field-row"><label>Loan Amount ₹</label><input type="number" id="emiP" value="${o.principal}"></div>
+    <div class="field-row"><label>Interest %/yr</label><input type="number" id="emiR" step="0.1" value="${o.rate}"></div>
+    <div class="field-row"><label>Tenure (yrs)</label><input type="number" id="emiT" value="${o.tenure}"></div>`;
+  container.querySelector('#emiP').addEventListener('input', e => { o.principal = +e.target.value; });
+  container.querySelector('#emiR').addEventListener('input', e => { o.rate = +e.target.value; });
+  container.querySelector('#emiT').addEventListener('input', e => { o.tenure = +e.target.value; });
+}
+async function convertEmi(files, progress){
+  const o = state.opts.emicalc || { principal:500000, rate:9.5, tenure:5 };
+  const P = o.principal, R = o.rate/12/100, N = o.tenure*12;
+  if(!(P>0 && o.rate>=0 && N>0)) throw new Error('Enter valid loan details.');
+  const emi = R===0 ? P/N : (P*R*Math.pow(1+R,N))/(Math.pow(1+R,N)-1);
+  const totalPay = emi*N, totalInterest = totalPay-P;
+  const rows = [
+    ['Monthly EMI', '₹'+Math.round(emi).toLocaleString('en-IN')],
+    ['Total Interest', '₹'+Math.round(totalInterest).toLocaleString('en-IN')],
+    ['Total Payment', '₹'+Math.round(totalPay).toLocaleString('en-IN')],
+  ];
+  let html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--lime); color:var(--lime)"></span>Loan Breakdown</div><div class="meta-card glass">`;
+  html += rows.map(([k,v],i)=>`<div class="meta-row" style="--i:${i}"><div class="k">${metaEscape(k)}</div><div class="v">${metaEscape(v)}</div></div>`).join('');
+  html += `</div></div>`;
+  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
+  return { blob:null, filename:'emi' };
+}
+
+// ================= Unit Converter =================
+const UNIT_DEFS = {
+  length: {m:1, km:1000, cm:0.01, mm:0.001, mi:1609.34, yd:0.9144, ft:0.3048, in:0.0254},
+  weight: {kg:1, g:0.001, mg:0.000001, lb:0.453592, oz:0.0283495, ton:1000},
+  temp: {C:'C', F:'F', K:'K'},
+};
+function renderUnitOptions(container){
+  state.opts.unitconv = state.opts.unitconv || { category:'length', from:'m', to:'ft', value:1 };
+  const o = state.opts.unitconv;
+  const unitKeys = Object.keys(UNIT_DEFS[o.category]);
+  container.innerHTML = `
+    <h5>Category</h5>
+    <div class="pill-group" id="unitCatPills">
+      <div class="pill ${o.category==='length'?'active':''}" data-c="length">Length</div>
+      <div class="pill ${o.category==='weight'?'active':''}" data-c="weight">Weight</div>
+      <div class="pill ${o.category==='temp'?'active':''}" data-c="temp">Temperature</div>
+    </div>
+    <div class="field-row"><label>Value</label><input type="number" id="unitVal" value="${o.value}"></div>
+    <div class="field-row"><label>From</label><select id="unitFrom" style="flex:1; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:10px; padding:9px; color:var(--text);">${unitKeys.map(u=>`<option value="${u}" ${u===o.from?'selected':''}>${u}</option>`).join('')}</select></div>
+    <div class="field-row"><label>To</label><select id="unitTo" style="flex:1; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:10px; padding:9px; color:var(--text);">${unitKeys.map(u=>`<option value="${u}" ${u===o.to?'selected':''}>${u}</option>`).join('')}</select></div>`;
+  container.querySelectorAll('#unitCatPills .pill').forEach(p => p.addEventListener('click', () => {
+    o.category = p.dataset.c;
+    const keys = Object.keys(UNIT_DEFS[p.dataset.c]);
+    o.from = keys[0]; o.to = keys[1]||keys[0];
+    renderUnitOptions(container);
+  }));
+  container.querySelector('#unitVal').addEventListener('input', e => { o.value = +e.target.value; });
+  container.querySelector('#unitFrom').addEventListener('change', e => { o.from = e.target.value; });
+  container.querySelector('#unitTo').addEventListener('change', e => { o.to = e.target.value; });
+}
+function convertTempVal(v, from, to){
+  let c;
+  if(from==='C') c=v; else if(from==='F') c=(v-32)*5/9; else c=v-273.15;
+  if(to==='C') return c; else if(to==='F') return c*9/5+32; else return c+273.15;
+}
+async function convertUnit(files, progress){
+  const o = state.opts.unitconv;
+  let result;
+  if(o.category==='temp'){ result = convertTempVal(o.value, o.from, o.to); }
+  else { result = (o.value * UNIT_DEFS[o.category][o.from]) / UNIT_DEFS[o.category][o.to]; }
+  const rounded = Math.round(result*10000)/10000;
+  const html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--amber); color:var(--amber)"></span>Result</div><div class="meta-card glass">${copyRow(`${o.value} ${o.from} =`, `${rounded} ${o.to}`)}</div></div>`;
+  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
+  return { blob:null, filename:'unit-convert' };
+}
+
+// ================= QR Code Scanner =================
+async function convertQrScan(files, progress){
+  progress('Reading QR code…');
+  if(typeof jsQR === 'undefined') throw new Error('QR scanner engine failed to load — check your internet connection and reload the page.');
+  const file = files[0];
+  const img = await loadImageFromFile(file);
+  const canvas = document.createElement('canvas'); canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+  const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const result = jsQR(imageData.data, imageData.width, imageData.height);
+  if(!result){
+    els.metaResults.innerHTML = `<div class="meta-empty">No QR code found in this image. Try a clearer, more zoomed-in photo.</div>`;
+    els.metaResults.classList.add('show');
+    return { blob:null, filename:file.name };
+  }
+  const html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--cyan); color:var(--cyan)"></span>QR Content Found</div><div class="meta-card glass">${copyRow('Decoded text', result.data)}</div></div>`;
+  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
+  return { blob:null, filename:file.name };
+}
+
+// ================= Image ↔ Base64 =================
+function renderImgB64Options(container){
+  state.opts.imgb64 = state.opts.imgb64 || { mode:'img2b64', text:'' };
+  const o = state.opts.imgb64;
+  container.innerHTML = `
+    <h5>Mode</h5>
+    <div class="pill-group" id="ib64Pills">
+      <div class="pill ${o.mode==='img2b64'?'active':''}" data-m="img2b64">Image → Base64</div>
+      <div class="pill ${o.mode==='b642img'?'active':''}" data-m="b642img">Base64 → Image</div>
+    </div>
+    <div id="b64PasteField" style="display:${o.mode==='b642img'?'':'none'}">
+      <h5>Paste Base64 / Data URI</h5>
+      <textarea id="b64Text" rows="4" placeholder="data:image/png;base64,…" style="${TA_STYLE} font-family:ui-monospace,monospace; font-size:11px;">${o.text||''}</textarea>
+    </div>`;
+  container.querySelectorAll('#ib64Pills .pill').forEach(p => p.addEventListener('click', () => {
+    container.querySelectorAll('#ib64Pills .pill').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active'); o.mode = p.dataset.m;
+    container.querySelector('#b64PasteField').style.display = p.dataset.m==='b642img' ? '' : 'none';
+    refreshConvertEnabled();
+  }));
+  const ta = container.querySelector('#b64Text');
+  if(ta) ta.addEventListener('input', e => { o.text = e.target.value; refreshConvertEnabled(); });
+}
+async function convertImgB64(files, progress){
+  const o = state.opts.imgb64 || { mode:'img2b64' };
+  if(o.mode==='img2b64'){
+    const file = files[0];
+    if(!file) throw new Error('Choose a photo first.');
+    progress('Encoding…');
+    const dataUrl = await fileToDataUrl(file);
+    let html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--violet); color:var(--violet)"></span>Base64 Data URI</div><div class="meta-card glass" style="padding:14px;">`;
+    html += `<div style="font-size:11px; color:var(--sub); margin-bottom:6px; display:flex; justify-content:space-between;">${humanSize(dataUrl.length)} as text <span class="copy-btn" data-idx="${pushCopy(dataUrl)}" style="background:rgba(255,255,255,0.1);border-radius:6px;padding:4px 8px;font-size:10px;color:var(--cyan);cursor:pointer;">Copy</span></div>`;
+    html += `<pre style="white-space:pre-wrap; word-break:break-all; font-family:ui-monospace,monospace; font-size:10.5px; color:var(--sub); background:rgba(0,0,0,0.25); border-radius:10px; padding:10px; max-height:200px; overflow:auto; margin:0;">${metaEscape(dataUrl)}</pre></div></div>`;
+    els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
+    return { blob:null, filename:file.name };
+  }
+  progress('Decoding…');
+  let text = (o.text||'').trim();
+  if(!text) throw new Error('Paste a base64 string first.');
+  if(!text.startsWith('data:')) text = 'data:image/png;base64,' + text;
+  let blob;
+  try{ blob = await (await fetch(text)).blob(); }
+  catch(e){ throw new Error("That doesn't look like valid base64 image data."); }
+  return { blob, filename:'decoded-image.png' };
+}
+
+// ================= Favicon Generator =================
+async function convertFavicon(files, progress){
+  const file = files[0];
+  const img = await loadImageFromFile(file);
+  const sizes = [16,32,48,180,192,512];
+  const zip = new JSZip();
+  for(const s of sizes){
+    progress(`Rendering ${s}×${s}…`);
+    const canvas = document.createElement('canvas'); canvas.width=s; canvas.height=s;
+    canvas.getContext('2d').drawImage(img,0,0,s,s);
+    zip.file(`favicon-${s}x${s}.png`, canvas.toDataURL('image/png').split(',')[1], { base64:true });
+  }
+  progress('Zipping…');
+  const blob = await zip.generateAsync({ type:'blob' });
+  return { blob, filename:'favicon-pack.zip' };
 }
 
 // ================= Photo Metadata =================
