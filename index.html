@@ -205,6 +205,8 @@
   .result p{margin:0 0 16px; font-size:12.5px; color:var(--sub);}
 
   .note{font-size:11.5px; color:var(--sub2); text-align:center; margin-top:10px; line-height:1.5; padding:0 8px;}
+  .inline-error{color:#FF5CAC; font-size:12.5px; font-weight:700; margin-bottom:14px; padding:10px 12px;
+    background:rgba(255,92,172,0.1); border-radius:12px; border:1px solid rgba(255,92,172,0.25); line-height:1.4;}
 
   /* ---- metadata report ---- */
   .meta-results{margin-top:6px; display:none;}
@@ -697,9 +699,7 @@ const ICONS = {
   pincodelookup:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
   weatherlookup:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.4 2.3A4 4 0 0 0 6.5 19h11z"/></svg>',
   dictionary:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>',
-  countryinfo:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>',
-  holidaychecker:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>',
-  randomquote:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+  dictionary:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>',
   cryptoprice:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 8.5h3.2a1.8 1.8 0 0 1 0 3.5H9.5m0 0h3.7a1.8 1.8 0 0 1 0 3.5H9.5m0-7V8m0 8.5V17"/></svg>',
 };
 const ICON_BG = {
@@ -717,8 +717,7 @@ const ICON_BG = {
   jsonfmt:'linear-gradient(155deg,#8CFF7C,#33D6FF)', diff:'linear-gradient(155deg,#FF5CAC,#FFB454)',
   currency:'linear-gradient(155deg,#8CFF7C,#33D6FF)', ifsclookup:'linear-gradient(155deg,#7C5CFF,#33D6FF)',
   pincodelookup:'linear-gradient(155deg,#FF9F5C,#FFB454)', weatherlookup:'linear-gradient(155deg,#33D6FF,#B48CFF)',
-  dictionary:'linear-gradient(155deg,#B48CFF,#FF5CAC)', countryinfo:'linear-gradient(155deg,#8CFF7C,#FFD65C)',
-  holidaychecker:'linear-gradient(155deg,#FF5CAC,#7C5CFF)', randomquote:'linear-gradient(155deg,#FFD65C,#FF9F5C)',
+  dictionary:'linear-gradient(155deg,#B48CFF,#FF5CAC)',
   cryptoprice:'linear-gradient(155deg,#FFB454,#FFD65C)',
   pwgen:'linear-gradient(155deg,#7C5CFF,#FF5CAC)', pwstrength:'linear-gradient(155deg,#FFB454,#FF5CAC)',
   agecalc:'linear-gradient(155deg,#33D6FF,#8CFF7C)', emicalc:'linear-gradient(155deg,#8CFF7C,#FFD65C)',
@@ -729,98 +728,98 @@ const ICON_BG = {
 // ---------------- tool config ----------------
 const TOOLS = {
   metadata: {
-    title:'Photo Metadata', subtitle:'See every EXIF/GPS/camera detail',
+    title:'Photo Metadata', subtitle:'See it all, then wipe it clean if you want',
     accept:'image/*', multiple:false, isReport:true,
     dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
-    limitsHtml:'<b>What this can\'t do</b>Can\'t recover metadata an app (WhatsApp, Instagram, Telegram) already stripped before you got the photo · Can\'t decode proprietary MakerNote data for most Android/budget camera brands · Screenshots never contain camera EXIF — nothing to extract · PNGs usually carry little to no EXIF even straight from a camera · Not a forensic tool — can\'t detect edits or AI generation · Only still images are supported, not video',
+    limitsHtml:'<b>What this can\'t do</b>Can\'t recover metadata an app (WhatsApp, Instagram, Telegram) already stripped before you got the photo. Can\'t decode proprietary MakerNote data for most Android/budget camera brands. Screenshots never contain camera EXIF, so there\'s nothing to extract there. PNGs usually carry little to no EXIF even straight from a camera. It\'s not a forensic tool, so it can\'t detect edits or AI generation. Only works on still images, not video.',
     convert: extractMetadata,
   },
   img2pdf: {
-    title:'Images → PDF', subtitle:'Combine JPG/PNG photos into one PDF',
+    title:'Images → PDF', subtitle:'Turn your photos into one tidy PDF',
     accept:'image/jpeg,image/png', multiple:true,
     dzTitle:'Tap to choose photos', dzSub:'or drag & drop — pick as many as you like',
-    note:'Pages are added in the order you pick them, each sized to match its photo.',
+    note:'Pages come out in the order you pick them, each one sized to match its photo.',
     convert: convertImagesToPdf,
   },
   imgedit: {
-    title:'Crop, Resize & Compress', subtitle:'Crop, resize, target a size, or change format',
+    title:'Crop, Resize & Compress', subtitle:'Crop it, resize it, shrink it down to size',
     accept:'image/jpeg,image/png,image/webp', multiple:false,
     dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
-    note:'Drag the corner handles to crop, or pick an aspect preset.',
+    note:'Drag the corner handles to crop, or just pick an aspect preset and go.',
     renderOptions: renderImgEditOptions,
     convert: convertImageEdit,
   },
   pdf2img: {
-    title:'PDF → Images', subtitle:'Export every page as JPG or PNG',
+    title:'PDF → Images', subtitle:'Pull every page out as a JPG or PNG',
     accept:'application/pdf,.pdf', multiple:false,
     dzTitle:'Tap to choose a PDF', dzSub:'or drag & drop it here',
-    note:'One page → one image download. Multiple pages are bundled into a .zip.',
+    note:'One page becomes one image. More than one page, and you get a neat .zip instead.',
     renderOptions: renderPdf2ImgOptions,
     convert: convertPdfToImages,
   },
   pdfmerge: {
-    title:'Merge PDFs', subtitle:'Join multiple PDFs into one file',
+    title:'Merge PDFs', subtitle:'Stitch a few PDFs into one file',
     accept:'application/pdf,.pdf', multiple:true,
-    dzTitle:'Tap to choose PDFs', dzSub:'pick 2 or more, in the order you want them merged',
-    note:'Files are merged in the order shown above — remove and re-add to reorder.',
+    dzTitle:'Tap to choose PDFs', dzSub:'pick two or more, in the order you want them joined',
+    note:'They\'re merged in the order shown above, so remove and re-add any file to move it.',
     convert: mergePdfs,
   },
   pdfsplit: {
-    title:'Split PDF', subtitle:'Pull out a page range as a new PDF',
+    title:'Split PDF', subtitle:'Grab just the pages you need',
     accept:'application/pdf,.pdf', multiple:false,
     dzTitle:'Tap to choose a PDF', dzSub:'or drag & drop it here',
-    note:'Pages outside your chosen range are left out of the new file.',
+    note:'Anything outside your chosen range gets left behind.',
     renderOptions: renderPdfSplitOptions,
     convert: splitPdf,
   },
   pdfrotate: {
-    title:'Rotate PDF', subtitle:'Rotate every page 90° / 180°',
+    title:'Rotate PDF', subtitle:'Spin every page the right way round',
     accept:'application/pdf,.pdf', multiple:false,
     dzTitle:'Tap to choose a PDF', dzSub:'or drag & drop it here',
-    note:'Rotation applies to every page in the document.',
+    note:'The rotation you pick gets applied to the whole document.',
     renderOptions: renderPdfRotateOptions,
     convert: rotatePdf,
   },
   pdf2ppt: {
-    title:'PDF → PPT', subtitle:'Every page becomes a full-size slide',
+    title:'PDF → PPT', subtitle:'Every page turns into a ready-to-show slide',
     accept:'application/pdf,.pdf', multiple:false,
     dzTitle:'Tap to choose a PDF', dzSub:'or drag & drop it here',
-    note:'Each slide is a high-resolution image of the original page — text stays crisp but is not separately editable.',
+    note:'Each slide is a sharp image of the original page. Text looks crisp, but you can\'t edit it separately.',
     convert: convertPdfToPptx,
   },
   ppt2pdf: {
-    title:'PPT → PDF', subtitle:'Flatten a .pptx deck into a PDF',
+    title:'PPT → PDF', subtitle:'Flatten your slides into one shareable PDF',
     accept:'.pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation', multiple:false,
     dzTitle:'Tap to choose a .pptx', dzSub:'or drag & drop it here',
-    note:'Best-effort layout from the slide XML. Very complex slides (charts, SmartArt, animations) may not look pixel-perfect.',
+    note:'It rebuilds your slides from the raw XML, so it\'s a best effort. Charts, SmartArt and animations may not come out pixel-perfect.',
     convert: convertPptxToPdf,
   },
   qrgen: {
-    title:'QR Code Generator', subtitle:'Turn any text or link into a scannable code',
+    title:'QR Code Generator', subtitle:'Any text or link, turned into a scannable code',
     noFile:true,
-    note:'Works fully offline once the page has loaded — nothing you type is sent anywhere.',
+    note:'Runs fully offline once the page has loaded. Nothing you type goes anywhere.',
     renderOptions: renderQrOptions,
     convert: convertQr,
   },
   palette: {
-    title:'Color Palette', subtitle:'Pull the dominant colors out of a photo',
+    title:'Color Palette', subtitle:'Grab the dominant colors from a photo',
     accept:'image/*', multiple:false, isReport:true,
     dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
-    note:'Colors are estimated by sampling and grouping pixels — great for mood boards, not lab-accurate.',
+    note:'Colors are estimated by sampling and grouping pixels, so it\'s great for mood boards, not lab-grade color matching.',
     convert: extractPalette,
   },
   hashcheck: {
-    title:'File Checksum', subtitle:"Verify a file's SHA-256 / SHA-1 hash",
+    title:'File Checksum', subtitle:"Check a file's SHA-256 or SHA-1 fingerprint",
     accept:'*/*', multiple:false, isReport:true,
     dzTitle:'Tap to choose any file', dzSub:'or drag & drop it here',
-    limitsHtml:'<b>What this can\'t do</b>MD5 isn\'t offered — modern browsers removed it from Web Crypto for security reasons, only SHA-1/256 are available · This only computes a hash, it can\'t tell you if a file is "safe", only whether it matches a hash you already trust',
+    limitsHtml:'<b>What this can\'t do</b>No MD5 here. Modern browsers dropped it from Web Crypto for security reasons, so only SHA-1 and SHA-256 are on offer. This only computes a hash. It can\'t tell you a file is "safe", only whether it matches a hash you already trust.',
     convert: computeHashes,
   },
   wordcount: {
-    title:'Word Counter', subtitle:'Words, characters, sentences & reading time',
+    title:'Word Counter', subtitle:'Words, characters, sentences, reading time, all at once',
     accept:'.pdf,.txt,text/plain,application/pdf', multiple:false, isReport:true, alwaysShowOptions:true,
-    dzTitle:'Tap to choose a PDF or .txt', dzSub:'optional — you can paste text below instead',
-    note:'Everything is counted locally — nothing leaves your device, including any PDF text.',
+    dzTitle:'Tap to choose a PDF or .txt', dzSub:'optional, you can just paste text below instead',
+    note:'Everything gets counted right on your device, PDF text included.',
     renderOptions: renderWordCountOptions,
     convert: computeWordCount,
     enableCheck: () => {
@@ -829,10 +828,10 @@ const TOOLS = {
     },
   },
   stego: {
-    title:'Secret Message in Photo', subtitle:'Hide invisible text in an image, or reveal one',
+    title:'Secret Message in Photo', subtitle:'Hide a message in plain sight, or dig one out',
     accept:'image/*', multiple:false, alwaysShowOptions:true,
     dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
-    limitsHtml:'<b>How this actually works</b>This uses steganography — your message is written into the least-significant bit of each pixel\'s color, changes too small for the eye to see · The result MUST be saved/shared as PNG — JPEG, WhatsApp, Instagram etc. all recompress images and will destroy the hidden data · Bigger photos can hold longer messages',
+    limitsHtml:'<b>How this actually works</b>This uses steganography. Your message gets written into the least-significant bit of each pixel\'s color, changes far too small for the eye to notice. Save or share the result as PNG only. JPEG, WhatsApp, Instagram and the like all recompress images and will wipe out the hidden data. Bigger photos can hold longer messages.',
     renderOptions: renderStegoOptions,
     convert: convertStego,
     enableCheck: () => {
@@ -843,34 +842,34 @@ const TOOLS = {
     },
   },
   ela: {
-    title:'Edit Detector', subtitle:'See if a photo was likely edited',
+    title:'Edit Detector', subtitle:'A quick gut-check on whether a photo was touched up',
     accept:'image/*', multiple:false,
     dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
-    note:'Uses Error Level Analysis — a real forensic technique that highlights areas with different JPEG compression history than the rest of the photo.',
-    limitsHtml:'<b>What this can\'t do</b>It\'s a strong visual clue, not proof — heavily compressed or re-saved photos can show false positives · Works best on JPEGs straight from a camera or app, less reliably on already-edited/exported images',
+    note:'Uses Error Level Analysis, a real forensic trick that highlights spots with a different JPEG compression history than the rest of the photo.',
+    limitsHtml:'<b>What this can\'t do</b>It\'s a strong hint, not proof. Heavily compressed or re-saved photos can trigger false positives. Works best on JPEGs fresh from a camera or app, less reliably on images that have already been exported or edited elsewhere.',
     convert: convertEla,
   },
   jpegquality: {
-    title:'JPEG Quality Detector', subtitle:"Estimate a photo's original save quality",
+    title:'JPEG Quality Detector', subtitle:'Guess how compressed a photo really is',
     accept:'image/jpeg', multiple:false,
     dzTitle:'Tap to choose a JPEG', dzSub:'or drag & drop it here',
-    note:'Reads the compression tables baked into the JPEG file itself and matches them against known quality presets.',
-    limitsHtml:'<b>What this can\'t do</b>Only works on JPEG files — PNG/WEBP don\'t store this data · If a photo was saved multiple times by different apps, this shows the most recent save, not the original',
+    note:'Reads the compression tables baked into the JPEG itself and matches them against known quality presets.',
+    limitsHtml:'<b>What this can\'t do</b>Only works on JPEG files. PNG and WEBP don\'t store this kind of data. If a photo\'s been saved by a few different apps over time, this shows the most recent save, not the original.',
     convert: estimateJpegQuality,
   },
   colorblind: {
-    title:'Color Blindness Simulator', subtitle:'See a photo the way colorblind eyes do',
+    title:'Color Blindness Simulator', subtitle:'See a photo the way colorblind eyes see it',
     accept:'image/*', multiple:false, alwaysShowOptions:true,
     dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
-    note:'Uses standard color-vision-deficiency transform matrices used in accessibility research.',
+    note:'Uses the same color-vision-deficiency transforms used in accessibility research.',
     renderOptions: renderColorblindOptions,
     convert: convertColorblind,
   },
   filecrypt: {
-    title:'Password-Protect a File', subtitle:'Real AES-256 encryption, fully offline',
+    title:'Password-Protect a File', subtitle:'Real AES-256 encryption, entirely offline',
     accept:'*/*', multiple:false, alwaysShowOptions:true,
     dzTitle:'Tap to choose a file', dzSub:'or drag & drop it here',
-    limitsHtml:'<b>Read before you use this</b>There is no password recovery — if you forget it, the file is gone forever, even we can\'t help since nothing is ever sent anywhere · Keep the original safe until you\'ve confirmed you can decrypt it again',
+    limitsHtml:'<b>Read before you use this</b>There\'s no password recovery here. Forget it, and the file is gone for good, even we can\'t help since nothing is ever sent anywhere. Keep the original safe until you\'ve confirmed you can decrypt it back.',
     renderOptions: renderFileCryptOptions,
     convert: convertFileCrypt,
     enableCheck: () => {
@@ -884,8 +883,9 @@ const TOOLS = {
       els.opts.style.display = '';
       renderFileCryptOptions(els.opts);
       const errBox = document.createElement('div');
-      errBox.style.cssText = 'color:#FF5CAC; font-size:12.5px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;';
-      errBox.textContent = '⚠ ' + ((e && e.message) || 'Something went wrong — try again.');
+      errBox.className = 'inline-error';
+      errBox.style.marginBottom = '12px';
+      errBox.textContent = '⚠ ' + ((e && e.message) || 'Something went wrong, give it another try.');
       els.opts.insertBefore(errBox, els.opts.firstChild);
       els.opts.classList.add('show');
       els.convertBtn.style.display = '';
@@ -894,37 +894,37 @@ const TOOLS = {
     },
   },
   qrscan: {
-    title:'QR Code Scanner', subtitle:'Decode a QR code from any photo',
+    title:'QR Code Scanner', subtitle:'Point it at a photo, get the hidden text out',
     accept:'image/*', multiple:false, isReport:true, actionLabel:'Scan QR Code',
     dzTitle:'Tap to choose a photo with a QR code', dzSub:'or drag & drop it here',
-    note:'Works fully offline — the photo never leaves your device.',
+    note:'Runs fully offline, the photo never leaves your device.',
     convert: convertQrScan,
   },
   casetext: {
-    title:'Text Case Converter', subtitle:'Every text case format at once',
+    title:'Text Case Converter', subtitle:'Every case format, ready at once',
     noFile:true, isReport:true, actionLabel:'Convert Case',
-    note:'Everything is computed locally — nothing you type leaves your device.',
+    note:'Computed right on your device. Nothing you type leaves it.',
     renderOptions: renderCaseOptions, convert: convertCaseText,
     enableCheck: () => (state.opts.casetext && state.opts.casetext.text || '').trim().length > 0,
   },
   encodetext: {
-    title:'Encode / Decode Text', subtitle:'Base64, URL, and HTML entities',
+    title:'Encode / Decode Text', subtitle:'Base64, URLs, HTML entities, sorted',
     noFile:true, isReport:true, actionLabel:'Run',
-    note:'Everything is computed locally — nothing you type leaves your device.',
+    note:'Computed right on your device. Nothing you type leaves it.',
     renderOptions: renderEncodeOptions, convert: convertEncodeText,
     enableCheck: () => (state.opts.encodetext && state.opts.encodetext.text || '').trim().length > 0,
   },
   jsonfmt: {
-    title:'JSON Formatter', subtitle:'Validate, pretty-print & minify JSON',
+    title:'JSON Formatter', subtitle:'Validate it, tidy it up, or squash it flat',
     noFile:true, isReport:true, actionLabel:'Format',
-    note:'Everything is computed locally — nothing you paste leaves your device.',
+    note:'Computed right on your device. Nothing you paste leaves it.',
     renderOptions: renderJsonOptions, convert: convertJsonFmt,
     enableCheck: () => (state.opts.jsonfmt && state.opts.jsonfmt.text || '').trim().length > 0,
   },
   diff: {
-    title:'Text Diff Checker', subtitle:'See exactly what changed between two texts',
+    title:'Text Diff Checker', subtitle:'Spot exactly what changed between two texts',
     noFile:true, isReport:true, actionLabel:'Compare',
-    note:'Everything is computed locally — nothing you paste leaves your device.',
+    note:'Computed right on your device. Nothing you paste leaves it.',
     renderOptions: renderDiffOptions, convert: convertDiff,
     enableCheck: () => {
       const o = state.opts.diff;
@@ -932,38 +932,38 @@ const TOOLS = {
     },
   },
   pwgen: {
-    title:'Password Generator', subtitle:'Strong, random, cryptographically secure',
+    title:'Password Generator', subtitle:'Strong, random, and genuinely secure',
     noFile:true, isReport:true, actionLabel:'Generate',
-    note:'Uses your browser\'s built-in secure random generator — never stored or sent anywhere.',
+    note:'Uses your browser\'s built-in secure random generator. Never stored, never sent anywhere.',
     renderOptions: renderPwGenOptions, convert: convertPwGen,
     enableCheck: () => true,
   },
   pwstrength: {
-    title:'Password Strength Checker', subtitle:'Entropy & estimated crack time',
+    title:'Password Strength Checker', subtitle:'How tough is it to crack, really',
     noFile:true, isReport:true, actionLabel:'Check Strength',
     renderOptions: renderPwStrengthOptions, convert: convertPwStrength,
     enableCheck: () => (state.opts.pwstrength && state.opts.pwstrength.text || '').length > 0,
   },
   agecalc: {
-    title:'Age Calculator', subtitle:'Exact age, total days lived & next birthday',
+    title:'Age Calculator', subtitle:'Exact age down to the day, plus your next birthday',
     noFile:true, isReport:true, actionLabel:'Calculate Age',
     renderOptions: renderAgeOptions, convert: convertAge,
     enableCheck: () => !!(state.opts.agecalc && state.opts.agecalc.dob),
   },
   emicalc: {
-    title:'EMI / Loan Calculator', subtitle:'Monthly payment, interest & total cost',
+    title:'EMI / Loan Calculator', subtitle:'What you\'ll actually pay each month',
     noFile:true, isReport:true, actionLabel:'Calculate EMI',
     renderOptions: renderEmiOptions, convert: convertEmi,
     enableCheck: () => true,
   },
   unitconv: {
-    title:'Unit Converter', subtitle:'Length, weight & temperature',
+    title:'Unit Converter', subtitle:'Length, weight and temperature, done right',
     noFile:true, isReport:true, actionLabel:'Convert Units',
     renderOptions: renderUnitOptions, convert: convertUnit,
     enableCheck: () => true,
   },
   imgb64: {
-    title:'Image ↔ Base64', subtitle:'Convert a photo to text and back',
+    title:'Image ↔ Base64', subtitle:'Turn a photo into text, or text back into a photo',
     accept:'image/*', multiple:false, alwaysShowOptions:true, actionLabel:'Run',
     dzTitle:'Tap to choose a photo', dzSub:'only needed for Image → Base64 mode',
     renderOptions: renderImgB64Options, convert: convertImgB64,
@@ -974,72 +974,51 @@ const TOOLS = {
     },
   },
   favicon: {
-    title:'Favicon Generator', subtitle:'One photo → a full favicon pack',
+    title:'Favicon Generator', subtitle:'One photo, every favicon size you need',
     accept:'image/*', multiple:false,
     dzTitle:'Tap to choose a photo', dzSub:'or drag & drop it here',
-    note:'Generates 16, 32, 48, 180, 192 and 512px PNGs, zipped together.',
+    note:'Spits out 16, 32, 48, 180, 192 and 512px PNGs, all zipped together.',
     convert: convertFavicon,
   },
   currency: {
-    title:'Currency Converter', subtitle:'Live exchange rates, 30+ currencies',
+    title:'Currency Converter', subtitle:'Live rates for 30-plus currencies',
     noFile:true, isReport:true, actionLabel:'Convert',
-    limitsHtml:'<b>Uses the internet</b>Sends only the two currency codes to the free Frankfurter API (European Central Bank rates) — nothing personal, no key needed.',
+    limitsHtml:'<b>Uses the internet</b>Sends only the two currency codes to the free Frankfurter API (European Central Bank rates). Nothing personal, no key needed.',
     renderOptions: renderCurrencyOptions, convert: convertCurrency,
     enableCheck: () => true,
   },
   ifsclookup: {
-    title:'IFSC Code Lookup', subtitle:"Find any Indian bank branch's details",
+    title:'IFSC Code Lookup', subtitle:'Find any Indian bank branch in seconds',
     noFile:true, isReport:true, actionLabel:'Look Up',
-    limitsHtml:'<b>Uses the internet</b>Sends only the IFSC code to Razorpay\'s free public IFSC database — nothing personal, no key needed.',
+    limitsHtml:'<b>Uses the internet</b>Sends only the IFSC code to Razorpay\'s free public IFSC database. Nothing personal, no key needed.',
     renderOptions: renderIfscOptions, convert: convertIfsc,
     enableCheck: () => /^[A-Za-z]{4}0[A-Za-z0-9]{6}$/.test((state.opts.ifsclookup && state.opts.ifsclookup.code)||''),
   },
   pincodelookup: {
-    title:'PIN Code Lookup', subtitle:'Area, district & state for any Indian PIN',
+    title:'PIN Code Lookup', subtitle:'Area, district and state for any Indian PIN',
     noFile:true, isReport:true, actionLabel:'Look Up',
-    limitsHtml:'<b>Uses the internet</b>Sends only the PIN code to the free India Post public API — nothing personal, no key needed.',
+    limitsHtml:'<b>Uses the internet</b>Sends only the PIN code to the free India Post public API. Nothing personal, no key needed.',
     renderOptions: renderPincodeOptions, convert: convertPincode,
     enableCheck: () => /^\d{6}$/.test((state.opts.pincodelookup && state.opts.pincodelookup.code)||''),
   },
   weatherlookup: {
-    title:'Weather Lookup', subtitle:'Live weather for any city',
+    title:'Weather Lookup', subtitle:'What\'s it like outside, anywhere in the world',
     noFile:true, isReport:true, actionLabel:'Get Weather',
-    limitsHtml:'<b>Uses the internet</b>Sends only the city name you type to the free Open-Meteo service — nothing personal, no key needed.',
+    limitsHtml:'<b>Uses the internet</b>Sends only the city name you type to the free Open-Meteo service. Nothing personal, no key needed.',
     renderOptions: renderWeatherOptions, convert: convertWeather,
     enableCheck: () => (state.opts.weatherlookup && state.opts.weatherlookup.city || '').trim().length > 0,
   },
   dictionary: {
-    title:'Dictionary', subtitle:'Meanings, pronunciation & examples',
+    title:'Dictionary', subtitle:'Meanings, pronunciation, real examples',
     noFile:true, isReport:true, actionLabel:'Look Up',
-    limitsHtml:'<b>Uses the internet</b>Sends only the word you type to the free dictionaryapi.dev service — no key needed.',
+    limitsHtml:'<b>Uses the internet</b>Sends only the word you type to the free dictionaryapi.dev service. No key needed.',
     renderOptions: renderDictOptions, convert: convertDict,
     enableCheck: () => (state.opts.dictionary && state.opts.dictionary.word || '').trim().length > 0,
   },
-  countryinfo: {
-    title:'Country Info', subtitle:'Flag, capital, population & more',
-    noFile:true, isReport:true, actionLabel:'Look Up',
-    limitsHtml:'<b>Uses the internet</b>Sends only the country name to the free restcountries.com service — no key needed.',
-    renderOptions: renderCountryOptions, convert: convertCountry,
-    enableCheck: () => (state.opts.countryinfo && state.opts.countryinfo.name || '').trim().length > 0,
-  },
-  holidaychecker: {
-    title:'Public Holidays', subtitle:"See a country's holidays for any year",
-    noFile:true, isReport:true, actionLabel:'Check',
-    limitsHtml:'<b>Uses the internet</b>Sends only the country + year to the free date.nager.at service — no key needed.',
-    renderOptions: renderHolidayOptions, convert: convertHoliday,
-    enableCheck: () => true,
-  },
-  randomquote: {
-    title:'Random Quote', subtitle:'A fresh dose of inspiration',
-    noFile:true, isReport:true, actionLabel:'Get Quote',
-    limitsHtml:'<b>Uses the internet</b>Fetches a random quote from a free public API — nothing is sent from your device.',
-    convert: convertQuote,
-    enableCheck: () => true,
-  },
   cryptoprice: {
-    title:'Crypto Price Checker', subtitle:'Live prices for major cryptocurrencies',
+    title:'Crypto Price Checker', subtitle:'Live prices for the big cryptocurrencies',
     noFile:true, isReport:true, actionLabel:'Refresh Prices',
-    limitsHtml:'<b>Uses the internet</b>Fetches live prices from CoinGecko\'s free public API — nothing is sent from your device.',
+    limitsHtml:'<b>Uses the internet</b>Fetches live prices from CoinGecko\'s free public API. Nothing is sent from your device.',
     convert: convertCrypto,
     enableCheck: () => true,
   },
@@ -1054,7 +1033,7 @@ const CATEGORIES = [
   { label:'🧾 Text & Code', keys:['casetext','jsonfmt','encodetext','diff','pwgen','pwstrength','hashcheck'] },
   { label:'🧮 Calculators', keys:['agecalc','emicalc','unitconv'] },
   { label:'🔧 Utilities', keys:['qrgen','qrscan','wordcount','filecrypt'] },
-  { label:'🌐 Live Data (needs internet)', keys:['currency','ifsclookup','pincodelookup','weatherlookup','dictionary','countryinfo','holidaychecker','randomquote','cryptoprice'] },
+  { label:'🌐 Live Data (needs internet)', keys:['currency','ifsclookup','pincodelookup','weatherlookup','dictionary','cryptoprice'] },
 ];
 function getFavorites(){ try{ return JSON.parse(localStorage.getItem('ots_favorites')||'[]'); }catch(e){ return []; } }
 function toggleFavorite(key){
@@ -1321,10 +1300,24 @@ els.convertBtn.addEventListener('click', async () => {
     console.error(e);
     els.progressWrap.classList.remove('show');
     if(cfg.onError){ cfg.onError(e); return; }
-    els.resultTitle.textContent = 'Something went wrong';
-    els.resultSub.textContent = (e && e.message) ? e.message : 'Please try a different file.';
-    els.result.classList.add('show');
-    els.downloadBtn.style.display = 'none';
+
+    if(!cfg.noFile){
+      els.dropzone.style.display = '';
+      els.fileChips.style.display = '';
+      renderChips();
+    }
+    els.opts.innerHTML = '';
+    if(cfg.renderOptions){ cfg.renderOptions(els.opts, state.files); els.opts.classList.add('show'); }
+    else { els.opts.classList.remove('show'); }
+
+    const errBox = document.createElement('div');
+    errBox.className = 'inline-error';
+    errBox.textContent = '⚠ ' + ((e && e.message) ? e.message : 'Something went wrong — please try again.');
+    els.convertBtn.parentNode.insertBefore(errBox, els.convertBtn);
+
+    els.convertBtn.style.display = '';
+    els.convertBtn.textContent = 'Try again';
+    refreshConvertEnabled();
   }
 });
 
@@ -2750,12 +2743,30 @@ async function convertQrScan(files, progress){
   if(typeof jsQR === 'undefined') throw new Error('QR scanner engine failed to load — check your internet connection and reload the page.');
   const file = files[0];
   const img = await loadImageFromFile(file);
-  const canvas = document.createElement('canvas'); canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
-  const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0);
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const result = jsQR(imageData.data, imageData.width, imageData.height);
+  const natW = img.naturalWidth, natH = img.naturalHeight;
+
+  function scanAt(w, h){
+    const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h);
+    const imageData = ctx.getImageData(0, 0, w, h);
+    return jsQR(imageData.data, w, h, { inversionAttempts: 'attemptBoth' });
+  }
+
+  progress('Scanning…');
+  let result = scanAt(natW, natH);
+  if(!result && Math.max(natW, natH) > 1200){
+    progress('Trying a different resolution…');
+    const scale = 1200 / Math.max(natW, natH);
+    result = scanAt(Math.round(natW*scale), Math.round(natH*scale));
+  }
+  if(!result && Math.max(natW, natH) < 2400){
+    progress('Trying a higher resolution…');
+    const upscale = Math.min(3, 2400 / Math.max(natW, natH));
+    result = scanAt(Math.round(natW*upscale), Math.round(natH*upscale));
+  }
+
   if(!result){
-    els.metaResults.innerHTML = `<div class="meta-empty">No QR code found in this image. Try a clearer, more zoomed-in photo.</div>`;
+    els.metaResults.innerHTML = `<div class="meta-empty">No QR code found. Try a sharper, well-lit photo where the code fills most of the frame and isn't at a steep angle.</div>`;
     els.metaResults.classList.add('show');
     return { blob:null, filename:file.name };
   }
@@ -3014,100 +3025,6 @@ async function convertDict(files, progress){
   return { blob:null, filename:'dictionary' };
 }
 
-// ================= Country Info =================
-function renderCountryOptions(container){
-  state.opts.countryinfo = state.opts.countryinfo || { name:'' };
-  container.innerHTML = `<h5>Country</h5><input type="text" id="countryField" placeholder="e.g. Japan" value="${state.opts.countryinfo.name||''}"
-    style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:10px; padding:11px; color:var(--text); font-size:14px;">`;
-  container.querySelector('#countryField').addEventListener('input', e => { state.opts.countryinfo.name = e.target.value; refreshConvertEnabled(); });
-}
-async function convertCountry(files, progress){
-  const name = (state.opts.countryinfo && state.opts.countryinfo.name || '').trim();
-  progress('Looking up country…');
-  let json;
-  try{
-    const res = await fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(name)}?fields=name,capital,population,region,subregion,flag,currencies,languages,timezones`);
-    json = await res.json();
-  }catch(e){ throw new Error('Could not reach the country info service.'); }
-  if(!Array.isArray(json) || !json.length){
-    els.metaResults.innerHTML = `<div class="meta-empty">No country found matching "${metaEscape(name)}".</div>`;
-    els.metaResults.classList.add('show');
-    return { blob:null, filename:'country' };
-  }
-  const c = json[0];
-  const currencies = c.currencies ? Object.values(c.currencies).map(cur=>`${cur.name} (${cur.symbol||''})`).join(', ') : '—';
-  const languages = c.languages ? Object.values(c.languages).join(', ') : '—';
-  const rows = [
-    ['Capital', (c.capital||[])[0] || '—'],
-    ['Region', `${c.region}${c.subregion ? ' · '+c.subregion : ''}`],
-    ['Population', (c.population||0).toLocaleString()],
-    ['Currency', currencies], ['Languages', languages],
-    ['Timezones', (c.timezones||[]).slice(0,3).join(', ')],
-  ];
-  let html = `<div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--lime); color:var(--lime)"></span>${metaEscape(c.flag||'')} ${metaEscape(c.name.common)}</div><div class="meta-card glass">`;
-  html += rows.map(([k,v],i)=>`<div class="meta-row" style="--i:${i}"><div class="k">${metaEscape(k)}</div><div class="v">${metaEscape(v)}</div></div>`).join('');
-  html += `</div></div>`;
-  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
-  return { blob:null, filename:'country' };
-}
-
-// ================= Public Holidays =================
-const HOLIDAY_COUNTRIES = {IN:'India', US:'United States', GB:'United Kingdom', CA:'Canada', AU:'Australia', DE:'Germany', FR:'France', JP:'Japan', BR:'Brazil', ZA:'South Africa', AE:'UAE', SG:'Singapore'};
-function renderHolidayOptions(container){
-  state.opts.holidaychecker = state.opts.holidaychecker || { country:'IN', year:new Date().getFullYear() };
-  const o = state.opts.holidaychecker;
-  container.innerHTML = `
-    <h5>Country</h5>
-    <select id="holCountry" style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-brd); border-radius:10px; padding:10px; color:var(--text); margin-bottom:12px;">${Object.entries(HOLIDAY_COUNTRIES).map(([k,v])=>`<option value="${k}" ${k===o.country?'selected':''}>${v}</option>`).join('')}</select>
-    <div class="field-row"><label>Year</label><input type="number" id="holYear" value="${o.year}"></div>`;
-  container.querySelector('#holCountry').addEventListener('change', e => { o.country = e.target.value; });
-  container.querySelector('#holYear').addEventListener('input', e => { o.year = +e.target.value; });
-}
-async function convertHoliday(files, progress){
-  const o = state.opts.holidaychecker || { country:'IN', year:new Date().getFullYear() };
-  progress('Fetching holidays…');
-  let json;
-  try{
-    const res = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${o.year}/${o.country}`);
-    json = await res.json();
-  }catch(e){ throw new Error('Could not reach the holiday service.'); }
-  if(!Array.isArray(json) || !json.length){
-    els.metaResults.innerHTML = `<div class="meta-empty">No holiday data found for that country/year.</div>`;
-    els.metaResults.classList.add('show');
-    return { blob:null, filename:'holidays' };
-  }
-  let html = `<div class="meta-badge">${json.length} holidays in ${o.year}</div><div class="meta-section" style="opacity:1;"><div class="meta-title"><span class="meta-dot" style="background:var(--pink); color:var(--pink)"></span>${metaEscape(HOLIDAY_COUNTRIES[o.country]||o.country)}</div><div class="meta-card glass" style="max-height:340px; overflow:auto;">`;
-  html += json.map((h,i)=>`<div class="meta-row" style="--i:${i}"><div class="k">${metaEscape(h.localName)}</div><div class="v">${metaEscape(h.date)}</div></div>`).join('');
-  html += `</div></div>`;
-  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
-  return { blob:null, filename:'holidays' };
-}
-
-// ================= Random Quote =================
-async function convertQuote(files, progress){
-  progress('Fetching a quote…');
-  let content, author;
-  try{
-    const res = await fetch('https://api.quotable.io/random');
-    const json = await res.json();
-    content = json.content; author = json.author;
-  }catch(e){ /* try fallback */ }
-  if(!content){
-    try{
-      const res2 = await fetch('https://zenquotes.io/api/random');
-      const json2 = await res2.json();
-      content = json2[0].q; author = json2[0].a;
-    }catch(e){ /* both failed */ }
-  }
-  if(!content) throw new Error('Could not reach any quote service — check your internet connection.');
-  const html = `<div class="meta-section" style="opacity:1;"><div class="meta-card glass" style="padding:20px; text-align:center;">
-    <div style="font-size:16px; font-weight:700; color:var(--text); line-height:1.5; margin-bottom:10px;">"${metaEscape(content)}"</div>
-    <div style="font-size:13px; color:var(--sub);">— ${metaEscape(author||'Unknown')}</div>
-  </div></div>`;
-  els.metaResults.innerHTML = html; els.metaResults.classList.add('show');
-  return { blob:null, filename:'quote' };
-}
-
 // ================= Crypto Price Checker =================
 async function convertCrypto(files, progress){
   progress('Fetching live prices…');
@@ -3170,8 +3087,10 @@ function metaFmt(v){
 }
 function metaEscape(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
+let lastMetaFile = null;
 async function extractMetadata(files, progress){
   const file = files[0];
+  lastMetaFile = file;
   progress('Reading image…');
   const url = URL.createObjectURL(file);
   const img = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = url; });
@@ -3185,6 +3104,44 @@ async function extractMetadata(files, progress){
 
   buildMetaResults(file, img, tags, loadError);
   return { blob:null, filename:file.name };
+}
+function stripImageMetadata(file){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const mime = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+      canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Could not process this image')), mime, 0.95);
+    };
+    img.onerror = () => reject(new Error('Could not load this image'));
+    img.src = URL.createObjectURL(file);
+  });
+}
+function wireStripMetadataButton(){
+  const btn = document.getElementById('stripMetaBtn');
+  if(!btn) return;
+  btn.addEventListener('click', async () => {
+    const orig = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Removing metadata…';
+    try{
+      const blob = await stripImageMetadata(lastMetaFile);
+      const ext = lastMetaFile.type === 'image/png' ? 'png' : 'jpg';
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = lastMetaFile.name.replace(/\.[^.]+$/,'') + '-clean.' + ext;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      showToast('📂 Saved — check your Downloads folder');
+      btn.textContent = '✓ Downloaded — tap to save again';
+    }catch(e){
+      btn.textContent = "Failed — tap to retry";
+    }
+    btn.disabled = false;
+  });
 }
 
 function buildMetaResults(file, img, tags, loadError){
@@ -3273,9 +3230,14 @@ function buildMetaResults(file, img, tags, loadError){
   if(totalTags <= 4 && !loadError){
     html += `<div class="meta-empty">No EXIF metadata found — this image may have been stripped of its data (see "What this can't do" above).</div>`;
   }
+  if(!loadError){
+    html += `<button class="btn btn-primary" id="stripMetaBtn" style="margin-top:6px;">🧹 Remove All Metadata & Download Clean Copy</button>
+    <div class="note">Re-encodes the photo from scratch, wiping every EXIF/GPS/IPTC/XMP tag — the image itself looks identical.</div>`;
+  }
 
   els.metaResults.innerHTML = intro + html;
   els.metaResults.classList.add('show');
+  wireStripMetadataButton();
 }
 function metaSection(dotClass, title, rows, gps, sectionIndex){
   let rowsHtml = rows.map(([k,v], i) => `<div class="meta-row" style="--i:${i}"><div class="k">${metaEscape(k)}</div><div class="v">${metaEscape(v)}</div></div>`).join('');
